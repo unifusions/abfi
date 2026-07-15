@@ -31,6 +31,10 @@ Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
     Route::prefix('compliance')->name('compliance.')->group(
         function () {
             Route::resource('roles', RoleController::class);
+            Route::patch(
+                'compliance/roles/{role}/permissions',
+                [RoleController::class, 'syncPermissions']
+            )->name('roles.permissions.sync');
             Route::controller(UserController::class)->prefix('users')->name('users.')->group(
                 function(){
                     Route::get('/','index')->name('index');

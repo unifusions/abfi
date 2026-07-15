@@ -2,6 +2,7 @@
 
 namespace App\Domains\AccessControl\Controllers;
 
+use App\Domains\AccessControl\Requests\SyncRolePermissionsRequest;
 use App\Http\Controllers\Controller;
 use App\Domains\AccessControl\DTOs\RoleData;
 use App\Domains\AccessControl\Models\Permission;
@@ -12,6 +13,7 @@ use App\Domains\AccessControl\Services\RoleService;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -25,7 +27,7 @@ class RoleController extends Controller
         return Inertia::render('compliance/access-control/role-index', [
             'roles' => Role::query()
                 ->withCount('users')
-                ->with('permissions:id,name')
+                ->with('permissions:id')
                 ->orderBy('name')
                 ->get(),
 
@@ -34,6 +36,10 @@ class RoleController extends Controller
                 ->orderBy('name')
                 ->get()->groupBy('module'),
         ]);
+    }
+
+    public function show(Role $role){
+            return inertia('compliance/access-control/role-show', );
     }
 
     public function store(StoreRoleRequest $request): RedirectResponse
@@ -52,7 +58,8 @@ class RoleController extends Controller
         UpdateRoleRequest $request,
         Role $role
     ): RedirectResponse {
-
+ 
+        
         $this->service->update(
             $role,
             RoleData::fromUpdateRequest($request)
@@ -64,6 +71,23 @@ class RoleController extends Controller
         );
     }
 
+
+    public function syncPermissions(
+        SyncRolePermissionsRequest $request,
+        Role $role
+    ): RedirectResponse {
+
+        $this->service->syncPermissions(
+            $role,
+            $request->validated('permissions', [])
+        );
+
+        return back()->with(
+            'success',
+            'Role permissions updated successfully.'
+        );
+    }
+    
     public function destroy(Role $role): RedirectResponse
     {
         $this->service->delete($role);
