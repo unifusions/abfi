@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, IdCard, LayoutGrid, Trophy, User, UserCog, Users  } from 'lucide-react';
+import { BookOpen, FolderGit2, IdCard, LayoutGrid, Shield, Trophy, User, UserCog, Users  } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,7 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { compliance, dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 import   { index as PlayerIndex } from '@/routes/players';
 import {index as TournamentIndex} from '@/routes/tournaments';
@@ -45,6 +45,11 @@ title:'Tournaments',
         title:'Rosters',
         href: '#',
         icon: IdCard,  
+    },
+    {
+        title: 'Compliance',
+        href:compliance(),
+icon : Shield
     }
 ];
 

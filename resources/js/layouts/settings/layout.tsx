@@ -49,7 +49,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                 key={`${toUrl(item.href)}-${index}`}
                                 size="sm"
                                 variant="ghost"
-                                asChild
+                                
                                 className={cn('w-full justify-start', {
                                     'bg-muted': isCurrentOrParentUrl(item.href),
                                 })}

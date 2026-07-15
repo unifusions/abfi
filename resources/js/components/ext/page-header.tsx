@@ -1,6 +1,14 @@
 import { Head } from "@inertiajs/react";
+import { LucideIcon } from "lucide-react";
 
-export default function PageHeader({ title, subText, belowPill, belowPillIcon : BelowPillIcon, children }) {
+type Props = {
+    title?: string;
+    subText?: string;
+    belowPill ?: string;
+    belowPillIcon?: LucideIcon | null;
+    children ?: React.ReactNode;
+}
+export default function PageHeader({ title, subText, belowPill, belowPillIcon : BelowPillIcon, children } : Props) {
     return (
         <>
 

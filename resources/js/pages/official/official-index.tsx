@@ -1,11 +1,14 @@
 import LinkButton from "@/components/ext/link-button";
 import OfficialList from "@/components/ext/official/official-list";
 import PageHeader from "@/components/ext/page-header";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { dashboard } from "@/routes";
 import officials, { create } from "@/routes/officials";
 import { UserRoundPlus, Users } from "lucide-react";
 
-export default function OfficialIndex() {
+export default function OfficialIndex(
+    { states }
+) {
     return (
 
         < >
@@ -17,7 +20,7 @@ export default function OfficialIndex() {
 
 
             >
- 
+
                 <LinkButton href={create()}
 
                     icon={UserRoundPlus}
@@ -27,28 +30,38 @@ export default function OfficialIndex() {
                     Register New Official
                 </LinkButton>
             </PageHeader>
-            
+
 
             {/* <!-- Robust Filter Bar --> */}
-            <div class="bg-surface-container-lowest p-5 rounded-2xl shadow-sm mb-6 flex flex-wrap items-center gap-6 border-outline-variant/10 border">
-                <div class="flex-1 min-w-[200px]">
+
+
+            <div class="  p-5 rounded-2xl shadow-sm mb-6 flex flex-wrap items-center gap-6 border-outline-variant/10 border">
+                <div class="flex-1 ">
                     <label class="font-label text-xs uppercase font-bold text-on-surface-variant mb-2 block">State / Region</label>
                     <div class="relative">
-                        <select class="w-full bg-surface-container-low border-none rounded-lg py-2.5 px-4 font-body text-body-md appearance-none focus:ring-2 focus:ring-primary/20">
-                            <option>All States</option>
-                            <option>California</option>
-                            <option>New York</option>
-                            <option>Maharashtra</option>
-                            <option>Delhi</option>
-                            <option>Karnataka</option>
-                        </select>
-                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+
+                        <Select  >
+                            <SelectTrigger className="w-full  focus:ring-2 focus:ring-primary/20 ">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+
+                                    {states.map((item) => (
+                                        <SelectItem key={item.id} value={item.short_code}>
+                                            {item.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+
                     </div>
                 </div>
-                <div class="flex-1 min-w-[200px]">
+                <div class="flex-1  ">
                     <label class="font-label text-xs uppercase font-bold text-on-surface-variant mb-2 block">Category</label>
                     <div class="relative">
-                        <select class="w-full bg-surface-container-low border-none rounded-lg py-2.5 px-4 font-body text-body-md appearance-none focus:ring-2 focus:ring-primary/20">
+                        <select class="w-full bg-surface-container-low border-none rounded-lg py-2.5 px-4 font-body text-body-md appearance-none">
                             <option>All Categories</option>
                             <option>Umpire</option>
                             <option>Coach</option>
@@ -58,19 +71,7 @@ export default function OfficialIndex() {
                         <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
                     </div>
                 </div>
-                <div class="flex-1 min-w-[200px]">
-                    <label class="font-label text-xs uppercase font-bold text-on-surface-variant mb-2 block">Age Range</label>
-                    <div class="relative">
-                        <select class="w-full bg-surface-container-low border-none rounded-lg py-2.5 px-4 font-body text-body-md appearance-none focus:ring-2 focus:ring-primary/20">
-                            <option>Any Age</option>
-                            <option>20-30</option>
-                            <option>31-40</option>
-                            <option>41-50</option>
-                            <option>51+</option>
-                        </select>
-                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
-                    </div>
-                </div>
+                
                 <div class="flex items-end h-full">
                     <button class="bg-surface-variant/50 text-primary px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-surface-variant transition-colors border-outline-variant/20 border">
                         <span class="material-symbols-outlined text-sm">filter_list</span>
@@ -97,6 +98,6 @@ OfficialIndex.layout = {
             title: "Official's Directory",
             href: officials.index.url()
         },
-        
+
     ],
 };

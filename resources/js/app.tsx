@@ -5,6 +5,7 @@ import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import ComplianceLayout from './layouts/compliance/layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'ABFI Admin';
 
@@ -18,6 +19,8 @@ createInertiaApp({
                 return AuthLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
+                case name.startsWith('compliance/'):
+                    return [AppLayout, ComplianceLayout]
             default:
                 return AppLayout;
         }
@@ -27,7 +30,7 @@ createInertiaApp({
         return (
             <TooltipProvider delayDuration={0}>
                 {app}
-                <Toaster />
+                <Toaster  richColors position="top-right"  />
             </TooltipProvider>
         );
     },
@@ -37,4 +40,4 @@ createInertiaApp({
 });
 
 // This will set light / dark mode on load...
-initializeTheme();
+// initializeTheme();

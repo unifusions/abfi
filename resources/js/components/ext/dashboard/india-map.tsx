@@ -200,7 +200,7 @@ export default function IndiaMap({ stateInfo }) {
 
             {tooltip.visible && (
                 <div
-                    className="tooltip fixed z-50 bg-secondary text-white p-4 pb-0 rounded-md shadow-sm"
+                    className="tooltip fixed z-50 bg-accent-secondary text-white p-4 pb-0 rounded-md shadow-sm"
                     style={{
                         left: tooltip.x + 15,
                         top: tooltip.y + 15,
@@ -225,14 +225,14 @@ export default function IndiaMap({ stateInfo }) {
 
                 </div>
             )}
-            <svg baseprofile="tiny" viewBox="0 0 1000 1000" className="h-full fill-primary  " stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"   >
+            <svg baseprofile="tiny" viewBox="0 0 1000 1000" className="h-full fill-accent  " stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"   >
                 <g id="features">
                     {states.map((state) => (
                         <path
                             key={state.id}
                             d={state.d}
 
-                            className={`transition-all duration-300   ${hoveredState === state.id ? "fill-secondary" : "fill-primary"}`}
+                            className={`transition-all duration-300   ${hoveredState === state.id ? "fill-accent-secondary" : "fill-accent"}`}
                             stroke="#fff"
                             onMouseMove={(e) =>
                                 setTooltip({

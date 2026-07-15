@@ -2,6 +2,7 @@
 
 namespace App\Domains\Official\Controllers;
 
+use App\Domains\Compliance\Models\State;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,10 @@ class OfficialController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return inertia('official/official-index');
+    { 
+        return inertia('official/official-index', [
+            'states' => State::all()
+        ]);
     }
 
     /**

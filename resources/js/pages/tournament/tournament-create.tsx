@@ -1,76 +1,212 @@
-import { Rocket } from "lucide-react";
+import CreatableSelect from "@/components/ext/createable-select";
+import FormInput from "@/components/ext/form-input";
+import FormInputWithIcon from "@/components/ext/form-input-with-icon";
+import PageHeader from "@/components/ext/page-header";
+import { Button } from "@/components/ui/button";
+import { dashboard } from "@/routes";
+import tournaments from "@/routes/tournaments";
+import venue from "@/routes/venue";
+import { useForm } from "@inertiajs/react";
+import { Calendar, ClipboardPen, Component, FileUser, FolderTree, Layers2, ListTree, MapPin, Network, Rocket } from "lucide-react";
+import AddVenueDialog from "./add-venue-dialog";
+import { useState } from "react";
+import InputError from "@/components/input-error";
+import SearchableSelect from "@/components/ext/searcable-select";
 
-export default function TournamentCreate() {
+type Props = {
+    states?: [],
+    organizations?: []
+}
+export default function TournamentCreate({ states, organizations }: Props) {
+
+    const [v, setV] = useState();
+
+    const { data, setData, processing, errors, post, transform } = useForm({
+        'name': '',
+        'category': '',
+        'organization_id': '',
+        'venue_id': '',
+        'starts_at': '',
+        'ends_at': '',
+        'registration_open_at': '',
+        'registration_close_at': '',
+        'competition_format': '',
+
+    });
+
+    const [venueQuery, setVenueQuery] = useState('');
+    const [venueDialogOpen, setVenueDialogOpen] = useState(false);
+    const submit = (action) => {
+        transform((data) => ({
+            ...data,
+            action,
+        }));
+
+        post(
+
+            tournaments.store().url
+        )
+
+    }
+
+    const selectedOrganization =
+        organizations.find(
+            (o) => o.id === data.organization_id
+        ) ?? null;
+
+
     return (
         < >
-          
-             
-            <div class="flex flex-col lg:flex-row gap-10 max-w-5xl">
+            <PageHeader title="New Tournament" subText="Initialize a new event. Ensure all data conforms to guidelines." />
+
+
+            <div className="flex flex-col lg:flex-row gap-10 max-w-5xl">
                 {/* <!-- Left Column: Form Sections --> */}
-                <div class="flex-1 space-y-10">
-                    <section>
-                        <h1 class="font-headline font-black text-4xl text-primary tracking-tight mb-2">Create New Tournament</h1>
-                        <p class="text-on-surface-variant font-body">Initialize a new event. Ensure all data conforms to guidelines.</p>
-                    </section>
-                    <form class="space-y-12" id="tournamentForm">
+                <div className="flex-1 space-y-10">
+
+                    <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
                         {/* <!-- Section 1: Core Identity --> */}
-                        <div class="space-y-6">
-                            <div class="flex items-center gap-4">
-                                <div class="w-1 h-6 bg-secondary"></div>
-                                <h2 class="font-headline font-bold text-xl uppercase tracking-wider">Tournament Identity</h2>
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4">
+                                <div className="w-1 h-6 bg-secondary"></div>
+                                <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Tournament Identity</h2>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="space-y-2">
-                                    <label class="font-label text-sm font-bold uppercase text-on-surface-variant">Tournament Name</label>
-                                    <input class="w-full bg-surface-container-lowest border-none rounded-lg p-4 font-body shadow-sm form-input-focus placeholder:text-on-surface-variant/40" placeholder="e.g. Mid-Summer National Open" type="text" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <FormInput
+                                        id="tournament_name"
+                                        label="Tournament Name"
+                                        hasError={errors.name}
+                                        value={data.name}
+                                        onChange={e => setData('name', e.target.value)}
+
+
+
+                                        placeholder="e.g., Sub Junior National Baseball Championship"
+                                    />
+
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="font-label text-sm font-bold uppercase text-on-surface-variant">Category</label>
-                                    <select class="w-full bg-surface-container-lowest border-none rounded-lg p-4 font-body shadow-sm form-input-focus">
-                                        <option>State Championship</option>
-                                        <option>National Qualifier</option>
-                                        <option>Invitational Elite</option>
-                                        <option>Regional Open</option>
+                                <div className="space-y-2">
+                                    <label className="font-label text-sm font-bold uppercase text-on-surface-variant">Category</label>
+                                    <select className="w-full bg-surface-container-lowest border-none rounded-lg p-4 font-body shadow-sm form-input-focus">
+                                        <option>Little League</option>
+                                        <option>Sub-Junior</option>
+                                        <option>Junior</option>
+                                        <option>Senior</option>
                                     </select>
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="font-label text-sm font-bold uppercase text-on-surface-variant">Primary Venue</label>
-                                    <div class="relative">
-                                        <input class="w-full bg-surface-container-lowest border-none rounded-lg p-4 pl-12 font-body shadow-sm form-input-focus" placeholder="Search venues..." type="text" />
-                                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">location_on</span>
-                                    </div>
+                                <div className="space-y-2">
+
+                                    {/* <CreatableSelect 
+                                      selectedValue = {data.venue_id}
+                                        searchApiUrl = {venue.search().url}
+                                        passQuery={(e) => setVenueQuery(e.target.value) }
+                                        handleSelect={(val) => setData('venue_id', val)}
+                                        addDialog={ <AddVenueDialog triggerText={venueQuery} states={states}
+                                            setVenueId={(newVenueObject) => setData('venue_id', newVenueObject.id  )}
+                                        />} */}
+                                    {/* /> */}
+
+                                    <CreatableSelect value={v}
+                                        searchUrl={venue.search().url}
+                                        onChange={(v) => {
+                                            setV(v);
+                                            setData("venue_id", v.id);
+                                        }}
+                                        getOptionLabel={(v) => v.name}
+                                        getOptionValue={(v) => v.id}
+                                        renderOption={(v) => (
+                                            <div>
+                                                <div>{v?.name}</div>
+                                                <div className="text-xs hover:text-zinc-200">
+                                                    {v?.state_code}
+                                                </div>
+                                            </div>
+                                        )}
+                                        icon={MapPin}
+                                        label="PrimaryVenue"
+                                        onCreate={(query) => { setVenueQuery(query); setVenueDialogOpen(true) }}
+
+                                    />
+                                    <AddVenueDialog
+                                        open={venueDialogOpen}
+                                        onOpenChange={setVenueDialogOpen}
+                                        states={states}
+                                        triggerText={venueQuery}
+                                        setVenueId={(v) => {
+
+                                            setV(v);
+                                            setData("venue_id", v.id);
+                                        }}
+
+
+
+                                    />
+
+
+
+
+
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="font-label text-sm font-bold uppercase text-on-surface-variant">Sanctioning ID</label>
-                                    <input class="w-full bg-surface-container-low border-none rounded-lg p-4 font-mono text-sm text-primary/60 cursor-not-allowed" readonly="" type="text" value="FED-2024-AUTO" />
+
+                                <div>
+
+
+                                    <SearchableSelect
+                                        options={organizations}
+                                        onChange={(org) => setData("organization_id", org.id)}
+
+                                        getOptionLabel={(org) => org.name}
+                                        getOptionValue={(org) => org.id}
+                                        renderOption={(org) => (
+                                            <div>
+                                                <div>{org?.name}</div>
+                                                <div className="text-xs hover:text-zinc-200">
+                                                    {org?.id}
+                                                </div>
+                                            </div>
+                                        )}
+                                        icon={FileUser}
+                                        label="Organizer "
+                                        value={organizations.find(o => o.id === data.organization_id) ?? null}
+
+                                    />
+
+                                    {data?.organization_id}
                                 </div>
                             </div>
                         </div>
                         {/* <!-- Section 2: Timeline --> */}
-                        <div class="space-y-6">
-                            <div class="flex items-center gap-4">
-                                <div class="w-1 h-6 bg-secondary"></div>
-                                <h2 class="font-headline font-bold text-xl uppercase tracking-wider">Event Timeline</h2>
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4">
+                                <div className="w-1 h-6 bg-secondary"></div>
+                                <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Event Timeline</h2>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 bg-surface-container-low p-8 rounded-xl">
-                                <div class="space-y-4">
-                                    <h3 class="font-label text-xs font-black uppercase text-secondary tracking-widest flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-sm">calendar_today</span> Tournament Dates
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 bg-surface-container-low p-8 rounded-xl">
+                                <div className="space-y-4">
+                                    <h3 className="font-label text-xs font-black uppercase text-secondary tracking-widest flex items-center gap-2">
+                                        <Calendar /> Tournament Dates
                                     </h3>
-                                    <div class="flex items-center gap-4">
-                                        <input class="flex-1 bg-surface-container-lowest border-none rounded-lg p-3 font-body shadow-sm form-input-focus" type="date" />
-                                        <span class="text-on-surface-variant">to</span>
-                                        <input class="flex-1 bg-surface-container-lowest border-none rounded-lg p-3 font-body shadow-sm form-input-focus" type="date" />
+                                    <div className="flex items-center gap-4">
+                                        <FormInput className="flex-1" type="date"
+                                            onChange={(e) => setData('starts_at', e.target.value)} value={data.starts_at} />
+
+                                        <span className="text-on-surface-variant">to</span>
+                                        <FormInput className="flex-1" type="date"
+                                            onChange={(e) => setData('ends_at', e.target.value)} value={data.ends_at} />
                                     </div>
                                 </div>
                                 <div class="space-y-4">
                                     <h3 class="font-label text-xs font-black uppercase text-secondary tracking-widest flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-sm">app_registration</span> Registration Window
+                                        <ClipboardPen /> Registration Window
                                     </h3>
                                     <div class="flex items-center gap-4">
-                                        <input class="flex-1 bg-surface-container-lowest border-none rounded-lg p-3 font-body shadow-sm form-input-focus" type="date" />
-                                        <span class="text-on-surface-variant">to</span>
-                                        <input class="flex-1 bg-surface-container-lowest border-none rounded-lg p-3 font-body shadow-sm form-input-focus" type="date" />
+                                        <FormInput className="flex-1" type="date"
+                                            onChange={(e) => setData('registration_open_at', e.target.value)} value={data.registration_open_at} />
+
+                                        <span className="text-on-surface-variant">to</span>
+                                        <FormInput className="flex-1" type="date"
+                                            onChange={(e) => setData('registration_close_at', e.target.value)} value={data.registration_close_at} />
                                     </div>
                                 </div>
                             </div>
@@ -81,27 +217,43 @@ export default function TournamentCreate() {
                                 <div class="w-1 h-6 bg-secondary"></div>
                                 <h2 class="font-headline font-bold text-xl uppercase tracking-wider">Bracket &amp; Logic</h2>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <label class="relative group cursor-pointer">
-                                    <input checked="" class="peer sr-only" name="bracket" type="radio" />
+                                    <input class="peer sr-only" name="bracket" type="radio" value="pool_play"
+
+                                        onChange={(e) => setData('competition_format', e.target.value)}
+                                    />
                                     <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
-                                        <span class="material-symbols-outlined text-3xl text-primary">account_tree</span>
-                                        <p class="font-bold text-primary">Single Knockout</p>
-                                        <p class="text-xs text-on-surface-variant leading-relaxed">Lose once and the team is out. Fast-paced elimination format.</p>
+                                        <FolderTree className="h-10 w-10 text-primary" />
+
+                                        <p class="font-bold text-primary">Pool Play</p>
+                                        <p class="text-xs text-on-surface-variant leading-relaxed">Every team plays every other team in their pool. Points-based advancement.</p>
                                     </div>
                                 </label>
                                 <label class="relative group cursor-pointer">
                                     <input class="peer sr-only" name="bracket" type="radio" />
                                     <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
-                                        <span class="material-symbols-outlined text-3xl text-primary">groups</span>
+                                        <Component className="h-10 w-10 text-primary" />
                                         <p class="font-bold text-primary">Round Robin</p>
                                         <p class="text-xs text-on-surface-variant leading-relaxed">Every team plays every other team. Points-based advancement.</p>
                                     </div>
                                 </label>
+
                                 <label class="relative group cursor-pointer">
                                     <input class="peer sr-only" name="bracket" type="radio" />
                                     <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
-                                        <span class="material-symbols-outlined text-3xl text-primary">layers</span>
+                                        <Network className="h-10 w-10 text-primary" />
+
+                                        <p class="font-bold text-primary">Single Knockout</p>
+                                        <p class="text-xs text-on-surface-variant leading-relaxed">Lose once and the team is out. Fast-paced elimination format.</p>
+                                    </div>
+                                </label>
+
+                                <label class="relative group cursor-pointer">
+                                    <input class="peer sr-only" name="bracket" type="radio" />
+                                    <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
+                                        <Layers2 className="h-10 w-10 text-primary" />
+
                                         <p class="font-bold text-primary">Double Elimination</p>
                                         <p class="text-xs text-on-surface-variant leading-relaxed">Teams drop to a loser's bracket after one defeat. Two losses to exit.</p>
                                     </div>
@@ -109,7 +261,7 @@ export default function TournamentCreate() {
                             </div>
                         </div>
                         {/* <!-- Section 4: Prizes & Financials --> */}
-                        <div class="space-y-6">
+                        {/* <div class="space-y-6">
                             <div class="flex items-center gap-4">
                                 <div class="w-1 h-6 bg-secondary"></div>
                                 <h2 class="font-headline font-bold text-xl uppercase tracking-wider">Prize Purse &amp; Rewards</h2>
@@ -154,21 +306,30 @@ export default function TournamentCreate() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         {/* <!-- Submit Actions --> */}
                         <div class="pt-10 flex flex-col sm:flex-row items-center justify-end gap-4 border-t border-outline-variant/30">
-                            <button class="w-full sm:w-auto px-8 py-4 font-bold text-primary hover:bg-surface-container-low rounded transition-all" type="button">Save as Draft</button>
-                            <button class="w-full sm:w-auto px-10 py-4 font-bold bg-primary text-white rounded shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
+                            <button class="w-full sm:w-auto px-8 py-4 font-bold text-primary hover:bg-surface-container-low rounded transition-all" type="submit" value="draft" onClick={() => submit('draft')}>Save as Draft</button>
+                            <button class="w-full sm:w-auto px-10 py-4 font-bold bg-primary text-white rounded shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit" value="publish" onClick={() => submit('publish')}>
                                 <span>Publish Tournament</span>
                                 <Rocket />
-                               
+
                             </button>
                         </div>
                     </form>
                 </div>
                 {/* <!-- Right Column: Contextual Card & Map --> */}
-            
+
             </div>
         </>
     )
+}
+
+TournamentCreate.layout = {
+    breadcrumbs: [
+        { title: 'Dashboard', href: dashboard() },
+        { title: 'Tournaments', href: tournaments.index().url },
+        { title: 'New Tournament' }
+    ],
+
 }

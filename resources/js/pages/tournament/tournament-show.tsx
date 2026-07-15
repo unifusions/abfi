@@ -1,0 +1,86 @@
+import TournamentStatCard from "@/components/ext/tournament/tournament-stats-card";
+import { dashboard } from "@/routes";
+import { index } from "@/routes/tournaments";
+import { Head } from "@inertiajs/react";
+import { Calendar, MapPin } from "lucide-react";
+
+export default function TournamentShow({ tournament }) {
+    return (
+        <>
+            <Head title={tournament?.name} />
+            <div className="flex justify-between items-end mb-6">
+                <div className="flex flex-col items-start">
+                    <div>
+                        <h1 className="text-5xl font-display font-black text-primary tracking-tighter leading-tight">{tournament?.name}</h1>
+
+                    </div>
+                    <div className="flex items-center">
+                        <div className=" bg-blue-200  shrink-0 text-primary px-4 py-1 rounded-full flex items-center gap-2" >
+                            {/* BelowPillIcon && <BelowPillIcon className="h-5" />  */}
+                            <span className=" uppercase text-xs">{tournament.status}</span>
+                        </div>
+
+                        <div>
+                            <Calendar />
+                            {tournament?.starts_at} - {tournament?.ends_at}
+                        </div>
+
+                        <div>
+                            <MapPin />
+                            {tournament?.venue}
+                        </div>
+
+                    </div>
+                </div>
+                <div className="flex space-x-3">
+
+
+
+                </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-6">
+                <TournamentStatCard
+                    label="Total Registered Rosters"
+                    value=""
+                    variant="accent"
+                    description=""
+
+                />
+
+                <TournamentStatCard
+                    label="Pending Payments" value=""
+                    variant="accent-secondary"
+                    description=""
+
+                />
+
+                <TournamentStatCard
+                    label="Validated Entry" value=""
+
+                    description=""
+
+                />
+
+            </div>
+        </>
+    )
+}
+
+TournamentShow.layout = {
+    breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard()
+        }
+        ,
+        {
+            title: 'Tournaments',
+            href: index(),
+        },
+        {
+            title: 'Event Detail'
+        }
+
+    ],
+}

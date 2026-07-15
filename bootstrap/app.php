@@ -1,5 +1,8 @@
 <?php
 
+use App\Domains\AccessControl\Middleware\Authorize;
+use App\Domains\AccessControl\Middleware\CheckPermission;
+use App\Domains\AccessControl\Middleware\CheckRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -21,7 +24,14 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+           
         ]);
+
+        $middleware->alias([
+            'authorize' => Authorize::class,
+        ]);
+
+       
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
