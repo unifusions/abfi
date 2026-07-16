@@ -1,6 +1,7 @@
 <?php
 
 use App\Domains\AccessControl\Controllers\RoleController;
+use App\Domains\AccessControl\Middleware\Authorize;
 use App\Domains\Compliance\Controllers\AuditLogController;
 use App\Domains\Compliance\Controllers\ComplianceController;
 use App\Domains\Compliance\Controllers\StateController;
@@ -16,44 +17,54 @@ Route::inertia('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-// SIMPLE SEARCH QUERIES
+    // SIMPLE SEARCH QUERIES
 
-Route::get('/venue-search' , VenueSearchController::class)->name('venue.search');
-Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
+    Route::get('/venue-search', VenueSearchController::class)->name('venue.search');
+    Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
+
+
+    Route::middleware('rbac:role, Federation Admin')->group(function () {
+        Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
+        Route::get('compliance', [ComplianceController::class, 'index'])->name('compliance');
+
+        Route::prefix('compliance')->name('compliance.')->group(
+            function () {
+                Route::resource('roles', RoleController::class);
+                Route::patch(
+                    'compliance/roles/{role}/permissions',
+                    [RoleController::class, 'syncPermissions']
+                )->name('roles.permissions.sync');
+                Route::controller(\App\Domains\User\Controllers\UserController::class)->prefix('users')->name('users.')->group(
+                    function () {
+                        Route::get('/', 'index')->name('index');
+                        Route::post('/', 'store')->name('store');
+                        Route::get('/create', 'create')->name('create');
+                    }
+                );
+
+                Route::controller(StateController::class)->prefix('states')->name('states.')->group(
+                    function () {
+                        Route::get('/', 'index')->name('index');
+                    }
+                );
+                Route::controller(AuditLogController::class)->prefix('audit')->name('logs.')->group(
+                    function () {
+                        Route::get('/', 'index')->name('index');
+                    }
+                );
+            }
+        );
+    });
+
+
 
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
     Route::resource('players', \App\Domains\Player\Controllers\PlayerController::class);
     Route::resource('tournaments', \App\Domains\Tournament\Controllers\TournamentController::class);
     Route::post('tournaments\create-and-publish', [TournamentPublishController::class, 'store'])->name('tournaments.createpublish');
-    Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
-    Route::get('compliance', [ComplianceController::class, 'index'])->name('compliance');
-    
-    Route::prefix('compliance')->name('compliance.')->group(
-        function () {
-            Route::resource('roles', RoleController::class);
-            Route::patch(
-                'compliance/roles/{role}/permissions',
-                [RoleController::class, 'syncPermissions']
-            )->name('roles.permissions.sync');
-            Route::controller(UserController::class)->prefix('users')->name('users.')->group(
-                function(){
-                    Route::get('/','index')->name('index');
-                    Route::get('/create','create')->name('create');
-                }
-            );
+    // Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
 
-            Route::controller(StateController::class)->prefix('states')->name('states.')->group(
-                function (){
-                    Route::get('/', 'index')->name('index');
-                }
-            );
-            Route::controller(AuditLogController::class)->prefix('audit')->name('logs.')->group(
-                function(){
-                    Route::get('/', 'index')->name('index');
-                }
-            );
-        }
-    );
+
     Route::prefix('tournaments/{tournament}/competition')->name('tournaments.competition.')->
         group(
             function () {
@@ -68,11 +79,11 @@ Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
 
                     });
 
-                    Route::controller(FixtureController::class)->prefix('fixtures')->name('fixtures.')->group(
-                        function(){
-                            Route::get('/', 'index')->name('index');
-                        }
-                    );
+                Route::controller(FixtureController::class)->prefix('fixtures')->name('fixtures.')->group(
+                    function () {
+                        Route::get('/', 'index')->name('index');
+                    }
+                );
 
             }
         );

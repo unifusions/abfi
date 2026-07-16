@@ -28,7 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            'authorize' => Authorize::class,
+            'rbac' => Authorize::class,
         ]);
 
        

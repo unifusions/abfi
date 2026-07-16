@@ -68,6 +68,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                 </div>
                                 <input type={showPassword ? 'text' : 'password'}
                                     class="block w-full pl-10 pr-12 py-3 bg-zinc-50 border-0 rounded-md focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline/60 transition-all"
+                                    tabIndex={2}
                                     id="password" name="password" placeholder="••••••••" required="" />
                                 <button
                                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-primary transition-colors"

@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, IdCard, LayoutGrid, Shield, Trophy, User, UserCog, Users  } from 'lucide-react';
+import { BookOpen, FolderGit2, IdCard, LayoutGrid, Shield, Trophy, User, UserCog, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -15,41 +15,46 @@ import {
 } from '@/components/ui/sidebar';
 import { compliance, dashboard } from '@/routes';
 import type { NavItem } from '@/types';
-import   { index as PlayerIndex } from '@/routes/players';
-import {index as TournamentIndex} from '@/routes/tournaments';
-import {index as OfficialIndex} from '@/routes/officials';
- 
+import { index as PlayerIndex } from '@/routes/players';
+import { index as TournamentIndex } from '@/routes/tournaments';
+import { index as OfficialIndex } from '@/routes/officials';
+
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+        
     },
     {
-title:'Tournaments',
+        title: 'Tournaments',
         href: TournamentIndex(),
         icon: Trophy,
+        permission: "tournament.index"
     },
     {
-        title:'Players',
-        href:  PlayerIndex(),
+        title: 'Players',
+        href: PlayerIndex(),
         icon: Users,
+        permission: "player.index"
     },
     {
-        title:"Officials",
-        href : OfficialIndex(),
-        icon: UserCog
+        title: "Officials",
+        href: OfficialIndex(),
+        icon: UserCog,
+        permission:"official.index"
     },
     {
-        title:'Rosters',
+        title: 'Rosters',
         href: '#',
-        icon: IdCard,  
+        icon: IdCard,
     },
     {
         title: 'Compliance',
-        href:compliance(),
-icon : Shield
+        href: compliance(),
+        icon: Shield,
+        permission : "compliance.index"
     }
 ];
 
@@ -82,6 +87,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
+               
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 

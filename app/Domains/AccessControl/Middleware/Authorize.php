@@ -14,8 +14,15 @@ class Authorize
         string $type,
         string $value
     ): Response {
+        
+       
+        if (auth()->user()->is_super_admin) {
 
-        if (! auth()->check()) {
+
+            return $next($request);
+        }
+
+        if (!auth()->check()) {
             abort(401);
         }
 
@@ -27,7 +34,7 @@ class Authorize
 
                 $roles = explode('|', $value);
 
-                if (! $user->hasAnyRole($roles)) {
+                if (!$user->hasAnyRole($roles)) {
                     abort(403, 'Unauthorized.');
                 }
 
@@ -37,7 +44,7 @@ class Authorize
 
                 $permissions = explode('|', $value);
 
-                if (! $user->hasPermission($permissions)) {
+                if (!$user->hasPermission($permissions)) {
                     abort(403, 'Unauthorized.');
                 }
 

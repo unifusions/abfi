@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table){
             $table->foreignUuidFor(Organization::class)->nullable();
+            $table->string('designation')->nullable();
             $table->boolean('is_super_admin')->default(false);
         });
     }
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table){
             $table->dropColumn('organization_id');
             $table->dropColumn('is_super_admin');
+            $table->dropColumn('designation');
         });
     }
 };

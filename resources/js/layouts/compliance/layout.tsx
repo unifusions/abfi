@@ -6,18 +6,19 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarGroupLabel } from "@/components/ui/sidebar";
 import { useCurrentUrl } from "@/hooks/use-current-url";
 import { cn } from "@/lib/utils";
-import logs from "@/routes/compliance/logs";
-import states from "@/routes/compliance/states";
-import users from "@/routes/compliance/users";
+ 
+ 
 import { Link } from "@inertiajs/react";
 import { Group, Logs, MapPinned, Users } from "lucide-react";
 import { PropsWithChildren } from "react";
+import { index as logIndex } from "@/routes/compliance/logs";
+import { index  as userIndex} from "@/routes/compliance/users";
 
 
 const menuItems = [
     {
         title: 'User Management',
-        href: users.index(),
+        href: userIndex().url,
         icon: Users
 
     },
@@ -30,7 +31,7 @@ const menuItems = [
 
     {
         title: 'Audit Logs',
-        href: logs.index(),
+        href:  logIndex().url,
         icon: Logs
     },
 

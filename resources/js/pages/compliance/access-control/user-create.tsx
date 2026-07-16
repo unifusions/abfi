@@ -4,16 +4,40 @@ import FormInputWithIcon from "@/components/ext/form-input-with-icon"
 import PageHeader from "@/components/ext/page-header"
 import SearchableSelect from "@/components/ext/searcable-select"
 import { Button } from "@/components/ui/button"
+import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@/components/ui/field"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { compliance, dashboard } from "@/routes"
+import { store } from "@/routes/compliance/users"
+import { useForm } from "@inertiajs/react"
 import { Group, PersonStanding, SaveIcon, Settings, User } from "lucide-react"
+import { useState } from "react"
 
 export default function UserCreate({ roles, organizations }) {
+
+    const [org, setOrg] = useState();
+    const { data, setData, processing, errors, post } = useForm({
+        name: '',
+        email: '',
+        password: '',
+        organization_id: '',
+        designation: '',
+        role_id: ''
+    })
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        post(store.url());
+    }
     return (
         <div className="ps-3">
 
             <PageHeader />
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 ">
+            {JSON.stringify(errors)}
+            <form onSubmit={handleSubmit}>
 
+           
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 ">
+              
                 <div className="md:col-span-7 space-y-8">
 
                     <FormCard
@@ -24,17 +48,24 @@ export default function UserCreate({ roles, organizations }) {
                             <FormInput
                                 label="Full Legal Name"
                                 placeholder="e.g. Johnathan Miller"
+                                onChange={(e) => setData('name', e.target.value)}
+                                value={data.name}
                             />
 
                             <FormInput
                                 label="Email (Will be used as login ID)"
                                 placeholder="e.g. j.miller@federation.org"
+                                type="email"
+                                onChange={(e) => setData('email', e.target.value)}
+                                value={data.email}
                             />
 
                             <FormInput
                                 label="Access Password"
                                 type="password"
-                                value="K8#mP92!vXq"
+                                onChange={(e) => setData('password', e.target.value)}
+                                value={data.password}
+                                placeholder="********"
                             />
 
 
@@ -70,35 +101,37 @@ export default function UserCreate({ roles, organizations }) {
                         title="Organization / Association"
                     >
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                             
-                             <SearchableSelect 
-                              options={organizations}
-                                        // onChange={(org) => setData("organization_id", org.id)}
 
-                                        // getOptionLabel={(org) => org.name}
-                                        // getOptionValue={(org) => org.id}
-                                        // renderOption={(org) => (
-                                        //     <div>
-                                        //         <div>{org?.name}</div>
-                                        //         <div className="text-xs hover:text-zinc-200">
-                                        //             {org?.id}
-                                        //         </div>
-                                        //     </div>
-                                        // )}
-                                        // icon={FileUser}
-                                        label="Organization/Association Name "
-                                        // value={organizations.find(o => o.id === data.organization_id) ?? null}
+                            <SearchableSelect
+                                options={organizations}
+                                onChange={(org) => setData("organization_id", org.id)}
 
-                             />
-                               
-                          <FormInput 
-                                    label = "Designation"
-                                    placeholder= "e.g., Founder"
-                                />
+                                getOptionLabel={(org) => org.name}
+                                getOptionValue={(org) => org.id}
+                                renderOption={(org) => (
+                                    <div>
+                                        {org?.name}
+                                        <div className="text-xs hover:text-zinc-200">
+                                            {org?.id}
+                                        </div>
+                                    </div>
+                                )}
+                                // icon={FileUser}s
+                                label="Organization/Association Name "
+                                value={organizations.find(o => o.id === data.organization_id) ?? null}
 
-                            
-                           
-                            
+                            />
+
+                            <FormInput
+                                label="Designation"
+                                placeholder="e.g., Founder"
+                                onChange={(e) => setData('designation', e.target.value)}
+                                value={data.designation}
+                            />
+
+
+
+
                         </div>
 
                     </FormCard>
@@ -119,20 +152,33 @@ export default function UserCreate({ roles, organizations }) {
                                 Role</label>
                             <div class="space-y-3">
 
-                                {roles.map((role) =>
-                                    <label
-                                        class="flex items-center justify-between p-4 rounded-md bg-surface border border-outline-variant/15 cursor-pointer hover:border-primary transition-all">
-                                        <div class="flex items-center gap-3">
-                                            <input class="w-4 h-4 text-primary" name="role" type="radio" />
-                                            <div>
-                                                <p class="font-bold text-sm text-primary leading-none">{role.name}</p>
-                                                <p class="text-[10px] text-on-surface-variant mt-1">{role.description}</p>
-                                            </div>
-                                        </div>
 
-                                    </label>
+                                <RadioGroup defaultValue="plus"   value={data.role_id} onValueChange={(val) => setData('role_id', val)}>
 
-                                )}
+
+                                    {roles.map((role) =>
+                                        <FieldLabel key={role.id} htmlFor={role.id} 
+                                            className="  cursor-pointer"
+                                        >
+                                            <Field orientation="horizontal">
+
+                                                <FieldContent>
+                                                    <FieldTitle>{role.name}</FieldTitle>
+                                                    <FieldDescription>
+                                                        {role.description}
+                                                    </FieldDescription>
+                                                </FieldContent>
+                                                <RadioGroupItem value={role.id} id={role.id} />
+
+
+                                            </Field>
+                                        </FieldLabel>
+
+                                    )}
+
+
+                                </RadioGroup>
+
 
 
                             </div>
@@ -140,6 +186,7 @@ export default function UserCreate({ roles, organizations }) {
 
 
                         <Button
+                        type="submit"
                             variant="default"
                             size="xl"
                             className=" w-full px-10 py-8   font-bold shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
@@ -151,7 +198,7 @@ export default function UserCreate({ roles, organizations }) {
                 </div>
             </div>
 
-
+ </form>
         </div>
     )
 }
@@ -164,3 +211,16 @@ UserCreate.layout = {
     ],
 
 }
+
+
+//  <label
+//                                         class="flex items-center justify-between p-4 rounded-md bg-surface border border-outline-variant/15 cursor-pointer hover:border-primary transition-all">
+//                                         <div class="flex items-center gap-3">
+//                                             <input class="w-4 h-4 text-primary" name="role" type="radio" />
+//                                             <div>
+//                                                 <p class="font-bold text-sm text-primary leading-none">{role.name}</p>
+//                                                 <p class="text-[10px] text-on-surface-variant mt-1">{role.description}</p>
+//                                             </div>
+//                                         </div>
+
+//                                     </label>

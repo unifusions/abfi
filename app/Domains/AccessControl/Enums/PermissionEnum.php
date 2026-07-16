@@ -37,6 +37,7 @@ enum PermissionEnum: string
     case ROSTER_APPROVE = 'roster.approve';
 
     // Reports
+  
     case REPORT_VIEW = 'report.view';
     case REPORT_DOWNLOAD = 'report.download';
 

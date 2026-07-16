@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Domains\AccessControl\Models\Role;
 use App\Domains\AccessControl\Traits\HasRoles;
+use App\Domains\Organization\Models\Organization;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -27,7 +28,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password', 'organization_id', 'is_super_admin'])]
+#[Fillable(['name', 'email', 'password', 'organization_id', 'is_super_admin', 'designation'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -49,5 +50,9 @@ class User extends Authenticatable
         ];
     }
 
+
+    public function organization (){
+        return $this->belongsTo(Organization::class);
+    }
  
 }

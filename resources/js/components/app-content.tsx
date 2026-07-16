@@ -17,7 +17,7 @@ export function AppContent({ variant = 'sidebar', children, ...props }: Props) {
         <main
             className="  flex h-full w-full   flex-1 flex-col gap-4 rounded-xl  p-4"
             {...props}
-        > s
+        >  
             {children}
         </main>
     );
