@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export default function FormCard({ variant = "accent", icon: Icon, title, className, children  }) {
     return (
-        <div className={cn('p-8 relative border-l-4', className,
+        <div className={cn('bg-zinc-25 p-8 relative border-l-4', className,
             { 'border-accent': variant === "accent",
                 'border-accent-secondary' : variant==="accent-secondary"
              }

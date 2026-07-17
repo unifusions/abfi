@@ -19,7 +19,7 @@ const {from, to, total,prev_page_url, next_page_url } = meta;
 
   return (
 
-    <div className="bg-zinc-50 px-6 py-4 flex items-center justify-between">
+    <div className="bg-zinc-50 px-6 py-4 flex items-center justify-between ">
       <p className="font-body text-xs text-on-surface-variant">Showing <span
         className="font-bold text-primary">{from}-{to}</span> of {total} entries</p>
 

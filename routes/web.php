@@ -6,6 +6,7 @@ use App\Domains\Compliance\Controllers\AuditLogController;
 use App\Domains\Compliance\Controllers\ComplianceController;
 use App\Domains\Compliance\Controllers\StateController;
 use App\Domains\Compliance\Controllers\UserController;
+use App\Domains\Organization\Controllers\OrganizationController;
 use App\Domains\Tournament\Competition\PoolPlay\Controllers\FixtureController;
 use App\Domains\Tournament\Competition\PoolPlay\Controllers\PoolController;
 use App\Domains\Tournament\Controllers\TournamentPublishController;
@@ -30,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('compliance')->name('compliance.')->group(
             function () {
                 Route::resource('roles', RoleController::class);
+                Route::resource('organizations', OrganizationController::class);
                 Route::patch(
                     'compliance/roles/{role}/permissions',
                     [RoleController::class, 'syncPermissions']

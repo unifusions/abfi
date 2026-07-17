@@ -1,12 +1,14 @@
 import FormCard from "@/components/ext/form-card"
 import { FormCheckbox } from "@/components/ext/form-checkbox"
+import FormCombobox from "@/components/ext/form-combobox"
 import FormInput from "@/components/ext/form-input"
 import FormRadio from "@/components/ext/form-radio"
 import FormSelect from "@/components/ext/form-select"
 import PageHeader from "@/components/ext/page-header"
+import SearchableSelect from "@/components/ext/searcable-select"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import players, { create, index } from "@/routes/players"
+import players, { create, index, store } from "@/routes/players"
 import { router, useForm } from "@inertiajs/react"
 import {  Save, User, XCircle } from "lucide-react"
 
@@ -21,17 +23,19 @@ const GENDEROPTIONS = [{
 ]
 export default function PlayerCreate({baseball_positions, organizations, states}) {
 
-    const {data, setData, processing} = useForm({
+    const {data, setData, processing, post, errors} = useForm({
         'first_name' : '',
         'middle_name' : '',
         'last_name' : '',
+        'father_name' : '', 
+        'dob' : '',
         'player_positions' : [],
         'gender' : '',
         'aadhar_no': '',
         'passport': '',
         'email' : '',
         'phone' : '',
-        'emergency_contact_name' : '',
+        'emergency_contact_phone' : '',
         'state_id' : '',
         'address' : '',
         'city' : '',
@@ -55,6 +59,10 @@ export default function PlayerCreate({baseball_positions, organizations, states}
     
       }
 
+      const handleSubmit = (e) => {
+e.preventDefault();
+post(store().url);
+      }
     return (
         <>
             <div className="flex h-full   flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
@@ -64,8 +72,8 @@ export default function PlayerCreate({baseball_positions, organizations, states}
 </PageHeader>
                
                 {/* <!-- Form Canvas (Bento Grid Style for Sections) --> */}
-                <form className="  grid grid-cols-1 md:grid-cols-12 gap-6">
-
+                <form className="  grid grid-cols-1 md:grid-cols-12 gap-6" onSubmit={handleSubmit}>
+{JSON.stringify(errors)}
                     <FormCard
                         title="Personal Identity"
                         icon={User}
@@ -102,11 +110,14 @@ export default function PlayerCreate({baseball_positions, organizations, states}
                                     />
 
                                 <FormInput
-                                    label="Father's / Guardian Name"
-                                    id="guardian_name"
+                                    label="Father's  Name"
+                                    id="fathers_name"
                                    
                                     placeholder="e.g., Juan Rivera"
                                     labelRequired
+ value={data.father_name}
+                                    onChange= {(e) => setData('father_name',e.target.value)}
+
                                 />
                            
                           
@@ -117,6 +128,9 @@ export default function PlayerCreate({baseball_positions, organizations, states}
                                     name="date_of_birth"
                                     type="date"
                                     labelRequired
+
+                                     value={data.dob}
+                                    onChange= {(e) => setData('dob', e.target.value)}
 
                                 />
 
@@ -138,9 +152,9 @@ labelRequired={true}
 
                   
 
-                    <FormCard className="md:col-span-6" title="Player Details">
-                        <div className="grid grid-cols-3 w-full gap-3 space-y-6">
-                            <div className="col-span-3">
+                    <FormCard className="md:col-span-8" title="Player Details">
+                        <div className="grid grid-cols-2 w-full gap-3 space-y-6">
+                            <div className="col-span-2">
  
  <FormCheckbox 
  labelId="player_position"
@@ -161,6 +175,16 @@ labelRequired={true}
                              
                             
  
+<FormCombobox 
+   label = "Association / Organization"
+
+    labelRequired = {true}
+
+    placeholder="Assoction Player Belongs to"
+    value = {data.organization_id}
+    options={organizations.data}
+    onValueChange={(val) => setData('organization_id', val)}
+/>
 
 
                              
@@ -171,6 +195,9 @@ labelRequired={true}
                                     placeholder="e.g., O+"
                                     type="text"
                                     labelRequired={true}
+
+                                     value={data.blood_group}
+                                    onChange= {(e) => setData('blood_group', e.target.value)}
                                 />
 
                            
@@ -186,28 +213,35 @@ labelRequired={true}
 
                                 />
 
+ 
+ 
+
                                 <FormInput
                                     label="Passport Number"
                                     id="passport_number"
                                     name="passport_number"
                                     placeholder="12345678"
                                     type="text"
-                                    labelRequired={true}
-
+                                        value={data.passport}
+                                    onChange= {(e) => setData('passport', e.target.value)}
                                 />
                              
                         </div>
                     </FormCard>
 
-                    <FormCard title="Contact & Assignment"  className="md:col-span-6">
+                    <FormCard title="Contact & Assignment"  className="md:col-span-8">
                     <div className="grid grid-cols-3  gap-6">
 
     <FormInput
         label="Phone Number"
         id="phone_number"
         name="phone_number"
-        placeholder="(555) 000-0000"
+        placeholder="98401 54321"
         type="tel"
+          labelRequired={true} 
+
+              value={data.phone}
+                                    onChange= {(e) => setData('phone', e.target.value)}
     />
 
 
@@ -217,6 +251,10 @@ labelRequired={true}
         name="emergency_phone_number"
         placeholder="(555) 000-0000"
         type="tel"
+         labelRequired={true} 
+
+             value={data.emergency_contact_phone}
+                                    onChange= {(e) => setData('emergency_contact_phone', e.target.value)}
     />
 
 
@@ -226,6 +264,11 @@ labelRequired={true}
         name="email"
         type="email"
         placeholder="contact@domain.com"
+         labelRequired={true} 
+
+             value={data.email}
+                                    onChange= {(e) => setData('email', e.target.value)}
+
     />
 
     <FormInput
@@ -234,6 +277,9 @@ labelRequired={true}
         name="address"
         placeholder="123 Main St"
         type="text"
+
+            value={data.address}
+                                    onChange= {(e) => setData('address', e.target.value)}
     />
 
     <FormInput
@@ -242,30 +288,34 @@ labelRequired={true}
         name="district_city"
         placeholder="New Delhi "
         type="text"
+            value={data.city}
+                                    onChange= {(e) => setData('city', e.target.value)}
     />
 
-    <FormSelect items = {states} />
+    <FormSelect 
+id="state_id"
+    label = "State"
+    items = {states} value={data.state_id}
+    labelRequired={true} 
+    onValueChange={(val) => setData('state_id',val)}  />
 
-{JSON.stringify(organizations)}
+ 
     <FormInput
-        label="Postal  Code"
-        id="postal_code"
-        name="postal_code"
+        label="PIN  Code"
+        id="pin_code"
+         
         placeholder="110001"
         type="text"
+          labelRequired={true} 
+          hasError={errors.pincode}
+              value={data.pincode}
+                                    onChange= {(e) => setData('pincode', e.target.value)}
     />
 </div>
                     </FormCard>
                     
 
-                    {/* <!-- Section 3: Contact Info --> */}
-                    <section className="md:col-span-6 bg-surface-container-lowest p-8 relative overflow-hidden">
-                        <div className="absolute left-0 top-0 w-1 h-full bg-primary"></div>
-                        <header className="mb-8">
-                            <h2 className="font-headline text-xl font-bold text-primary">Contact &amp; Assignment</h2>
-                        </header>
-                      
-                    </section>
+                    
  
                      <div class="md:col-span-12 flex items-center justify-end gap-4 py-8 border-t border-outline-variant/10">
 

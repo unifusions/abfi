@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
  
-#[Fillable(['name'])]
+#[Fillable(['name','contact_person', 'code', 'phone','email', 'organization_id', 'state_id'])]
 class Organization extends Model{
      use HasUuids, SoftDeletes, Searchable;
 

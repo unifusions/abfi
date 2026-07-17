@@ -13,6 +13,8 @@ import { Group, Logs, MapPinned, Users } from "lucide-react";
 import { PropsWithChildren } from "react";
 import { index as logIndex } from "@/routes/compliance/logs";
 import { index  as userIndex} from "@/routes/compliance/users";
+ 
+import organizations from "@/routes/compliance/organizations";
 
 
 const menuItems = [
@@ -24,7 +26,7 @@ const menuItems = [
     },
     {
         title: 'Association Management',
-        href: '#',
+        href: organizations.index().url,
         icon:Group
     }, 
      
@@ -74,8 +76,8 @@ export default function ComplianceLayout({ children }: PropsWithChildren) {
 
                 <div className="flex flex-col lg:flex-row   border-t">
 
-                    <aside className="w-full min-w-48 max-w-60  h-screen   border-r">
-                        <SidebarGroupLabel className="uppercase border-b rounded-none">Compliance Menu</SidebarGroupLabel>
+                    <aside className="w-full min-w-48 max-w-60  h-screen ">
+                        {/* <SidebarGroupLabel className="uppercase border-b rounded-none">Compliance Menu</SidebarGroupLabel> */}
                         <nav
                             className="flex flex-col  space-x-0"
                             aria-label="Settings"

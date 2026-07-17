@@ -20,12 +20,13 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('father_name')->nullable();
             $table->foreignUuidFor(Organization::class)->nullable();
             $table->enum('gender', ['male', 'female']);
             $table->date('dob');
             $table->string('blood_group', 5)->nullable();
-$table->string('aadhar_no')->unique();
-$table->string('passport')->nullable();
+            $table->string('aadhar_no')->unique();
+            $table->string('passport')->nullable();
             $table->string('email')->nullable();
             $table->string('phone', 20)->nullable();
 
@@ -45,8 +46,11 @@ $table->string('passport')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->timestamp('verified_at')->nullable();
             $table->foreignId('verified_by')->nullable()->constrained('users');
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
 
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('baseball_positions', function (Blueprint $table) {
@@ -70,7 +74,7 @@ $table->string('passport')->nullable();
 
         });
 
-      
+
     }
 
     /**
@@ -80,7 +84,7 @@ $table->string('passport')->nullable();
     {
         Schema::dropIfExists('player_positions');
         Schema::dropIfExists('baseball_positions');
-         Schema::dropIfExists('players');
-       
+        Schema::dropIfExists('players');
+
     }
 };

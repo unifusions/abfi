@@ -1,15 +1,18 @@
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import FormLabel from "./form-label";
 
-export default function FormInputWithIcon({ id, name, type = "text", label, icon: Icon, className, ...props }: { id: string; name: string; type?: string; label: string; className?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+export default function FormInputWithIcon({ id, name, type = "text", labelRequired,  label, icon: Icon, className, ...props }: { id: string; name: string; type?: string; label: string; className?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
     return (
         <div className="space-y-2" >
-            <Label
-                htmlFor={id}
-                className="text-xs font-label uppercase font-semibold tracking-widest text-primary"
-            >
-                {label}
-            </Label>
+            {label &&
+                            <FormLabel
+                                id={id}
+                                label={label}
+                                labelRequired={labelRequired}
+                            />
+                        }
+            
             <div className="relative">
                 {Icon &&
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

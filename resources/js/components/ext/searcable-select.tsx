@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 export default function SearchableSelect({
     options = [],
+    
     value, // Selected object, not id
     onChange,
     getOptionLabel,
@@ -11,6 +12,7 @@ export default function SearchableSelect({
     renderOption,
     placeholder = "Search...",
     label,
+    labelRequired,
     icon,
 }) {
     const wrapperRef = useRef(null);

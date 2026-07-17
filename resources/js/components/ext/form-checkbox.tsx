@@ -19,9 +19,9 @@ export function FormCheckbox({ label, labelId, labelRequired, layout = 'row', ha
                 labelRequired={labelRequired}
             />}
             <FieldSet>
-                
+
                 <FieldGroup className={cn("gap-3 ", {
-                    'grid grid-cols-4' : layout==="row"
+                    'grid grid-cols-4': layout === "row"
                 })}>
                     {options.map((option) => {
                         const isChecked = value.includes(option.value);
