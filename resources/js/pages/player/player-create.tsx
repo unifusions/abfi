@@ -1,93 +1,135 @@
 import FormCard from "@/components/ext/form-card"
+import { FormCheckbox } from "@/components/ext/form-checkbox"
 import FormInput from "@/components/ext/form-input"
+import FormRadio from "@/components/ext/form-radio"
+import FormSelect from "@/components/ext/form-select"
+import PageHeader from "@/components/ext/page-header"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import players, { create, index } from "@/routes/players"
 import { router, useForm } from "@inertiajs/react"
 import {  Save, User, XCircle } from "lucide-react"
 
-export default function PlayerCreate({baseball_positions}) {
+const GENDEROPTIONS = [{
+    label : 'Male',
+    value : 'male'
+},
+{
+    label:'Female',
+    value:'female'
+}
+]
+export default function PlayerCreate({baseball_positions, organizations, states}) {
 
     const {data, setData, processing} = useForm({
-        'player_position_id' : ''
+        'first_name' : '',
+        'middle_name' : '',
+        'last_name' : '',
+        'player_positions' : [],
+        'gender' : '',
+        'aadhar_no': '',
+        'passport': '',
+        'email' : '',
+        'phone' : '',
+        'emergency_contact_name' : '',
+        'state_id' : '',
+        'address' : '',
+        'city' : '',
+        'pincode' : '',
+        'organization_id' : '',
+       
     })
+
+    const handleCheckboxChange = (value) => {
+
+            if(data.player_positions.includes(value)){
+                setData(
+                    "player_positions",
+            data.player_positions.filter(x=>x!==value)
+            );
+        }      
+        else {
+    setData('player_positions', [...data.player_positions, value]);
+
+}
+    
+      }
+
     return (
         <>
             <div className="flex h-full   flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
-                <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div>
-                        {/* <nav className="flex items-center gap-2   mb-2">
-                            <span className="text-xs font-label uppercase tracking-widest">Registry</span>
-                            <span className="material-symbols-outlined text-sm">chevron_right</span>
-                            <span className="text-xs font-label uppercase tracking-widest">Players</span>
-                        </nav> */}
-                        <h1 className="font-headline text-4xl font-black text-primary tracking-tight">Register New Player</h1>
-                        <p className="text-on-surface-variant mt-2 max-w-lg">Complete the official registration form to add a player to the national database for the 2024/25 season.</p>
-                    </div>
-                    <div className="flex gap-3">
-                        <Button size="xl" variant="destructive"
-                            className="     hover:bg-red-200 transition-colors  " onClick={() => router.ba}>
-                            <XCircle className="text-destructive" />   Cancel</Button>
-                        <Button
-                            size="xl"
-                            className="">
-                            <Save className="h-8 w-8 mr-2" /> <span>Save Player</span>
-                        </Button>
-                    </div>
-                </div>
+<PageHeader title="Register New Player" subText="Complete the official registration form to add a player to the national federation database">
+
+</PageHeader>
+               
                 {/* <!-- Form Canvas (Bento Grid Style for Sections) --> */}
                 <form className="  grid grid-cols-1 md:grid-cols-12 gap-6">
 
                     <FormCard
                         title="Personal Identity"
                         icon={User}
-                        variant="accent-secondary" className="md:col-span-6   p-8 relative overflow-hidden group">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex flex-col gap-1.5">
+                        variant="accent-secondary" className="md:col-span-9   p-8 relative overflow-hidden group">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                           
                                 <FormInput
-                                    label="Legal Full Name"
-                                    id="full_name"
-                                    name="full_name"
-                                    placeholder="e.g., Juan Rivera"
-                                    onChange={(e) => console.log(e.target.value)}
+                                    label="First Name"
+                                    id="first_name"
+                                  placeholder="e.g., Juan Rivera"
+                                    onChange={(e) =>setData('first_name', e.target.value)}
+                                    labelRequired
+                                    value={data.first_name}
+                                    
+                                    />
 
-                                />
-
-                            </div>
-                            <div className="flex flex-col gap-1.5">
+ 
+<FormInput
+                                    label="Middle Name"
+                                    id="first_name"
+                                     placeholder="e.g., Juan Rivera"
+                                    onChange={(e) =>setData('middle_name', e.target.value)}
+                                    value={data.first_name}
+                                    
+                                    />
+                                     <FormInput
+                                    label="Last Name"
+                                    id="last_name"
+                                  placeholder="e.g., Juan Rivera"
+                                    onChange={(e) =>setData('last_name', e.target.value)}
+                                    labelRequired
+                                    value={data.last_name}
+                                    
+                                    />
 
                                 <FormInput
                                     label="Father's / Guardian Name"
                                     id="guardian_name"
-                                    name="guardian_name"
+                                   
                                     placeholder="e.g., Juan Rivera"
-
+                                    labelRequired
                                 />
-                            </div>
-                            <div class="flex flex-col gap-1.5">
-
+                           
+                          
 
                                 <FormInput
                                     label="Date of birth"
                                     id="date_of_birth"
                                     name="date_of_birth"
                                     type="date"
-
+                                    labelRequired
 
                                 />
 
 
-
-                            </div>
-                            <div class="flex flex-col gap-1.5">
-                                <label class="text-xs font-label uppercase font-bold tracking-widest text-primary">Gender</label>
-                                <select class="input-field bg-surface-container-low border-0 p-3 rounded-lg text-on-surface">
-                                    <option>Male</option>
-                                    <option>Female</option>
-
-                                </select>
-                            </div>
+<FormRadio 
+labelId="Gender"
+label = "Gender"
+labelRequired={true}
+    value={data.gender} onValueChange={(val) => setData('gender', val)}
+    options={GENDEROPTIONS}
+/>
+ 
+                          
 
 
 
@@ -97,99 +139,122 @@ export default function PlayerCreate({baseball_positions}) {
                   
 
                     <FormCard className="md:col-span-6" title="Player Details">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="flex flex-col gap-1.5">
+                        <div className="grid grid-cols-3 w-full gap-3 space-y-6">
+                            <div className="col-span-3">
+ 
+ <FormCheckbox 
+ labelId="player_position"
+ label="Player Position"
+ labelRequired={true}
+    layout="row"
+    options = {baseball_positions}
+    value={data.player_positions}
+    handleCheckboxChange={(newpositions) => handleCheckboxChange(newpositions) }
+    
+ />
+
+                                
  
 
-                                <label class="text-xs font-label uppercase font-bold tracking-widest text-primary">Position</label>
-                                 
-                                <Select items={baseball_positions} value={data.player_position_id} onValueChange={(val) => setData('player_position_id', val)} >
-  <SelectTrigger  className="border-0 p-3 rounded-lg bg-zinc-50 w-full">
-    <SelectValue placeholder="Select Position" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      {baseball_positions.map((item) => (
-        <SelectItem key={item.id} value={item.id}>
-            <div>
-  {item.name}
+                            </div>
+
+                             
+                            
  
-            </div>
-        
-        </SelectItem>
-      ))}
-    </SelectGroup>
-  </SelectContent>
-</Select>
 
-                                <select class="  bg-surface-container-low border-0 p-3 rounded-lg text-on-surface" >
-                                {baseball_positions.map((position) => 
-                                    <option value={position.id}>{position.name}</option>
-                                )}
-                                   
 
-                                </select>
-
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
-                                    label="Height"
-                                    id="height"
-                                    name="height"
-                                    placeholder="e.g., 5'10&quot;"
-                                    type="text"
-                                />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
-                                    label="Weight"
-                                    id="weight"
-                                    name="weight"
-                                    placeholder="e.g., 180 lbs"
-                                    type="text"
-                                />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
+                             
                                 <FormInput
                                     label="Blood Group"
                                     id="blood_group"
                                     name="blood_group"
                                     placeholder="e.g., O+"
                                     type="text"
+                                    labelRequired={true}
                                 />
 
-                            </div>
+                           
 
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
+                              <FormInput
                                     label="Aadhar Number"
                                     id="aadhar_number"
                                     name="aadhar_number"
                                     placeholder="1234 5678 9012"
                                     type="text"
+                                    labelRequired={true}
+                                    onChange = {(e) => setData('aadhar_no', e.target.value)}
+
                                 />
 
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
                                 <FormInput
                                     label="Passport Number"
                                     id="passport_number"
                                     name="passport_number"
                                     placeholder="12345678"
                                     type="text"
+                                    labelRequired={true}
+
                                 />
-
-                            </div>
-
-                            <div class="flex flex-col gap-1.5">
-
-                            </div>
+                             
                         </div>
+                    </FormCard>
+
+                    <FormCard title="Contact & Assignment"  className="md:col-span-6">
+                    <div className="grid grid-cols-3  gap-6">
+
+    <FormInput
+        label="Phone Number"
+        id="phone_number"
+        name="phone_number"
+        placeholder="(555) 000-0000"
+        type="tel"
+    />
+
+
+    <FormInput
+        label="Emergency Contact Number"
+        id="emergency_phone_number"
+        name="emergency_phone_number"
+        placeholder="(555) 000-0000"
+        type="tel"
+    />
+
+
+    <FormInput
+        label="Email Address"
+        id="email"
+        name="email"
+        type="email"
+        placeholder="contact@domain.com"
+    />
+
+    <FormInput
+        label="Address"
+        id="address"
+        name="address"
+        placeholder="123 Main St"
+        type="text"
+    />
+
+    <FormInput
+        label="District / City"
+        id="district_city"
+        name="district_city"
+        placeholder="New Delhi "
+        type="text"
+    />
+
+    <FormSelect items = {states} />
+
+{JSON.stringify(organizations)}
+    <FormInput
+        label="Postal  Code"
+        id="postal_code"
+        name="postal_code"
+        placeholder="110001"
+        type="text"
+    />
+</div>
                     </FormCard>
                     
 
@@ -198,87 +263,30 @@ export default function PlayerCreate({baseball_positions}) {
                         <div className="absolute left-0 top-0 w-1 h-full bg-primary"></div>
                         <header className="mb-8">
                             <h2 className="font-headline text-xl font-bold text-primary">Contact &amp; Assignment</h2>
-                            <p className="text-sm text-on-surface-variant">Primary guardian contact and team placement</p>
                         </header>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
-                                    label="Phone Number"
-                                    id="phone_number"
-                                    name="phone_number"
-                                    placeholder="(555) 000-0000"
-                                    type="tel"
-                                />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
-                                    label="Emergency Contact Number"
-                                    id="emergency_phone_number"
-                                    name="emergency_phone_number"
-                                    placeholder="(555) 000-0000"
-                                    type="tel"
-                                />
-
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-
-                                <FormInput
-                                    label="Email Address"
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    placeholder="contact@domain.com"
-                                />
-
-
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
-                                    label="Address"
-                                    id="address"
-                                    name="address"
-                                    placeholder="123 Main St"
-                                    type="text"
-                                />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
-                                    label="District / City"
-                                    id="district_city"
-                                    name="district_city"
-                                    placeholder="New Delhi "
-                                    type="text"
-                                />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
-                                <FormInput
-                                    label="Postal  Code"
-                                    id="postal_code"
-                                    name="postal_code"
-                                    placeholder="110001"
-                                    type="text"
-                                />
-
-                            </div>
-
-
-                        </div>
+                      
                     </section>
  
                      <div class="md:col-span-12 flex items-center justify-end gap-4 py-8 border-t border-outline-variant/10">
 
-                        <Button variant="accentSecondary" size="xl"  type="submit">
-                            <Save className="h-5" /> Finalize Registration
-                         </Button>
+                     <div className="flex gap-3">
+                        <Button size="xl" variant="destructive"
+                            className="     hover:bg-red-200 transition-colors  " onClick={() => router.bac}>
+                            <XCircle className="text-destructive" />   Cancel</Button>
+                        <Button
+                            size="xl"
+                            className=""  type="submit">
+                            <Save className="h-8 w-8 mr-2" /> <span>Save Player</span>
+                        </Button>
+                    </div>
+
+ 
                     </div>
                 </form>
+
+                <pre>
+                    {JSON.stringify(data, null, 2)}
+                </pre>
             </div>
         </>
     )

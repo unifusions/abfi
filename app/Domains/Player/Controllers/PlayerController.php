@@ -3,6 +3,9 @@
 namespace App\Domains\Player\Controllers;
 
 use App\Domains\Compliance\Models\BaseballPosition;
+use App\Domains\Compliance\Models\State;
+use App\Domains\Organization\Models\Organization;
+use App\Domains\Organization\Resource\OrganizationDropdownResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -22,9 +25,16 @@ class PlayerController extends Controller
     public function create()
     {
         return inertia('player/player-create', [
-            'baseball_positions' => BaseballPosition::all(),
+            'organizations' => OrganizationDropdownResource::collection(Organization::all()),
+            'states' => State::all(),
+            'baseball_positions' => BaseballPosition::all()->map(function($position){ return [
+                    'value' => $position->id,
+                    'label' => $position->name
+            ];
+        }),
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.

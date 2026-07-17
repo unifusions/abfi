@@ -1,6 +1,7 @@
 import InputError from "../input-error";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import FormLabel from "./form-label";
 
 type Props = {
     hasError ?: string
@@ -10,25 +11,28 @@ type Props = {
     label?: string; 
     className?: string;
     layout?:string;
+    labelRequired?:boolean;
     
 
 }
-export default function FormInput({ id, name, type = "text", layout="col", label, className,hasError, ...props  }: Props) {
+export default function FormInput({ id, name, type = "text", layout="col", label, className,labelRequired=false, hasError, ...props  }: Props) {
     return (
-        <div className="space-y-2">
-        {label && <label 
-            htmlFor={id}
-            className="text-xs font-label uppercase font-bold tracking-widest text-primary"
-        >
-            {label}
-            </label>}
+        <div className="flex flex-col gap-1.5  w-full">
+        {label && 
+        <FormLabel 
+            id={id}
+            label={label}
+            labelRequired={labelRequired}
+        />
+        }
           <input
             id={id}
-            name={name}
+ 
             type={type}
             className={`block border-0 p-3 w-full rounded-lg text-slate-900 bg-zinc-50 focus:bg-white 
                 focus:ring-2 focus:ring-primary/20 placeholder:text-outline/60 transition-all
                 ${className} ${hasError && 'ring-1 ring-destructive'}`}
+                
             {...props}
         />
 

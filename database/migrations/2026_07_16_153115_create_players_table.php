@@ -1,9 +1,12 @@
 <?php
 
+use App\Domains\Compliance\Models\BaseballPosition;
 use App\Domains\Compliance\Models\State;
+use App\Domains\Organization\Models\Organization;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Domains\Player\Models\Player;
 
 return new class extends Migration {
     /**
@@ -17,6 +20,7 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->foreignUuidFor(Organization::class)->nullable();
             $table->enum('gender', ['male', 'female']);
             $table->date('dob');
             $table->string('blood_group', 5)->nullable();
@@ -40,20 +44,9 @@ $table->string('passport')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_verified')->default(false);
             $table->timestamp('verified_at')->nullable();
-            $table->foreignUuid('verified_by')->nullable()->constrained('users');
+            $table->foreignId('verified_by')->nullable()->constrained('users');
 
             $table->timestamps();
-        });
-
-        Schema::create('player_positions', function (Blueprint $table) {
-
-            $table->uuid('id')->primary();
-            $table->foreignUuid('player_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('position_id')->constrained();
-            $table->boolean('primary')->default(false);
-
-            $table->timestamps();
-
         });
 
         Schema::create('baseball_positions', function (Blueprint $table) {
@@ -65,6 +58,19 @@ $table->string('passport')->nullable();
             $table->timestamps();
         });
 
+
+        Schema::create('player_positions', function (Blueprint $table) {
+
+            $table->uuid('id')->primary();
+            $table->foreignUuidFor(Player::class)->constrained()->cascadeOnDelete();
+            $table->foreignUuidFor(BaseballPosition::class)->constrained();
+            $table->boolean('primary')->default(false);
+
+            $table->timestamps();
+
+        });
+
+      
     }
 
     /**
@@ -72,8 +78,9 @@ $table->string('passport')->nullable();
      */
     public function down(): void
     {
-        Schema::dropIfExists('players');
         Schema::dropIfExists('player_positions');
         Schema::dropIfExists('baseball_positions');
+         Schema::dropIfExists('players');
+       
     }
 };
