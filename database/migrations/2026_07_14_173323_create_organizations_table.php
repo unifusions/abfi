@@ -16,11 +16,14 @@ return new class extends Migration
         Schema::create('organizations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('president');
+            $table->string('secretary');
             $table->string('contact_person')->nullable();
              $table->string('code')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-           
+           $table->string('address_line_1')->nullable();
+           $table->string('address_line_2')->nullable();
             $table->foreignUuidFor(Organization::class)->nullable();
             $table->foreignIdFor(State::class)->nullable();
             $table->timestamps();
