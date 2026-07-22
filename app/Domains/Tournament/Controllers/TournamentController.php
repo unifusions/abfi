@@ -35,13 +35,13 @@ class TournamentController extends Controller
 
         $activeNow = Tournament::where('status', TournamentStatus::PUBLISHED)->count();
 
-        $registrationOpen = Tournament::where('registration_status', 'open')->count();
+        $registrationOpen = Tournament::where('registration_open_at', '>=', Carbon::now())->where('registration_close_at', '<=', Carbon::now())->get()->count();
         $activeTournament = Tournament::latest()->first();
         // $totalTeams = Team::count();
         $activeTournament = $activeTournament ? new ActiveTournamentResource($activeTournament) : [];
         $completedMTD = Tournament::where('status', 'completed')
-            ->whereMonth('completed_at', Carbon::now()->month)
-            ->whereYear('completed_at', Carbon::now()->year)
+            ->whereMonth('starts_at', Carbon::now()->month)
+            ->whereYear('ends_at', Carbon::now()->year)
             ->count();
 
 

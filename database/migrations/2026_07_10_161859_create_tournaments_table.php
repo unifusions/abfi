@@ -40,8 +40,8 @@ return new class extends Migration {
             $table->date('ends_at');
             $table->timestamp('published_at')->nullable();
 
-            $table->foreignUuid('created_by')->nullable();
-            $table->foreignUuid('updated_by')->nullable();
+            $table->foreignId('created_by')->nullable();
+            $table->foreignId('updated_by')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

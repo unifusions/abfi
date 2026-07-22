@@ -42,7 +42,7 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $user,
-                'is_super_admin' => $user->is_super_admin,
+                'is_super_admin' => $user?->is_super_admin,
                  'permissions' => $user
                 ? $user
                     ->permissions()->get(['module', 'code'])

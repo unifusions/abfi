@@ -83,8 +83,6 @@ export default function TournamentCreate({ states, organizations, categories }: 
     return (
         < >
             <PageHeader title="New Tournament" subText="Initialize a new event. Ensure all data conforms to guidelines." />
-{JSON.stringify(errors)}
-{JSON.stringify(data,null, 2)}
             <div className="flex flex-col lg:flex-row gap-10 max-w-5xl">
                 {/* <!-- Left Column: Form Sections --> */}
                 <div className="flex-1 space-y-10">
@@ -96,9 +94,10 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                 <div className="w-1 h-6 bg-secondary"></div>
                                 <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Tournament Identity</h2>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                                <FormInput
+<div className="col-span-3">
+<FormInput
                                     id="tournament_name"
                                     label="Tournament Name"
                                     hasError={errors.name}
@@ -106,51 +105,14 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                     onChange={e => setData('name', e.target.value)}
 
 
-
                                     placeholder="e.g., Sub Junior National Baseball Championship"
                                 />
 
+</div>
 
-                                <div className="col-span-2">
-                                    <div className="grid grid-cols-2  gap-6">
-                                        <FormSelect
-                                            label="category"
-                                            labelRequired={true}
-                                            id="tournament_category"
-                                            placeHolder="e.g., Sub Juniors"
-                                            items={categories.data}
-                                            value={data.category_id}
-                                            onValueChange={(val) => setData('category_id', val)}
-                                        />
+                        
 
-
-                                        {competitionType && competitionType.length > 0 &&
-                                            <FormCheckbox
-                                                label="Competition For"
-                                                labelRequired={true}
-                                                options={competitionType}
-                                                value={data.competition_type}
-                                                handleCheckboxChange={(competition_type) => handleCheckboxChange(competition_type)}
-                                                hasError={errors.competition_type}
-                                            />}
-
-                                    </div>
-
-
-
-                                </div>
-
-                                {/* <CreatableSelect 
-                                      selectedValue = {data.venue_id}
-                                        searchApiUrl = {venue.search().url}
-                                        passQuery={(e) => setVenueQuery(e.target.value) }
-                                        handleSelect={(val) => setData('venue_id', val)}
-                                        addDialog={ <AddVenueDialog triggerText={venueQuery} states={states}
-                                            setVenueId={(newVenueObject) => setData('venue_id', newVenueObject.id  )}
-                                        />} */}
-                                {/* /> */}
-
-                                <CreatableSelect value={v}
+<CreatableSelect value={v}
                                     searchUrl={venue.search().url}
                                     onChange={(v) => {
                                         setV(v);
@@ -195,7 +157,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                 <SearchableSelect
                                     options={organizations}
                                     onChange={(org) => setData("organization_id", org.id)}
-                                    s
+                                    
                                     getOptionLabel={(org) => org.name}
                                     getOptionValue={(org) => org.id}
                                     renderOption={(org) => (
@@ -211,6 +173,47 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                     value={organizations.find(o => o.id === data.organization_id) ?? null}
                                     labelRequired={true}
                                 />
+
+                                <div className="col-span-3">
+                                    <div className="grid grid-cols-2  gap-6">
+                                        <FormSelect
+                                            label="category"
+                                            labelRequired={true}
+                                            id="tournament_category"
+                                            placeHolder="e.g., Sub Juniors"
+                                            items={categories.data}
+                                            value={data.category_id}
+                                            onValueChange={(val) => setData('category_id', val)}
+                                        />
+
+
+                                        {competitionType && competitionType.length > 0 &&
+                                            <FormCheckbox
+                                                label="Competition For"
+                                                labelRequired={true}
+                                                options={competitionType}
+                                                value={data.competition_type}
+                                                handleCheckboxChange={(competition_type) => handleCheckboxChange(competition_type)}
+                                                hasError={errors.competition_type}
+                                            />}
+
+                                    </div>
+
+
+
+                                </div>
+
+                                {/* <CreatableSelect 
+                                      selectedValue = {data.venue_id}
+                                        searchApiUrl = {venue.search().url}
+                                        passQuery={(e) => setVenueQuery(e.target.value) }
+                                        handleSelect={(val) => setData('venue_id', val)}
+                                        addDialog={ <AddVenueDialog triggerText={venueQuery} states={states}
+                                            setVenueId={(newVenueObject) => setData('venue_id', newVenueObject.id  )}
+                                        />} */}
+                                {/* /> */}
+
+                                
 
 
 

@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Organization\Models\Organization;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Str;
 
 class OrganizationSeeder extends Seeder
 {
@@ -42,8 +44,15 @@ class OrganizationSeeder extends Seeder
             ['name' => 'U.P State Baseball Association', 'president' => 'Dr. D. R. Yadav', 'secretary' => 'Mr. Dinesh Yadav', 'phone' => '9412223344', 'email' => 'mdvedantgroups@gmail.com'],
             ['name' => 'Bengal Baseball Association', 'president' => 'Mr. Ajoy Ghosh', 'secretary' => 'Mr. Ashis Bardhan', 'phone' => '9831128271', 'email' => 'jaharmumdas@hotmail.com'],
 
-
-
         ];
+        
+foreach($orgs as $org){
+        Organization::create(
+            [
+            'id' => Str::uuid(),
+            ...$org
+        ]);
+    }
+
     }
 }

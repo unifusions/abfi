@@ -27,7 +27,7 @@ return new class extends Migration
 
             $table->unsignedInteger('height')->nullable();
 
-            $table->foreignUuid('created_by')
+            $table->foreignId('created_by')
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();
