@@ -63,6 +63,7 @@ export default function SearchableSelect({
     return (
         <div className="relative w-full" ref={wrapperRef}>
             <FormInputWithIcon
+            labelRequired={labelRequired}
                 label={label}
                 icon={icon}
                 value={search}

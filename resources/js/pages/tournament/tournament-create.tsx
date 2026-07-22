@@ -9,21 +9,24 @@ import venue from "@/routes/venue";
 import { useForm } from "@inertiajs/react";
 import { Calendar, ClipboardPen, Component, FileUser, FolderTree, Layers2, ListTree, MapPin, Network, Rocket } from "lucide-react";
 import AddVenueDialog from "./add-venue-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputError from "@/components/input-error";
 import SearchableSelect from "@/components/ext/searcable-select";
+import FormSelect from "@/components/ext/form-select";
+import { FormCheckbox } from "@/components/ext/form-checkbox";
+import FormCard from "@/components/ext/form-card";
 
 type Props = {
     states?: [],
     organizations?: []
 }
-export default function TournamentCreate({ states, organizations }: Props) {
+export default function TournamentCreate({ states, organizations, categories }: Props) {
 
     const [v, setV] = useState();
-
+    const [competitionType, setCompetitionType] = useState({});
     const { data, setData, processing, errors, post, transform } = useForm({
         'name': '',
-        'category': '',
+        'category_id': '',
         'organization_id': '',
         'venue_id': '',
         'starts_at': '',
@@ -31,6 +34,7 @@ export default function TournamentCreate({ states, organizations }: Props) {
         'registration_open_at': '',
         'registration_close_at': '',
         'competition_format': '',
+        'competition_type': []
 
     });
 
@@ -49,6 +53,27 @@ export default function TournamentCreate({ states, organizations }: Props) {
 
     }
 
+    useEffect(() => {
+        let selectCat = categories.data.find((c) => c.value === data.category_id);
+        setCompetitionType(selectCat?.competition_type)
+
+    }, [data.category_id])
+
+    const handleCheckboxChange = (value) => {
+
+        if (data.competition_type.includes(value)) {
+            setData(
+                "competition_type",
+                data.competition_type.filter(x => x !== value)
+            );
+        }
+        else {
+            setData('competition_type', [...data.competition_type, value]);
+
+        }
+
+    }
+
     const selectedOrganization =
         organizations.find(
             (o) => o.id === data.organization_id
@@ -58,8 +83,8 @@ export default function TournamentCreate({ states, organizations }: Props) {
     return (
         < >
             <PageHeader title="New Tournament" subText="Initialize a new event. Ensure all data conforms to guidelines." />
-
-
+{JSON.stringify(errors)}
+{JSON.stringify(data,null, 2)}
             <div className="flex flex-col lg:flex-row gap-10 max-w-5xl">
                 {/* <!-- Left Column: Form Sections --> */}
                 <div className="flex-1 space-y-10">
@@ -71,33 +96,51 @@ export default function TournamentCreate({ states, organizations }: Props) {
                                 <div className="w-1 h-6 bg-secondary"></div>
                                 <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Tournament Identity</h2>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <FormInput
-                                        id="tournament_name"
-                                        label="Tournament Name"
-                                        hasError={errors.name}
-                                        value={data.name}
-                                        onChange={e => setData('name', e.target.value)}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                                <FormInput
+                                    id="tournament_name"
+                                    label="Tournament Name"
+                                    hasError={errors.name}
+                                    value={data.name}
+                                    onChange={e => setData('name', e.target.value)}
 
 
 
-                                        placeholder="e.g., Sub Junior National Baseball Championship"
-                                    />
+                                    placeholder="e.g., Sub Junior National Baseball Championship"
+                                />
+
+
+                                <div className="col-span-2">
+                                    <div className="grid grid-cols-2  gap-6">
+                                        <FormSelect
+                                            label="category"
+                                            labelRequired={true}
+                                            id="tournament_category"
+                                            placeHolder="e.g., Sub Juniors"
+                                            items={categories.data}
+                                            value={data.category_id}
+                                            onValueChange={(val) => setData('category_id', val)}
+                                        />
+
+
+                                        {competitionType && competitionType.length > 0 &&
+                                            <FormCheckbox
+                                                label="Competition For"
+                                                labelRequired={true}
+                                                options={competitionType}
+                                                value={data.competition_type}
+                                                handleCheckboxChange={(competition_type) => handleCheckboxChange(competition_type)}
+                                                hasError={errors.competition_type}
+                                            />}
+
+                                    </div>
+
+
 
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label text-sm font-bold uppercase text-on-surface-variant">Category</label>
-                                    <select className="w-full bg-surface-container-lowest border-none rounded-lg p-4 font-body shadow-sm form-input-focus">
-                                        <option>Little League</option>
-                                        <option>Sub-Junior</option>
-                                        <option>Junior</option>
-                                        <option>Senior</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-2">
 
-                                    {/* <CreatableSelect 
+                                {/* <CreatableSelect 
                                       selectedValue = {data.venue_id}
                                         searchApiUrl = {venue.search().url}
                                         passQuery={(e) => setVenueQuery(e.target.value) }
@@ -105,84 +148,77 @@ export default function TournamentCreate({ states, organizations }: Props) {
                                         addDialog={ <AddVenueDialog triggerText={venueQuery} states={states}
                                             setVenueId={(newVenueObject) => setData('venue_id', newVenueObject.id  )}
                                         />} */}
-                                    {/* /> */}
+                                {/* /> */}
 
-                                    <CreatableSelect value={v}
-                                        searchUrl={venue.search().url}
-                                        onChange={(v) => {
-                                            setV(v);
-                                            setData("venue_id", v.id);
-                                        }}
-                                        getOptionLabel={(v) => v.name}
-                                        getOptionValue={(v) => v.id}
-                                        renderOption={(v) => (
-                                            <div>
-                                                <div>{v?.name}</div>
-                                                <div className="text-xs hover:text-zinc-200">
-                                                    {v?.state_code}
-                                                </div>
+                                <CreatableSelect value={v}
+                                    searchUrl={venue.search().url}
+                                    onChange={(v) => {
+                                        setV(v);
+                                        setData("venue_id", v.id);
+                                    }}
+                                    getOptionLabel={(v) => v.name}
+                                    getOptionValue={(v) => v.id}
+                                    renderOption={(v) => (
+                                        <div>
+                                            <div>{v?.name}</div>
+                                            <div className="text-xs hover:text-zinc-200">
+                                                {v?.state_code}
                                             </div>
-                                        )}
-                                        icon={MapPin}
-                                        label="PrimaryVenue"
-                                        onCreate={(query) => { setVenueQuery(query); setVenueDialogOpen(true) }}
+                                        </div>
+                                    )}
+                                    icon={MapPin}
+                                    label="Event Venue"
+                                    labelRequired={true}
+                                    onCreate={(query) => { setVenueQuery(query); setVenueDialogOpen(true) }}
 
-                                    />
-                                    <AddVenueDialog
-                                        open={venueDialogOpen}
-                                        onOpenChange={setVenueDialogOpen}
-                                        states={states}
-                                        triggerText={venueQuery}
-                                        setVenueId={(v) => {
+                                />
+                                <AddVenueDialog
+                                    open={venueDialogOpen}
+                                    onOpenChange={setVenueDialogOpen}
+                                    states={states.data}
+                                    triggerText={venueQuery}
+                                    setVenueId={(v) => {
 
-                                            setV(v);
-                                            setData("venue_id", v.id);
-                                        }}
-
-
-
-                                    />
+                                        setV(v);
+                                        setData("venue_id", v.id);
+                                    }}
 
 
 
+                                />
 
 
-                                </div>
-
-                                <div>
 
 
-                                    <SearchableSelect
-                                        options={organizations}
-                                        onChange={(org) => setData("organization_id", org.id)}
 
-                                        getOptionLabel={(org) => org.name}
-                                        getOptionValue={(org) => org.id}
-                                        renderOption={(org) => (
-                                            <div>
-                                                <div>{org?.name}</div>
-                                                <div className="text-xs hover:text-zinc-200">
-                                                    {org?.id}
-                                                </div>
+
+                                <SearchableSelect
+                                    options={organizations}
+                                    onChange={(org) => setData("organization_id", org.id)}
+                                    s
+                                    getOptionLabel={(org) => org.name}
+                                    getOptionValue={(org) => org.id}
+                                    renderOption={(org) => (
+                                        <div>
+                                            <div>{org?.name}</div>
+                                            <div className="text-xs hover:text-zinc-200">
+                                                {org?.state?.short_code}
                                             </div>
-                                        )}
-                                        icon={FileUser}
-                                        label="Organizer "
-                                        value={organizations.find(o => o.id === data.organization_id) ?? null}
+                                        </div>
+                                    )}
+                                    icon={FileUser}
+                                    label="Organizer "
+                                    value={organizations.find(o => o.id === data.organization_id) ?? null}
+                                    labelRequired={true}
+                                />
 
-                                    />
 
-                                    {data?.organization_id}
-                                </div>
+
                             </div>
                         </div>
-                        {/* <!-- Section 2: Timeline --> */}
-                        <div className="space-y-6">
-                            <div className="flex items-center gap-4">
-                                <div className="w-1 h-6 bg-secondary"></div>
-                                <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Event Timeline</h2>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 bg-surface-container-low p-8 rounded-xl">
+
+                        <FormCard title="Event Timeline">
+                            <div className="grid grid-cols-1 md:grid-cols-1 gap-x-6 gap-y-8  ">
                                 <div className="space-y-4">
                                     <h3 className="font-label text-xs font-black uppercase text-secondary tracking-widest flex items-center gap-2">
                                         <Calendar /> Tournament Dates
@@ -196,11 +232,11 @@ export default function TournamentCreate({ states, organizations }: Props) {
                                             onChange={(e) => setData('ends_at', e.target.value)} value={data.ends_at} />
                                     </div>
                                 </div>
-                                <div class="space-y-4">
-                                    <h3 class="font-label text-xs font-black uppercase text-secondary tracking-widest flex items-center gap-2">
+                                <div className="space-y-4">
+                                    <h3 className="font-label text-xs font-black uppercase text-secondary tracking-widest flex items-center gap-2">
                                         <ClipboardPen /> Registration Window
                                     </h3>
-                                    <div class="flex items-center gap-4">
+                                    <div className="flex items-center gap-4">
                                         <FormInput className="flex-1" type="date"
                                             onChange={(e) => setData('registration_open_at', e.target.value)} value={data.registration_open_at} />
 
@@ -210,57 +246,55 @@ export default function TournamentCreate({ states, organizations }: Props) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* <!-- Section 3: Competition Structure --> */}
-                        <div class="space-y-6">
-                            <div class="flex items-center gap-4">
-                                <div class="w-1 h-6 bg-secondary"></div>
-                                <h2 class="font-headline font-bold text-xl uppercase tracking-wider">Bracket &amp; Logic</h2>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                <label class="relative group cursor-pointer">
-                                    <input class="peer sr-only" name="bracket" type="radio" value="pool_play"
+
+                        </FormCard>
+
+                        <FormCard title="Bracket &amp; Logic">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <label className="relative group cursor-pointer">
+                                    <input className="peer sr-only" name="bracket" type="radio" value="pool_play"
 
                                         onChange={(e) => setData('competition_format', e.target.value)}
                                     />
-                                    <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
+                                    <div className="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
                                         <FolderTree className="h-10 w-10 text-primary" />
 
-                                        <p class="font-bold text-primary">Pool Play</p>
-                                        <p class="text-xs text-on-surface-variant leading-relaxed">Every team plays every other team in their pool. Points-based advancement.</p>
+                                        <p className="font-bold text-primary">Pool Play</p>
+                                        <p className="text-xs text-on-surface-variant leading-relaxed">Every team plays every other team in their pool. Points-based advancement.</p>
                                     </div>
                                 </label>
-                                <label class="relative group cursor-pointer">
-                                    <input class="peer sr-only" name="bracket" type="radio" />
-                                    <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
+                                <label className="relative group cursor-pointer">
+                                    <input className="peer sr-only" name="bracket" type="radio" />
+                                    <div className="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
                                         <Component className="h-10 w-10 text-primary" />
-                                        <p class="font-bold text-primary">Round Robin</p>
-                                        <p class="text-xs text-on-surface-variant leading-relaxed">Every team plays every other team. Points-based advancement.</p>
+                                        <p className="font-bold text-primary">Round Robin</p>
+                                        <p className="text-xs text-on-surface-variant leading-relaxed">Every team plays every other team. Points-based advancement.</p>
                                     </div>
                                 </label>
 
-                                <label class="relative group cursor-pointer">
-                                    <input class="peer sr-only" name="bracket" type="radio" />
-                                    <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
+                                {/* <label className="relative group cursor-pointer">
+                                    <input className="peer sr-only" name="bracket" type="radio" />
+                                    <div className="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
                                         <Network className="h-10 w-10 text-primary" />
 
-                                        <p class="font-bold text-primary">Single Knockout</p>
-                                        <p class="text-xs text-on-surface-variant leading-relaxed">Lose once and the team is out. Fast-paced elimination format.</p>
+                                        <p className="font-bold text-primary">Single Knockout</p>
+                                        <p className="text-xs text-on-surface-variant leading-relaxed">Lose once and the team is out. Fast-paced elimination format.</p>
                                     </div>
                                 </label>
 
-                                <label class="relative group cursor-pointer">
-                                    <input class="peer sr-only" name="bracket" type="radio" />
-                                    <div class="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
+                                <label className="relative group cursor-pointer">
+                                    <input className="peer sr-only" name="bracket" type="radio" />
+                                    <div className="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
                                         <Layers2 className="h-10 w-10 text-primary" />
 
-                                        <p class="font-bold text-primary">Double Elimination</p>
-                                        <p class="text-xs text-on-surface-variant leading-relaxed">Teams drop to a loser's bracket after one defeat. Two losses to exit.</p>
+                                        <p className="font-bold text-primary">Double Elimination</p>
+                                        <p className="text-xs text-on-surface-variant leading-relaxed">Teams drop to a loser's bracket after one defeat. Two losses to exit.</p>
                                     </div>
-                                </label>
+                                </label> */}
                             </div>
-                        </div>
-                        {/* <!-- Section 4: Prizes & Financials --> */}
+                        </FormCard>
+
+
                         {/* <div class="space-y-6">
                             <div class="flex items-center gap-4">
                                 <div class="w-1 h-6 bg-secondary"></div>

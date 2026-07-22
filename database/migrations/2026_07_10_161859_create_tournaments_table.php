@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Compliance\Models\Category;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Tournament\Enums\CompetitionFormat;
 use App\Domains\Tournament\Enums\TournamentStatus;
@@ -19,7 +20,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
-
+            $table->foreignUuidFor(Category::class)->nullable();
             $table->foreignUuidFor(Organization::class);
             $table->foreignUuidFor(Venue::class);
             $table->string('organizer')->nullable();

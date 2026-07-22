@@ -2,6 +2,7 @@
 
 namespace App\Domains\Tournament\Requests;
 
+use App\Domains\Compliance\Models\Category;
 use App\Domains\Tournament\Enums\CompetitionFormat;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -34,6 +35,8 @@ class StoreTournamentRequest extends FormRequest
                 'date',
                 'after_or_equal:registration_open_at',
             ],
+            'category_id' => ['required', 'uuid', Rule::exists('categories' ,'id')],
+            'competition_type' => ['array'],
             'action' => [
                 'required',
                 Rule::in(['draft', 'publish']),

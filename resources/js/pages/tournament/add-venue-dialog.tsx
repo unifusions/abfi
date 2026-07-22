@@ -1,3 +1,5 @@
+import FormInput from "@/components/ext/form-input"
+import FormSelect from "@/components/ext/form-select"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -34,9 +36,9 @@ export default function AddVenueDialog({ open, onOpenChange, triggerText, states
                 // setVenueId(response)
                 // console.log(response)
                 response.data && setVenueId(response.data)
-               
+
                 onOpenChange(false);
-                 response.toasts?.forEach((item) => {
+                response.toasts?.forEach((item) => {
                     toast[item.type](item.message);
                 });
             }
@@ -57,33 +59,27 @@ export default function AddVenueDialog({ open, onOpenChange, triggerText, states
                     <DialogHeader>
                         <DialogTitle> Venue {triggerText}</DialogTitle>
                         <DialogDescription>
-                            Make changes to your profile here. Click save when you&apos;re
-                            done.
+                          Create a new venue here.
 
                         </DialogDescription>
                     </DialogHeader>
 
-                    <form onSubmit={handleSubmit}>
-                        <Label htmlFor="name-1">Name</Label>
-                        <Input onChange={(e) => setData("name", e.target.value)} value={data.name} />
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <FormInput 
+                        label="Venue Name"
+                        labelRequired={true}
+                         onChange={(e) => setData("name", e.target.value)} value={data.name} 
+                         hasError={errors.name}                        />
+                        
 
-                        <Label htmlFor="name-1">Select State</Label>
-                        <Select onValueChange={(e) => setData('state_id', e)} value={data.state_id}>
-                            <SelectTrigger className="w-full">
-                                <SelectValue />
+                        <FormSelect
+                            items={states}
+                            label="Select State"
+                            labelRequired={true}
+                            onValueChange={(e) => setData('state_id', e)}
+                            value={data.state_id}
+                        />
 
-                            </SelectTrigger>
-                            <SelectContent position="popper">
-                                <SelectGroup>
-                                    <SelectLabel>Select State</SelectLabel>
-                                    {states.map((s) => (
-                                        <SelectItem key={s.id} value={String(s.id)}>
-                                            {s.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
 
 
 

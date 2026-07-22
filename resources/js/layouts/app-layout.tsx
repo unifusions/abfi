@@ -1,3 +1,4 @@
+import { PermissionProvider } from '@/context/PermissionContext';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import type { BreadcrumbItem } from '@/types';
 import { usePage } from '@inertiajs/react';
@@ -11,8 +12,8 @@ export default function AppLayout({
     breadcrumbs?: BreadcrumbItem[];
     children: React.ReactNode;
 }) {
-    const { flash } = usePage().props;
- useEffect(() => {
+    const { flash, auth } = usePage().props;
+    useEffect(() => {
         if (flash.success) {
             toast.success(flash.success);
         }
@@ -30,8 +31,12 @@ export default function AppLayout({
         }
     }, [flash]);
     return (
-        <AppLayoutTemplate breadcrumbs={breadcrumbs}>
-            {children}
-        </AppLayoutTemplate>
+        <PermissionProvider>
+            <AppLayoutTemplate breadcrumbs={breadcrumbs}>
+ 
+                {children}
+            </AppLayoutTemplate>
+        </PermissionProvider>
+
     );
 }

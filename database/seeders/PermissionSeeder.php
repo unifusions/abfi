@@ -18,9 +18,9 @@ class PermissionSeeder extends Seeder
         foreach (PermissionEnum::cases() as $permission) {
 
             Permission::Create(
-             
+
                 [
-                       'code' => $permission->value,
+                    'code' => $permission->value,
                     'name' => Str::headline(
                         str_replace('.', ' ', $permission->value)
                     ),

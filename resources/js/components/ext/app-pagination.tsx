@@ -9,51 +9,59 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export default function AppPagination({ paginationData }) {
+type Props = {
+  paginationData?: any
+}
+export default function AppPagination({ paginationData }: Props) {
   // Hide component entirely if there is only one page (Previous, 1, Next)
-  const { links, meta} = paginationData;
-const {from, to, total,prev_page_url, next_page_url } = meta;
-   const pageNumbersOnly = links.length>= 1 && links.slice(1, -1);
+  const { links, meta } = paginationData;
+  const { from, to, total, prev_page_url, next_page_url } = meta;
+  const { next, prev } = links;
+  const pageNumbersOnly = meta.links.length >= 1 && meta.links.slice(1, -1);
 
-  if (pageNumbersOnly.length <= 1) return null;
+  if (pageNumbersOnly.length < 1) return null;
 
   return (
 
-    <div className="bg-zinc-50 px-6 py-4 flex items-center justify-between ">
-      <p className="font-body text-xs text-on-surface-variant">Showing <span
-        className="font-bold text-primary">{from}-{to}</span> of {total} entries</p>
+    <div className="bg-zinc-50 px-6 py-2 flex items-center justify-between  ">
+      {from && to ? <p className="font-body text-xs text-on-surface-variant">Showing <span
+        className="font-bold text-primary">{from ?? 0}-{to ?? 0}</span> of {total} entries
+      </p>
+        : <p className="font-body text-xs text-on-surface-variant">Showing  {total} entries
+        </p>}
+
+
 
       <div>
-{pageNumbersOnly.length >= 2 &&
+        {meta.links &&
 
- <Pagination className="mt-6">
-           <PaginationContent>
+          <Pagination className="mt-3">
+            <PaginationContent>
 
 
-
-            <PaginationItem>
-              <PaginationPrevious href={prev_page_url || '#'} className={!prev_page_url ? "pointer-events-none opacity-50" : ""} />
-            </PaginationItem>
-            {pageNumbersOnly.map((link, index) =>
-              <PaginationItem key={index}>
-                <PaginationLink href={link.url}>{link.page}</PaginationLink>
+              <PaginationItem>
+                <PaginationPrevious href={prev_page_url || prev || '#'} className={!(prev_page_url || prev) ? "pointer-events-none opacity-50" : ""} />
               </PaginationItem>
-            )}
+              {pageNumbersOnly.map((link, index) =>
+                <PaginationItem key={index}  >
+                  <PaginationLink href={link.url} className={link.active && 'bg-primary text-white'} >{link.page} </PaginationLink>
+                </PaginationItem>
+              )}
 
 
 
-            {/* <PaginationItem>
+              {/* <PaginationItem>
               <PaginationEllipsis />
             </PaginationItem> */}
-            <PaginationItem>
-              <PaginationNext href={next_page_url || '#'} className={!next_page_url ? "pointer-events-none opacity-50" : ""} />
-            </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href={next_page_url || next || '#'} className={!(next_page_url || next) ? "pointer-events-none opacity-50" : ""} />
+              </PaginationItem>
 
-          </PaginationContent>
-        </Pagination>
+            </PaginationContent>
+          </Pagination>
 
-}
-       
+        }
+
       </div>
 
     </div>
@@ -65,72 +73,3 @@ const {from, to, total,prev_page_url, next_page_url } = meta;
 
 
 
-
-//  <PaginationContent>
-//               <PaginationItem key={key}>
-//                     <PaginationPrevious
-//                       asChild
-//                       className={!link.url ? "pointer-events-none opacity-50" : ""}
-//                     >
-//                       <Link href={link.url || "#"} preserveScroll />
-//                     </PaginationPrevious>
-//                   </PaginationItem>
-                  
-//             {links.map((link, key) => {
-//               // Identify if it's the previous button, next button, or an ellipsis
-//               const isPrevious = link.label.includes('Previous') || link.label.includes('&laquo;');
-//               const isNext = link.label.includes('Next') || link.label.includes('&raquo;');
-//               const isEllipsis = link.label === '...';
-
-//               // 1. Render Ellipsis component
-//               if (isEllipsis) {
-//                 return (
-//                   <PaginationItem key={key}>
-//                     <PaginationEllipsis />
-//                   </PaginationItem>
-//                 );
-//               }
-
-//               // 2. Render Previous Button
-//               if (isPrevious) {
-//                 return (
-//                   <PaginationItem key={key}>
-//                     <PaginationPrevious
-//                       asChild
-//                       className={!link.url ? "pointer-events-none opacity-50" : ""}
-//                     >
-//                       <Link href={link.url || "#"} preserveScroll />
-//                     </PaginationPrevious>
-//                   </PaginationItem>
-//                 );
-//               }
-
-//               // 3. Render Next Button
-//               if (isNext) {
-//                 return (
-//                   <PaginationItem key={key}>
-//                     <PaginationNext
-//                       asChild
-//                       className={!link.url ? "pointer-events-none opacity-50" : ""}
-//                     >
-//                       <Link href={link.url || "#"} preserveScroll />
-//                     </PaginationNext>
-//                   </PaginationItem>
-//                 );
-//               }
-
-//               // 4. Render Standard Page Number Links
-//               return (
-//                 <PaginationItem key={key}>
-//                   <PaginationLink
-//                     asChild
-//                     isActive={link.active}
-//                   >
-//                     <Link href={link.url} preserveScroll>
-//                       {link.label}
-//                     </Link>
-//                   </PaginationLink>
-//                 </PaginationItem>
-//               );
-//             })}
-//           </PaginationContent>

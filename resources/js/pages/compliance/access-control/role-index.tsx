@@ -60,7 +60,7 @@ export default function RoleIndex({ roles, permissions }) {
 
             <div class="flex-1 flex flex-col min-w-0 bg-slate-50  relative">
 
-{JSON.stringify(errors)}
+ 
                 {/* <!-- Dynamic Content Body --> */}
                 <div class="flex-1 flex overflow-hidden">
                     {/* <!-- Roles Sidebar (Left List) --> */}

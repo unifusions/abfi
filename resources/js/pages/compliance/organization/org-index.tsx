@@ -1,5 +1,5 @@
 import AppPagination from "@/components/ext/app-pagination";
-import IndexTable from "@/components/ext/table-container";
+ 
 import PageHeader from "@/components/ext/page-header";
 import RowFirstColumn from "@/components/ext/table/row-first-column";
 import { compliance, dashboard } from "@/routes";
@@ -10,6 +10,7 @@ import { useState } from "react";
 import { create } from "@/routes/compliance/organizations";
 import LinkButton from "@/components/ext/link-button";
 import PageHeaderAction from "@/components/ext/page-header-action";
+import TableContainer from "@/components/ext/table-container";
 
 export default function OrganizationIndex({ organizations }) {
 
@@ -27,7 +28,7 @@ export default function OrganizationIndex({ organizations }) {
                
             </PageHeader>
 
-            <IndexTable>
+            <TableContainer>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Association Name</TableHead>
@@ -41,7 +42,7 @@ export default function OrganizationIndex({ organizations }) {
 
                 <TableBody>
                     {data.map((org) => <TableRow key={org.id} >
-                        <TableCell> <RowFirstColumn title={org?.name} subTitle={org.state_code} /> </TableCell>
+                        <TableCell> <RowFirstColumn title={org?.name} subTitle={org?.state_code} /> </TableCell>
                         <TableCell> {org.state}</TableCell>
                         <TableCell><div class="flex justify-end gap-2">
                             <Button
@@ -68,7 +69,7 @@ export default function OrganizationIndex({ organizations }) {
 
                 </TableFooter>
 
-            </IndexTable>
+            </TableContainer>
 
 
         </div>

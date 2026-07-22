@@ -30,8 +30,8 @@ trait HasRoles
     public function hasRole(string|array $roles): bool
     {
         if ($this->isSuperAdmin()) {
-        return true;
-    }
+            return true;
+        }
 
 
         $roles = (array) $roles;
@@ -55,10 +55,9 @@ trait HasRoles
     public function hasPermission(string|array $permissions): bool
     {
         if ($this->isSuperAdmin()) {
-        return true;
-    }
-
-    
+            return true;
+        }
+ 
         $permissions = (array) $permissions;
 
         return Permission::query()

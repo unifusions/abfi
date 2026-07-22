@@ -18,6 +18,8 @@ import type { NavItem } from '@/types';
 import { index as PlayerIndex } from '@/routes/players';
 import { index as TournamentIndex } from '@/routes/tournaments';
 import { index as OfficialIndex } from '@/routes/officials';
+import { useAuthorization } from '@/hooks/use-authorization';
+
 
 
 const mainNavItems: NavItem[] = [
@@ -25,39 +27,40 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
-        
+        module: 'Dashboard',
     },
     {
         title: 'Tournaments',
         href: TournamentIndex(),
         icon: Trophy,
-        permission: "tournament.index"
+        module: "Tournament"
     },
     {
         title: 'Players',
         href: PlayerIndex(),
         icon: Users,
-        permission: "player.index"
+        module: "Player"
     },
     {
         title: "Officials",
         href: OfficialIndex(),
         icon: UserCog,
-        permission:"official.index"
+        module:"Official"
     },
     {
         title: 'Rosters',
         href: '#',
         icon: IdCard,
+        module:"Roster"
+
     },
     {
         title: 'Compliance',
         href: compliance(),
         icon: Shield,
-        permission : "compliance.index"
+        module : "Compliance"
     }
 ];
-
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
@@ -72,10 +75,15 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+
+    const { canModule } = useAuthorization();
+const visibleItems = mainNavItems.filter(item => canModule(item.module));
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
+               
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={dashboard()} prefetch>
@@ -87,8 +95,8 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-               
-                <NavMain items={mainNavItems} />
+              
+                <NavMain items={visibleItems} />
             </SidebarContent>
 
             <SidebarFooter >

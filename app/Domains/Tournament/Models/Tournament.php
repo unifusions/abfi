@@ -58,6 +58,9 @@ class Tournament extends Model
         return $this->belongsTo(Organization::class);
     }
     
+    public function competitions(){
+        return $this->hasMany(TournamentCompetition::class);
+    }
     // TOURNAMENT SCOPES
 
     public function scopePublished($query)

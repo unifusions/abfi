@@ -16,33 +16,46 @@ class StorePlayerRequest extends FormRequest
 
     public function rules(): array
     {
+      
         return [
-            'player_code' => ['string', 'max:255'],
-            'first_name' => ['string', 'max:255'],
-            'middle_name' => ['required', 'string'],
-            'last_name' => ['string'],
-            'father_name' => ['string'],
-            'player_positions' => ['array'],
+            
+            'first_name' => ['required','string', 'max:255'],
+            'middle_name' => [ 'nullable'],
+            'last_name' => ['required','string', 'max:255'],
+            'father_name' => ['required','string'],
+            'player_positions' => ['required','array'],
             'player_positions.*' => [
                 'uuid',
                 Rule::exists('baseball_positions', 'id')
             ],
-            'organization_id' => ['uuid', Rule::exists('organizations', 'id')],
-            'gender' => ['string'],
-            'dob' => ['date'],
-            'bloodgroup' => ['string'],
-            'aadhar_no' => ['unique', 'string'],
-            'passport' => ['string'],
-            'email' => ['string'],
-            'phone' => ['string'],
-            'emergency_contact_phone' => [],
-            'state_id' => ['nullable'],
-            'address' => ['string'],
-            'city' => ['string'],
-            'district' => ['string'],
-            'pincode' => ['string'],
+            'organization_id' => ['required', 'uuid', Rule::exists('organizations', 'id')],
+            'gender' => ['required','string'],
+            'dob' => ['required', 'date'],
+            'blood_group' => ['required', 'string'],
+            'aadhar_no' => ['required','unique:players', 'string'],
+            'passport' => ['nullable', 'string'],
+            'email' => ['required','email', Rule::unique('players', 'email')],
+            'phone' => ['required'],
+            'emergency_contact_phone' => ['required'],
+            'state_id' => ['required', 'nullable'],
+            'address' => ['required'],
+            'city' => ['required'],
+            
+            'pincode' => ['required', 'string'],
+            'media_id' => ['string']
             
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'organization_id.required' => 'Player should be in any one of the Association.',
+            'state_id.required' => 'State field is required',
+            'blood_group.required' => 'Bloog Group field is required', 
+            'aadhar_no.required' => 'Valid Aadhar Number is required',
+        ];
+    }
+
 
 }

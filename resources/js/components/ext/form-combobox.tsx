@@ -4,8 +4,8 @@ import FormLabel from "./form-label";
 export default function FormCombobox(
     {
         label, id, labelRequired,
-        placeholder,
-        options, value, onValueChange,
+        placeholder, 
+        options, value, onValueChange, disabled = false
     }
 ) {
     const selectedOption = options.find((opt) => opt.value === value) || null;
@@ -22,10 +22,9 @@ export default function FormCombobox(
 
 
             <Combobox items={options} value={selectedOption} onValueChange={onValueChange}
-            className="h-12"
-                itemToStringValue={(option) => option?.value}
+                 itemToStringValue={(option) => option?.value}
             >
-                <ComboboxInput placeholder={placeholder}  className="h-12 bg-zinc-50 border-0" />
+                <ComboboxInput placeholder={placeholder} className="h-12 bg-zinc-50 border-0" disabled={disabled} />
                 <ComboboxContent>
                     <ComboboxEmpty>No items found.</ComboboxEmpty>
                     <ComboboxList className="focus:text-white">

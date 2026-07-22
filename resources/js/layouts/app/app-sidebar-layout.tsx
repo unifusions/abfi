@@ -19,8 +19,18 @@ export default function AppSidebarLayout({
                     <Breadcrumbs breadcrumbs={breadcrumbs} />
 
                     {children}
-                </div>
 
+                    {/* <!-- Footer (from JSON) --> */}
+
+                </div>
+                <footer className="  h-16 flex justify-between items-center px-8 w-full bg-surface border-t border-zinc-100">
+                    <p className="font-label text-xs text-on-surface-variant opacity-80">© 2026 Amaetur Baseball Federation of India. All Rights Reserved.</p>
+                    <div className="flex space-x-6">
+                        <a className="font-label text-xs text-on-surface-variant hover:text-secondary transition-opacity" href="#">Privacy Policy</a>
+                        <a className="font-label text-xs text-on-surface-variant hover:text-secondary transition-opacity" href="#">Terms of Service</a>
+                        <a className="font-label text-xs text-on-surface-variant hover:text-secondary transition-opacity" href="#">API Documentation</a>
+                    </div>
+                </footer>
             </AppContent>
         </AppShell>
     );

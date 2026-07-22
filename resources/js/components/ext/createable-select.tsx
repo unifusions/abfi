@@ -22,6 +22,7 @@ export default function CreatableSelect({
     minSearchLength = 3,
     onCreate,
     icon, label,
+    labelRequired
 }) {
     const wrapperRef = useRef(null);
 
@@ -100,7 +101,7 @@ export default function CreatableSelect({
                 icon={icon}
                 // onChange={e => setData('venue', e.target.value)}
                 // value={data.venue}
-
+labelRequired={labelRequired}
 
                 value={data.search}
                 placeholder={placeholder}

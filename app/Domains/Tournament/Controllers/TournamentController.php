@@ -2,18 +2,23 @@
 
 namespace App\Domains\Tournament\Controllers;
 
+use App\Domains\Compliance\Models\Category;
 use App\Domains\Compliance\Models\State;
 use App\Domains\Organization\Models\Organization;
+use App\Domains\Shared\Resources\SelectCategoryResource;
+use App\Domains\Shared\Resources\SelectStateResource;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Requests\StoreTournamentRequest;
 use App\Domains\Tournament\Requests\UpdateTournamentRequest;
 use App\Domains\Tournament\Resources\ActiveTournamentResource;
+use App\Domains\Tournament\Resources\TournamentListResource;
 use App\Domains\Tournament\Services\TournamentService;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Domains\Venue\Models\Venue;
+
 
 class TournamentController extends Controller
 {
@@ -33,7 +38,7 @@ class TournamentController extends Controller
         $registrationOpen = Tournament::where('registration_status', 'open')->count();
         $activeTournament = Tournament::latest()->first();
         // $totalTeams = Team::count();
-$activeTournament = new ActiveTournamentResource($activeTournament) ;
+        $activeTournament = $activeTournament ? new ActiveTournamentResource($activeTournament) : [];
         $completedMTD = Tournament::where('status', 'completed')
             ->whereMonth('completed_at', Carbon::now()->month)
             ->whereYear('completed_at', Carbon::now()->year)
@@ -42,7 +47,7 @@ $activeTournament = new ActiveTournamentResource($activeTournament) ;
 
         return inertia('tournament/tournament-index', [
 
-            'tournaments' => Tournament::latest()->paginate(15),
+            'tournaments' => TournamentListResource::collection( Tournament::latest()->paginate(15)),
             'activeTournament' => $activeTournament,
             'activeNow' => $activeNow,
             'registrationOpen' => $registrationOpen,
@@ -57,9 +62,10 @@ $activeTournament = new ActiveTournamentResource($activeTournament) ;
     public function create()
     {
         return inertia('tournament/tournament-create', [
-            'states' => State::all(),
+            'categories' => SelectCategoryResource::collection(Category::all()),
+            'states' => SelectStateResource::collection(State::all()),
             'venues' => Venue::all(),
-            'organizations' => Organization::all()
+            'organizations' => Organization::with('state')->get()
         ]);
     }
 
@@ -69,25 +75,25 @@ $activeTournament = new ActiveTournamentResource($activeTournament) ;
     public function store(StoreTournamentRequest $request)
     {
 
-   
- 
+
+
 
         $data = $request->validated();
         if ($data['action'] === 'publish') {
 
             $tournament = $this->service->createAndPublish($data);
-           return redirect()
-            ->route('tournaments.show', $tournament)
-            ->with('success', 'Tournament published successfully.');
+            return redirect()
+                ->route('tournaments.show', $tournament)
+                ->with('success', 'Tournament published successfully.');
         } else {
 
             $tournament = $this->service->create($data);
-              return redirect()
-            ->back()
-            ->with('success', 'Tournament created successfully and yet to be published.');
+            return redirect()
+                ->back()
+                ->with('success', 'Tournament created successfully and yet to be published.');
 
         }
-      
+
     }
 
     /**

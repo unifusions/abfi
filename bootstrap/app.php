@@ -12,6 +12,10 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
+->withCommands([
+    App\Console\Commands\CleanupTemporaryMedia::class,
+])
+
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',

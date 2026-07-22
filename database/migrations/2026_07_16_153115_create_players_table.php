@@ -32,7 +32,7 @@ return new class extends Migration {
 
             $table->string('emergency_contact_phone', 20)->nullable();
 
-            $table->foreignId(State::class);
+            $table->foreignIdFor(State::class);
             $table->text('address')->nullable();
             $table->string('city')->nullable();
             $table->string('district')->nullable();
@@ -65,7 +65,7 @@ return new class extends Migration {
 
         Schema::create('player_positions', function (Blueprint $table) {
 
-            $table->uuid('id')->primary();
+           
             $table->foreignUuidFor(Player::class)->constrained()->cascadeOnDelete();
             $table->foreignUuidFor(BaseballPosition::class)->constrained();
             $table->boolean('primary')->default(false);

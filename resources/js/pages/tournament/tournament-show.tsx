@@ -20,12 +20,12 @@ export default function TournamentShow({ tournament }) {
                             <span className=" uppercase text-xs">{tournament.status}</span>
                         </div>
 
-                        <div>
+                        <div className="flex items-center gap-3 ">
                             <Calendar />
                             {tournament?.starts_at} - {tournament?.ends_at}
                         </div>
 
-                        <div>
+                        <div className="flex items-center gap-3 ">
                             <MapPin />
                             {tournament?.venue}
                         </div>

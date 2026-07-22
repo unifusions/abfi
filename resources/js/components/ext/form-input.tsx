@@ -1,3 +1,4 @@
+import React from "react";
 import InputError from "../input-error";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -9,11 +10,12 @@ type Props = {
     name?: string;
     type?: string;
     label?: string;
+    value?:string;
     className?: string;
     layout?: string;
     labelRequired?: boolean;
     placeholder?: string;
-
+    onChange ?:  React.ChangeEventHandler<HTMLInputElement>;
 
 }
 export default function FormInput({ id, name, type = "text", layout = "col", label, className, placeholder, labelRequired = false, hasError,value, ...props }: Props) {

@@ -15,7 +15,11 @@ class StoreOrganizationRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required']
+            'email' => ['required'],
+            'contact_person' => ['required'],
+            'phone' => ['required'],
+            
+            'state_id' => ['required']
         ];
     }
 }

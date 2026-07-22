@@ -24,53 +24,73 @@ class TournamentService
 
     public function create(array $data): Tournament
     {
-            $data['created_by'] = auth()->id();
+        $data['created_by'] = auth()->id();
 
-            // $tournament = $this->createTournament->handle($data);
 
-// $tournament->categories()->sync($data['category_ids']);
+        $tournament = $this->createTournament->handle($data);
+
+        foreach ($data['competition_type'] as $competition) {
+
+            $tournament->competitions()->create([
+                'name' => ucfirst($competition),
+                'competition_type' => $competition,
+            ]);
+
+        }
+        // $tournament->categories()->sync($data['category_ids']);
 // $tournament->ageGroups()->sync($data['age_group_ids']);
 
-        return $this->createTournament->handle($data);
+        return $tournament;
     }
 
-     public function createAndPublish(array $data): Tournament
+    public function createAndPublish(array $data): Tournament
     {
-            $data['created_by'] = auth()->id();
+        $data['created_by'] = auth()->id();
 
-            // $tournament = $this->createTournament->handle($data);
+        $tournament = $this->createAndPublishTournament->handle($data);
 
-// $tournament->categories()->sync($data['category_ids']);
+
+        foreach ($data['competition_type'] as $competition) {
+
+            $tournament->competitions()->create([
+                'name' => ucfirst($competition),
+                'competition_type' => $competition,
+            ]);
+
+        }
+        // $tournament = $this->createTournament->handle($data);
+
+        // $tournament->categories()->sync($data['category_ids']);
 // $tournament->ageGroups()->sync($data['age_group_ids']);
 
-        return $this->createAndPublishTournament->handle($data);
+        return $tournament;
     }
 
     public function update(
         Tournament $tournament,
         array $data
     ): Tournament {
-          $data['updated_by'] = auth()->id();
+        $data['updated_by'] = auth()->id();
         return $this->updateTournament->handle($tournament, $data);
     }
 
     public function publish(Tournament $tournament): Tournament
     {
-          $data['updated_by'] = auth()->id();
+        $data['updated_by'] = auth()->id();
 
         return $this->publishTournament->handle($tournament);
     }
 
     public function cancel(Tournament $tournament): Tournament
     {
-          $data['updated_by'] = auth()->id();
+        $data['updated_by'] = auth()->id();
 
         return $this->cancelTournament->handle($tournament);
     }
 
     public function complete(Tournament $tournament): Tournament
     {
-          $data['updated_by'] = auth()->id();
+        $data['updated_by'] = auth()->id();
 
         return $this->completeTournament->handle($tournament);
     }
