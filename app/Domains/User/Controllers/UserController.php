@@ -3,6 +3,8 @@
 namespace App\Domains\User\Controllers;
 
 use App\Domains\AccessControl\Models\Role;
+use App\Domains\Shared\Resources\SelectOrganizationResource;
+use App\Domains\Shared\Resources\SelectRoleResource;
 use App\Domains\User\Requests\StoreUserRequest;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\User\Resources\UserListResource;
@@ -17,15 +19,18 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct(protected UserService $service){}
+    public function __construct(protected UserService $service)
+    {
+    }
     public function index()
     {
-      
-     $users = User::where(['is_super_admin' => false])->paginate(15);
+
+        $users = User::where(['is_super_admin' => false])->paginate(15);
+
         return inertia('compliance/access-control/user-index', [
-            'users' => UserListResource::collection($users) ,
-            'roles' => Role::all(),
-              'organizations' => Organization::all()
+            'users' => UserListResource::collection($users),
+            'roles' => SelectRoleResource::collection(Role::all()),
+            'organizations' => SelectOrganizationResource::collection(Organization::all()) 
         ]);
     }
 
@@ -41,7 +46,7 @@ class UserController extends Controller
                 ->orderBy('name')
                 ->get(),
 
-                'organizations' => Organization::all()
+            'organizations' => Organization::all()
         ]);
     }
 
@@ -50,8 +55,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-       $data = $request->validated();
-       $user= $this->service->create($data);
+        $data = $request->validated();
+        $user = $this->service->create($data);
     }
 
     /**
@@ -59,7 +64,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-     
+
     }
 
     /**

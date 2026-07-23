@@ -7,7 +7,7 @@ import { compliance } from "@/routes";
 import { update } from "@/routes/compliance/roles";
 import { sync } from "@/routes/compliance/roles/permissions";
 import { useForm } from "@inertiajs/react";
-import { Info, Save } from "lucide-react";
+import { Info, Pencil, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function RoleIndex({ roles, permissions }) {
@@ -55,7 +55,7 @@ export default function RoleIndex({ roles, permissions }) {
     return (
         <>
             <div className="ps-6">
-                <PageHeader title="Roles & Permissions" subText="Manage Roles & Permissions" >
+                <PageHeader title="Roles & Permissions" subText="Manage Roles & Permissions for Federation" >
 
                 </PageHeader>
             </div>
@@ -65,34 +65,32 @@ export default function RoleIndex({ roles, permissions }) {
 
                 {/* <!-- Dynamic Content Body --> */}
                 <div className="flex-1 flex overflow-hidden">
-                    {/* <!-- Roles Sidebar (Left List) --> */}
+                    
                     <RoleSidebar roles={roles} onSelect={(role) => setSelectedRole(role)} selectedRole={selectedRole} />
-                    {/* <!-- Permission Configuration Pane --> */}
+                    
 
                    
                     <div className="flex-1 flex flex-col h-full bg-surface-container-lowest overflow-hidden">
-                        {/* <!-- Role Identity Header --> */}
-                       
-                        {/* <!-- Matrix Canvas --> */}
+                     
 
                         {selectedRole ? 
                         
                         <>
+                      
                         <div className="p-8 border-b border-outline-variant/10">
                         <div className="flex items-start justify-between">
                             <div>
                                 <div className="flex items-center gap-3 mb-2">
-                                    <h2 className="font-display text-3xl font-extrabold tracking-tight text-primary">Compliance Auditor</h2>
-                                    <span className="bg-secondary-fixed text-on-secondary-fixed text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">System Role</span>
+                                    <h2 className="font-display text-3xl font-extrabold tracking-tight text-primary">{selectedRole?.name}</h2>
+                                    {selectedRole?.is_system &&   <span className="bg-accent-secondary text-white text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">System Role</span>}
+                                  
                                 </div>
                                 <p className="text-on-surface-variant max-w-2xl leading-relaxed">
-                                    Authorized to view and analyze sensitive financial records, roster histories, and regulatory documents. This role is strictly for auditing and cannot initiate transactions or modify active player records.
+                                 {selectedRole.description}
                                 </p>
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2 border border-outline-variant text-primary rounded font-bold text-sm hover:bg-surface-container-low transition-colors">
-                                <span className="material-symbols-outlined text-lg" data-icon="edit">edit</span>
-                                Edit Identity
-                            </button>
+                            {!selectedRole?.is_system && <Button  variant="outline" size={"xl"}>
+                                <Pencil /> Edit Identity </Button>}
                         </div>
                     </div>
                         <form onSubmit={handleSubmit}>
