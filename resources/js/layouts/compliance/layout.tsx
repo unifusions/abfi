@@ -9,12 +9,13 @@ import { cn } from "@/lib/utils";
  
  
 import { Link } from "@inertiajs/react";
-import { Group, Logs, MapPinned, Users } from "lucide-react";
+import { Group, KeyRound, Logs, MapPinned, Users } from "lucide-react";
 import { PropsWithChildren } from "react";
 import { index as logIndex } from "@/routes/compliance/logs";
 import { index  as userIndex} from "@/routes/compliance/users";
  
 import organizations from "@/routes/compliance/organizations";
+import roles from "@/routes/compliance/roles";
 
 
 const menuItems = [
@@ -31,6 +32,11 @@ const menuItems = [
     }, 
      
 
+    {
+        title : 'Roles & Permissions',
+        href : roles.index().url,
+        icon : KeyRound
+    },
     {
         title: 'Audit Logs',
         href:  logIndex().url,
@@ -76,7 +82,7 @@ export default function ComplianceLayout({ children }: PropsWithChildren) {
 
                 <div className="flex flex-col lg:flex-row   border-t">
 
-                    <aside className="w-full min-w-48 max-w-60  h-screen ">
+                    <aside className="w-full min-w-48 max-w-60  h-screen border-r">
                         {/* <SidebarGroupLabel className="uppercase border-b rounded-none">Compliance Menu</SidebarGroupLabel> */}
                         <nav
                             className="flex flex-col  space-x-0"
