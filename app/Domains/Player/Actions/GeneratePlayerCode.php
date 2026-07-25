@@ -14,7 +14,7 @@ class GeneratePlayerCode
 
 
         $org = Organization::with('state')->find($organizationId);
-    
+ 
         $stateCode = strtoupper($org?->state?->short_code);
         $sequence = CodeSequence::where('name', 'player_code')
             ->lockForUpdate()
@@ -22,7 +22,7 @@ class GeneratePlayerCode
 
         $sequence->increment('last_number');
         $sequence->refresh();
-
+ 
         return sprintf(
             '%s%s%05d%s',
             $stateCode,

@@ -3,9 +3,11 @@ import FormInput from "@/components/ext/form-input"
 import FormInputWithIcon from "@/components/ext/form-input-with-icon"
 import PageHeader from "@/components/ext/page-header"
 import SearchableSelect from "@/components/ext/searcable-select"
+import InputError from "@/components/input-error"
 import { Button } from "@/components/ui/button"
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@/components/ui/field"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { cn } from "@/lib/utils"
 import { compliance, dashboard } from "@/routes"
 import { store } from "@/routes/compliance/users"
 import { useForm } from "@inertiajs/react"
@@ -32,44 +34,47 @@ export default function UserCreate({ roles, organizations }) {
         <div className="ps-3">
 
             <PageHeader />
-            {JSON.stringify(errors)}
+           
             <form onSubmit={handleSubmit}>
 
-           
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 ">
-              
-                <div className="md:col-span-7 space-y-8">
 
-                    <FormCard
-                        icon={User}
-                        title="Profile Identity" >
-                        <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 ">
 
-                            <FormInput
-                                label="Full Legal Name"
-                                placeholder="e.g. Johnathan Miller"
-                                onChange={(e) => setData('name', e.target.value)}
-                                value={data.name}
-                            />
+                    <div className="md:col-span-7 space-y-8">
 
-                            <FormInput
-                                label="Email (Will be used as login ID)"
-                                placeholder="e.g. j.miller@federation.org"
-                                type="email"
-                                onChange={(e) => setData('email', e.target.value)}
-                                value={data.email}
-                            />
+                        <FormCard
+                            icon={User}
+                            title="Profile Identity" >
+                            <div className="space-y-6">
 
-                            <FormInput
-                                label="Access Password"
-                                type="password"
-                                onChange={(e) => setData('password', e.target.value)}
-                                value={data.password}
-                                placeholder="********"
-                            />
+                                <FormInput
+                                    label="Full Legal Name"
+                                    placeholder="e.g. Johnathan Miller"
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    value={data.name}
+                                    hasError={errors.name}
+                                />
+
+                                <FormInput
+                                    label="Email (Will be used as login ID)"
+                                    placeholder="e.g. j.miller@federation.org"
+                                    type="email"
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    value={data.email}
+                                    hasError={errors.email}
+                                />
+
+                                <FormInput
+                                    label="Access Password"
+                                    type="password"
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    value={data.password}
+                                    placeholder="********"
+                                    hasError={errors.password}
+                                />
 
 
-                            {/* 
+                                {/* 
                             <div class="group">
                                 <div class="flex justify-between items-center mb-2">
                                     <label
@@ -93,112 +98,114 @@ export default function UserCreate({ roles, organizations }) {
                                 <p class="text-[10px] text-on-surface-variant mt-2">Entropy score: <span
                                     class="text-green-600 font-bold">Strong</span></p>
                             </div> */}
-                        </div>
-                    </FormCard>
+                            </div>
+                        </FormCard>
 
-                    <FormCard
-                        icon={Group}
-                        title="Organization / Association"
-                    >
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <FormCard
+                            icon={Group}
+                            title="Organization / Association"
+                        >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-                            <SearchableSelect
-                                options={organizations}
-                                onChange={(org) => setData("organization_id", org.id)}
+                                <SearchableSelect
+                                    options={organizations}
+                                    onChange={(org) => setData("organization_id", org.id)}
 
-                                getOptionLabel={(org) => org.name}
-                                getOptionValue={(org) => org.id}
-                                renderOption={(org) => (
-                                    <div>
-                                        {org?.name}
-                                        <div className="text-xs hover:text-zinc-200">
-                                            {org?.id}
+                                    getOptionLabel={(org) => org.name}
+                                    getOptionValue={(org) => org.id}
+                                    renderOption={(org) => (
+                                        <div>
+                                            {org?.name}
+                                            <div className="text-xs hover:text-zinc-200">
+                                                {org?.id}
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                                // icon={FileUser}s
-                                label="Organization/Association Name "
-                                value={organizations.find(o => o.id === data.organization_id) ?? null}
-
-                            />
-
-                            <FormInput
-                                label="Designation"
-                                placeholder="e.g., Founder"
-                                onChange={(e) => setData('designation', e.target.value)}
-                                value={data.designation}
-                            />
-
-
-
-
-                        </div>
-
-                    </FormCard>
-
-                </div>
-
-                <div class="md:col-span-5">
-                    <section
-                        class="bg-surface-container-lowest p-8 rounded-xl border-l-4 border-secondary-container h-full">
-                        <div class="flex items-center gap-3 mb-8">
-                            <Settings className="text-zinc-400" />
-                            <h3 className="font-headline text-xl font-bold text-primary">Access Control</h3>
-                        </div>
-
-                        <div class="mb-10">
-                            <label
-                                class="block text-xs font-bold text-secondary uppercase tracking-wider mb-3">Administrative
-                                Role</label>
-                            <div class="space-y-3">
-
-
-                                <RadioGroup defaultValue="plus"   value={data.role_id} onValueChange={(val) => setData('role_id', val)}>
-
-
-                                    {roles.map((role) =>
-                                        <FieldLabel key={role.id} htmlFor={role.id} 
-                                            className="  cursor-pointer"
-                                        >
-                                            <Field orientation="horizontal">
-
-                                                <FieldContent>
-                                                    <FieldTitle>{role.name}</FieldTitle>
-                                                    <FieldDescription>
-                                                        {role.description}
-                                                    </FieldDescription>
-                                                </FieldContent>
-                                                <RadioGroupItem value={role.id} id={role.id} />
-
-
-                                            </Field>
-                                        </FieldLabel>
-
                                     )}
+                                    // icon={FileUser}s
+                                    label="Organization/Association Name "
+                                    value={organizations.find(o => o.id === data.organization_id) ?? null}
+                                    hasError={errors.organization_id}
+                                />
 
+                                <FormInput
+                                    label="Designation"
+                                    placeholder="e.g., Founder"
+                                    onChange={(e) => setData('designation', e.target.value)}
+                                    value={data.designation}
+                                        hasError={errors.designation}
+                                />
 
-                                </RadioGroup>
 
 
 
                             </div>
-                        </div>
+
+                        </FormCard>
+
+                    </div>
+
+                    <div class="md:col-span-5">
+                        <section
+                            class="bg-surface-container-lowest p-8 rounded-xl border-l-4 border-secondary-container h-full">
+                            <div class="flex items-center gap-3 mb-8">
+                                <Settings className="text-zinc-400" />
+                                <h3 className="font-headline text-xl font-bold text-primary">Access Control</h3>
+                            </div>
+
+                            <div className="mb-10">
+                                <label
+                                    class="block text-xs font-bold text-secondary uppercase tracking-wider mb-3">Administrative
+                                    Role</label><InputError message={errors.role_id} />
+                                <div className="space-y-3">
 
 
-                        <Button
-                        type="submit"
-                            variant="default"
-                            size="xl"
-                            className=" w-full px-10 py-8   font-bold shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
-                            <SaveIcon />
-                            Create User
-                        </Button>
+                                    <RadioGroup defaultValue="plus" value={data.role_id} onValueChange={(val) => setData('role_id', val)}>
 
-                    </section>
+
+                                        {roles.map((role) =>
+                                            <FieldLabel key={role.id} htmlFor={role.id}
+                                                className="  cursor-pointer"
+                                            >
+                                                <Field orientation="horizontal"  {...(errors.role_id ? { "data-invalid": true } : {})} 
+                                                className={cn({'border-red-400 rounded-md border-1' : errors.role_id})}>
+
+                                                    <FieldContent>
+                                                        <FieldTitle>{role.name}</FieldTitle>
+                                                        <FieldDescription>
+                                                            {role.description}
+                                                        </FieldDescription>
+                                                    </FieldContent>
+                                                    <RadioGroupItem value={role.id} id={role.id} />
+
+
+                                                </Field>
+                                            </FieldLabel>
+
+                                        )}
+
+
+                                    </RadioGroup>
+
+
+
+                                </div>
+                            </div>
+
+
+                            <Button
+                                type="submit"
+                                variant="default"
+                                size="xl"
+                                className=" w-full px-10 py-8   font-bold shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center gap-2">
+                                <SaveIcon />
+                                Create User
+                            </Button>
+
+                        </section>
+                    </div>
                 </div>
-            </div>
 
- </form>
+            </form>
         </div>
     )
 }

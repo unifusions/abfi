@@ -10,6 +10,7 @@ use App\Domains\Organization\Controllers\OrganizationController;
 use App\Domains\Tournament\Competition\PoolPlay\Controllers\FixtureController;
 use App\Domains\Tournament\Competition\PoolPlay\Controllers\PoolController;
 use App\Domains\Tournament\Controllers\TournamentPublishController;
+use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Venue\Controllers\VenueSearchController;
 use App\Domains\Venue\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
@@ -22,8 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/venue-search', VenueSearchController::class)->name('venue.search');
     Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
-
-
+ 
     Route::middleware('rbac:role, Federation Admin')->group(function () {
         Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
         Route::get('compliance', [ComplianceController::class, 'index'])->name('compliance');
@@ -96,3 +96,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__ . '/settings.php';
 require __DIR__ .'/media.php';
+require __DIR__ .'/roster.php';

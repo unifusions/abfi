@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
-import { Label } from "../ui/label";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import FormLabel from "./form-label";
 import InputError from "../input-error";
 import { Field, FieldLabel } from "../ui/field";
 
-export default function FormRadio({ labelId, label, labelRequired = false, value, onValueChange, options, layout = 'row', hasError }) {
+export default function FormRadio({ labelId, label, labelRequired = false, value, onValueChange, options, layout = 'row', hasError,
+    orientation ='horizontal'
+ }) {
 
 
     return (
@@ -24,8 +25,8 @@ export default function FormRadio({ labelId, label, labelRequired = false, value
 
 
                 {options.map((option) =>
-                    <Field orientation="horizontal" className=" " {...(hasError ? { "data-invalid": true } : {})}>
-                        <RadioGroupItem value={option.value} id={option.value} />
+                    <Field orientation={orientation} className=" " {...(hasError ? { "data-invalid": true } : {})} >
+                        <RadioGroupItem value={option.value} id={option.value} {...(option?.disabled) && {"disabled" : true}}/>
                         <FieldLabel htmlFor={option.value} >{option.label}</FieldLabel>
                     </Field>
                 )}

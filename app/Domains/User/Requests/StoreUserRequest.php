@@ -16,7 +16,7 @@ class StoreUserRequest extends FormRequest{
             'email' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string'],
             'organization_id' => ['required'],
-            'designation' => ['string'],
+            'designation' => ['nullable'],
             'role_id'=>['uuid',
                 Rule::exists('roles', 'id')]
             

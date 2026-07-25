@@ -14,6 +14,7 @@ export default function SearchableSelect({
     label,
     labelRequired,
     icon,
+    hasError
 }) {
     const wrapperRef = useRef(null);
 
@@ -74,6 +75,7 @@ export default function SearchableSelect({
                     setSearch(e.target.value);
                     setOpen(true);
                 }}
+                hasError = {hasError}
                 onKeyDown={(e) => {
                     if (!open) return;
 

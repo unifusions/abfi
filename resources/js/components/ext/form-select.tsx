@@ -26,7 +26,7 @@ export default function FormSelect({ label, id, labelRequired = false,
         </Field>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Select State</SelectLabel>
+            <SelectLabel>{label}</SelectLabel>
             {items.map((item) => (
               <SelectItem key={item.value} value={item.value.toString()}>
                 {item.label}

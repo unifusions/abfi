@@ -37,11 +37,11 @@ const menuItems = [
         href : roles.index().url,
         icon : KeyRound
     },
-    {
-        title: 'Audit Logs',
-        href:  logIndex().url,
-        icon: Logs
-    },
+    // {
+    //     title: 'Audit Logs',
+    //     href:  logIndex().url,
+    //     icon: Logs
+    // },
 
 ]
 

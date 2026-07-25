@@ -13,13 +13,15 @@ export function useAuthorization() {
     }>().props;
 
     const can = (permission: string): boolean => {
+        console.log(auth)
         if (auth.is_super_admin) {
             return true;
         }
 
         const [module] = permission.split(".");
-
-        return auth.permissions[module]?.includes(permission) ?? false;
+ 
+const key = module.charAt(0).toUpperCase() + module.slice(1);
+        return auth.permissions[key]?.includes(permission) ?? false;
     };
 
     const canModule = (module: string): boolean => {

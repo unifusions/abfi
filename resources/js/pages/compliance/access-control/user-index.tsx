@@ -1,11 +1,14 @@
 import AppPagination from "@/components/ext/app-pagination"
+import FormInputWithIcon from "@/components/ext/form-input-with-icon"
+import FormSelect from "@/components/ext/form-select"
 import LinkButton from "@/components/ext/link-button"
+import PageHeader from "@/components/ext/page-header"
 import RowFirstColumn from "@/components/ext/table/row-first-column"
 import RowFirstColumnWithAvatar from "@/components/ext/table/row-first-column-with-avatar"
 import RowAvatar from "@/components/ext/table/row-first-column-with-avatar"
 import { compliance, dashboard } from "@/routes"
 import { create } from "@/routes/compliance/users"
-import { Group, User, UserPlus, Users } from "lucide-react"
+import { Bolt, Group, Search, User, UserPlus, Users } from "lucide-react"
 
 export default function UserIndex(
     { roles, organizations, users }
@@ -13,99 +16,75 @@ export default function UserIndex(
 
     const { data, ...paginationData } = users;
     const { links, meta } = paginationData;
-    return (
-        <>  <div class="flex-1 overflow-y-auto p-8 space-y-8">
 
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h3 class="font-headline text-3xl font-black text-primary tracking-tighter">Directory</h3>
-                    <p class="text-on-surface-variant font-body text-sm mt-1">Manage, audit, and authenticate all
-                        regional federation officials and scouts.</p>
-                </div>
+    const stats = [
+        {
+            label: 'Total Users',
+            value: users.data.length ,
+            icon: Users
+        },
+        {
+            label: 'Active Today',
+            value: 0,
+            icon: Bolt
+        },
+
+
+    ];
+    return (
+        <>  <div className="flex-1 overflow-y-auto p-6 space-y-8">
+            <PageHeader title="User Directory" subText="Manage, audit, and authenticate all
+                        federation users.">
                 <LinkButton
                     href={create().url}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-secondary text-on-secondary rounded-md font-label font-extrabold text-sm shadow-lg hover:shadow-secondary/20 hover:brightness-110 active:scale-95 transition-all">
+                >
                     <UserPlus />
-                    ADD NEW USER
+                    Add User
                 </LinkButton>
-            </div>
+            </PageHeader>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div
-                    class="bg-surface-container-lowest p-6 rounded-lg relative overflow-hidden group shadow-sm border-l-4 border-primary">
-                    <p class="text-on-surface-variant font-label text-xs uppercase tracking-widest font-bold">Total
-                        Users</p>
-                    <h4 class="text-primary font-headline text-4xl font-black mt-2">1,248</h4>
-                    <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform">
-                        <Users className="text-primary h-20 w-20" />
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {stats.map((stat) =>
+
+                    <div
+                        className="bg-zinc-50 p-6 rounded-lg relative overflow-hidden group shadow-sm border-l-4 border-primary">
+                        <p className="text-on-surface-variant font-label text-xs uppercase tracking-widest font-bold">{stat.label}</p>
+                        <h4 className="text-primary font-headline text-4xl font-black mt-2">{stat.value}</h4>
+                        <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform">
+                            {stat.icon && <stat.icon className="text-primary h-20 w-20" />}
+
+                        </div>
                     </div>
-                </div>
-                <div
-                    class="bg-surface-container-lowest p-6 rounded-lg relative overflow-hidden group shadow-sm border-l-4 border-secondary">
-                    <p class="text-on-surface-variant font-label text-xs uppercase tracking-widest font-bold">Active
-                        Today</p>
-                    <h4 class="text-primary font-headline text-4xl font-black mt-2">432</h4>
-                    <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-8xl">bolt</span>
-                    </div>
-                </div>
-                <div
-                    class="bg-surface-container-lowest p-6 rounded-lg relative overflow-hidden group shadow-sm border-l-4 border-outline-variant">
-                    <p class="text-on-surface-variant font-label text-xs uppercase tracking-widest font-bold">Pending
-                        Approval</p>
-                    <h4 class="text-primary font-headline text-4xl font-black mt-2">14</h4>
-                    <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-8xl">hourglass_empty</span>
-                    </div>
-                </div>
-                <div
-                    class="bg-surface-container-lowest p-6 rounded-lg relative overflow-hidden group shadow-sm border-l-4 border-primary-container">
-                    <p class="text-on-surface-variant font-label text-xs uppercase tracking-widest font-bold">Avg.
-                        Retention</p>
-                    <h4 class="text-primary font-headline text-4xl font-black mt-2">98.2%</h4>
-                    <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-8xl">trending_up</span>
-                    </div>
-                </div>
+                )}
+
+
             </div>
 
             <div
-                class="flex flex-wrap items-center gap-4 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
-                <div class="flex-1 min-w-[240px] relative">
-                    <span
-                        class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
-                    <input
-                        class="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border-outline-variant/20 rounded-md font-body text-sm focus:ring-2 focus:ring-primary/20"
-                        placeholder="Filter by name, email, or ID..." type="text" />
+                className="flex flex-wrap items-center gap-4 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+                <div className="flex-1 min-w-[240px] relative">
+                    <FormInputWithIcon icon={Search} placeholder="Filter by name, email, or ID..." />
+
                 </div>
-                <div class="flex items-center gap-2">
-                    <label
-                        class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Role:</label>
-                    <select
-                        class="bg-surface-container-lowest border-outline-variant/20 rounded-md font-body text-sm py-2 px-4 focus:ring-2 focus:ring-primary/20">
-                        <option>All Roles</option>
-                        <option>Administrator</option>
-                        <option>Regional Manager</option>
-                        <option>Compliance Officer</option>
-                        <option>Official Scout</option>
-                    </select>
+                <div className="flex items-center gap-2">
+                    <FormSelect
+                        items={roles.data}
+                        placeHolder="All Roles"
+                    />
                 </div>
-                <div class="flex items-center gap-2">
-                    <label
-                        class="font-label text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Org:</label>
-                    <select
-                        class="bg-surface-container-lowest border-outline-variant/20 rounded-md font-body text-sm py-2 px-4 focus:ring-2 focus:ring-primary/20">
-                        <option>All Organizations</option>
-                        <option>Eastern Federation</option>
-                        <option>National Board</option>
-                        <option>West Coast Scouting</option>
-                    </select>
+                <div className="flex items-center gap-2">
+
+                    <FormSelect
+                        items={organizations.data}
+                        placeHolder="All Associations"
+                    />
+
                 </div>
-                <button
+                {/* <button
                     class="p-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-md text-on-surface-variant hover:bg-white transition-colors">
                     <span class="material-symbols-outlined">tune</span>
-                </button>
+                </button> */}
             </div>
 
 
@@ -176,30 +155,7 @@ export default function UserIndex(
 
             </div>
 
-            <div
-                class="p-6 bg-primary-container text-on-primary-container rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="relative z-10">
-                    <h5 class="font-headline text-xl font-bold">Audit History &amp; Export</h5>
-                    <p class="text-on-primary-container/80 text-sm mt-1 max-w-lg">Generate a full CSV or PDF compliance
-                        report of all user actions and registry changes for the current athletic season.</p>
-                </div>
-                <div class="flex gap-3 relative z-10">
-                    <button
-                        class="px-6 py-2.5 bg-on-primary text-primary rounded font-label font-bold text-sm shadow-lg hover:brightness-110 active:scale-95 transition-all">
-                        Export as CSV
-                    </button>
-                    <button
-                        class="px-6 py-2.5 border border-on-primary/30 text-on-primary rounded font-label font-bold text-sm hover:bg-on-primary/10 transition-all">
-                        View Audit Log
-                    </button>
-                </div>
-                {/* <!-- Abstract "Digital Diamond" background elements --> */}
-                <div class="absolute -right-20 -top-20 w-64 h-64 bg-secondary rounded-full blur-[80px] opacity-20">
-                </div>
-                <div
-                    class="absolute -left-10 -bottom-10 w-40 h-40 bg-on-primary-fixed-variant rounded-full blur-[60px] opacity-30">
-                </div>
-            </div>
+
         </div></>
     )
 }

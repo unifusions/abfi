@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 class Role  extends Model{
     use HasUuids;
 
+    protected $casts = [
+        'is_system' => 'boolean'
+    ];
      public function permissions()
     {
         return $this->belongsToMany(Permission::class)

@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             StateSeeder::class,
             OrganizationSeeder::class,
+            CodeSequenceSeeder::class,
         ]);
 
     }

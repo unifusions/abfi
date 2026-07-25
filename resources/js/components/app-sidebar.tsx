@@ -19,6 +19,7 @@ import { index as PlayerIndex } from '@/routes/players';
 import { index as TournamentIndex } from '@/routes/tournaments';
 import { index as OfficialIndex } from '@/routes/officials';
 import { useAuthorization } from '@/hooks/use-authorization';
+import {index as RosterIndex} from '@/routes/rosters';
 
 
 
@@ -49,7 +50,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Rosters',
-        href: '#',
+        href: RosterIndex(),
         icon: IdCard,
         module:"Roster"
 
@@ -98,7 +99,7 @@ const visibleItems = mainNavItems.filter(item => canModule(item.module));
               
                 <NavMain items={visibleItems} />
             </SidebarContent>
-
+ 
             <SidebarFooter >
                 {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />

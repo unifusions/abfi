@@ -23,16 +23,19 @@ class PlayerService
         $user = auth()->user();
         $data['verified_at'] = $this->isAutoVerified($user) ? now() : null;
         $data['is_verified'] = $this->isAutoVerified($user);
-        return DB::transaction(function () use ($data) {
+      
+        $playerTrans = DB::transaction(function () use ($data) {
             $genderCode = strtoupper(substr($data['gender'], 0, 1));
+           
             $data['player_code'] = $this->generatePlayerCode->handle(
                 $data['organization_id'],
                 $genderCode
             );
-
+ 
             return $this->createPlayer->handle($data);
         });
-
+        
+        return $playerTrans;
 
 
     }

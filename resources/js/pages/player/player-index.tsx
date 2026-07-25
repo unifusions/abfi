@@ -70,6 +70,7 @@ export default function PlayerIndex({ registered_players, m_players, f_players, 
                     value={registered_players}
                     changeType="increase"
                     changeValue="+5.2% from last year"
+                    variant ="secondary"
                 />
 
 

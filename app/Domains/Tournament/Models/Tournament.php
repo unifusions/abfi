@@ -2,6 +2,7 @@
 
 namespace App\Domains\Tournament\Models;
 
+use App\Domains\Category\Models\Category;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Venue\Models\Venue;
@@ -23,10 +24,12 @@ class Tournament extends Model
         'name',
         'slug',
         'description',
-        'season',
+       
         'venue_id',
         'organization_id',
-        'year',
+        'category_id',
+        
+      
         'competition_format',
         'status',
         'registration_open_at',
@@ -50,6 +53,9 @@ class Tournament extends Model
     
     //RELATIONSHIPS
 
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
     public function venue(){
         return $this->belongsTo(Venue::class);
     }

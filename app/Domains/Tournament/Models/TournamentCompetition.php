@@ -2,6 +2,7 @@
 
 namespace App\Domains\Tournament\Models;
 
+use App\Domains\Shared\Enums\GenderEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
  
  

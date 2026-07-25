@@ -2,7 +2,10 @@
 
 namespace App\Domains\Compliance\Controllers;
 
+use App\Domains\AccessControl\Models\Role;
+use App\Domains\Organization\Models\Organization;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ComplianceController extends Controller
@@ -12,7 +15,11 @@ class ComplianceController extends Controller
      */
     public function index()
     {    
-        return inertia('compliance/compliance-index');
+        return inertia('compliance/compliance-index', [
+            'users' => User::count(),
+            'orgs' => Organization::count(),
+            'roles' => Role::count()
+        ]);
     }
 
     /**

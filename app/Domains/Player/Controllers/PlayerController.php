@@ -79,8 +79,10 @@ class PlayerController extends Controller
      */
     public function store(StorePlayerRequest $request)
     {
+ 
 
         $player = $this->service->create($request->validated());
+ 
         return redirect()->route('players.show', $player)->with(['success' => 'New player has been added to the registry']);
 
     }

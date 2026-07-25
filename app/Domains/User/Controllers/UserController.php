@@ -57,6 +57,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $user = $this->service->create($data);
+        return redirect()->route('compliance.users.index')->with(['success' => 'User has been created successfully']);
     }
 
     /**

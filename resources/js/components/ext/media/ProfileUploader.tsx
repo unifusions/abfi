@@ -113,10 +113,11 @@ export default function ProfileUploader({
                     </div>
                 ) : value ? (
                     <>
+                    
                         <img
                             src={value.url}
                             alt={value.name}
-                            className="absolute inset-0 h-full w-full object-cover"
+                            className="aspect-3/4 inset-0 h-full w-full object-cover"
                         />
 
                         <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition hover:opacity-100">
@@ -124,6 +125,7 @@ export default function ProfileUploader({
                                 Replace Photo
                             </span>
                         </div>
+                       
                     </>
                 ) : (
                     <div className="flex  flex-col items-center space-y-3 py-3">

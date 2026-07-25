@@ -16,7 +16,9 @@ class CreatePlayer{
         $data['created_by'] = auth()->user()->id;
          
         
+        
         $player = Player::create($data);
+        
         $player->positions()->sync($data['player_positions']);
         $player->attachProfileMedia( $data['media_id']);
         return $player;

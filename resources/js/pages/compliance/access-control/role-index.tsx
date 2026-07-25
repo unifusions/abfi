@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { permissionModules } from "@/lib/permissionModulesIcon";
 import { dashboard } from "@/routes";
 import { compliance } from "@/routes";
-import { update } from "@/routes/compliance/roles";
+ 
 import { sync } from "@/routes/compliance/roles/permissions";
 import { useForm } from "@inertiajs/react";
 import { Info, Pencil, Save } from "lucide-react";
@@ -61,7 +61,7 @@ export default function RoleIndex({ roles, permissions }) {
             </div>
 
             <div className="flex-1 flex flex-col min-w-0 bg-slate-50  relative">
-
+ 
 
                 {/* <!-- Dynamic Content Body --> */}
                 <div className="flex-1 flex overflow-hidden">
@@ -82,11 +82,11 @@ export default function RoleIndex({ roles, permissions }) {
                             <div>
                                 <div className="flex items-center gap-3 mb-2">
                                     <h2 className="font-display text-3xl font-extrabold tracking-tight text-primary">{selectedRole?.name}</h2>
-                                    {selectedRole?.is_system &&   <span className="bg-accent-secondary text-white text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">System Role</span>}
+                                    {selectedRole?.is_system  && <span className="bg-accent-secondary text-white text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">System Role</span>}
                                   
                                 </div>
                                 <p className="text-on-surface-variant max-w-2xl leading-relaxed">
-                                 {selectedRole.description}
+                                 {selectedRole?.description}
                                 </p>
                             </div>
                             {!selectedRole?.is_system && <Button  variant="outline" size={"xl"}>
