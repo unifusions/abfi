@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->foreignUuidFor(Roster::class);
             $table->foreignUuidFor(Player::class);
             $table->unsignedBigInteger('jersey_number')->nullable();
-            $table->boolean('is_captain')->default('false');
-            $table->boolean('is_vice_captain')->default('false');
+            $table->boolean('is_captain')->default(false);
+            $table->boolean('is_vice_captain')->default(false);
 
             $table->timestamps();
 

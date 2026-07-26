@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('from_status')->nullable();
             $table->string('to_status')->nullable();
             $table->string('remarks')->nullable();
-            $table->foreignUuid('changed_by')->constrained('users')->nullable();
-            $table->timestamp('created_at');
+            $table->foreignId('changed_by')->constrained('users')->nullable();
+         
             $table->timestamps();
         });
     }
