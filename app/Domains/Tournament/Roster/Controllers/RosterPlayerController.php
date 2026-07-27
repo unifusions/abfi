@@ -2,36 +2,51 @@
 
 namespace App\Domains\Tournament\Roster\Controllers;
 
+use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Models\RosterPlayer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class RosterPlayerController extends Controller
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function index() {}
-    public function search() {}
-    public function store(Request $request)
+    public function index()
+    {
+    }
+    public function search()
+    {
+    }
+    public function store(Roster $roster, Request $request)
     {
 
+ 
+        if ($roster->players->count() >= $roster->competition->tournament->category->maximum_players)
+            return back()->with([
+                'error' => "Player cannot be added furthur"
+            ]);
         $rosterPlayer = RosterPlayer::create([
-            'roster_id' => $request->roster,
+            'roster_id' => $roster->id,
             'player_id' => $request->player_id,
         ]);
 
+                $message = "Player " . $rosterPlayer->player->player_code . "  has been added to roster";
+
         return back()->with([
-            'success' => 'Player added to the roster'
+            'success' => $message
         ]);
 
         // dd($request->input());
     }
 
-    public function destroy(RosterPlayer $rosterPlayer)
+    public function destroy(Roster $roster, RosterPlayer $rosterPlayer)
     {
         $rosterPlayer->delete();
+         $message = "Player " . $rosterPlayer->player->player_code . "  has been removed from roster";
         return back()->with([
-            'success' => 'Player removed from the roster'
-        ]); 
+            'success' => $message
+        ]);
     }
 }

@@ -2,9 +2,12 @@ import PageHeader from "@/components/ext/page-header";
 import SearchInput from "@/components/ext/search-input";
 import { Button } from "@/components/ui/button";
 import rosters from "@/routes/rosters";
-import { router } from "@inertiajs/react";
-import { Minus, Plus, SendHorizonal, UserPlus } from "lucide-react";
+import { router, useHttp } from "@inertiajs/react";
+import { Minus, Plus, SendHorizonal, UserPlus, X } from "lucide-react";
 import { useState } from "react";
+import RosterPlayerCreateDialog from "./roster-player-create-dialog";
+import { create } from "@/routes/rosters/rosters/players";
+ 
 
 
 
@@ -13,10 +16,12 @@ export default function RosterBuilder({ roster,
     category, last_date, roster_players }) {
 
     const [playerSearch, setPlayerSearch] = useState('');
-
+    const [open, setOpen] = useState(false);
+    const [params, setParams] = useState({});
+    const { get } = useHttp({});
     const addPlayer = (playerId: string) => {
         router.post(
-            (rosters.players.store().url),
+            (rosters.rosterplayers.store({roster:roster.id}).url),
             {
                 roster: roster.id,
                 player_id: playerId,
@@ -30,7 +35,8 @@ export default function RosterBuilder({ roster,
 
     const deletePlayer = (playerId: string) => {
         router.delete(
-            (rosters.players.destroy({
+            (rosters.rosterplayers.destroy({
+                roster : roster.id,
                 rosterPlayer: playerId
             }).url),
 
@@ -40,6 +46,18 @@ export default function RosterBuilder({ roster,
             }
         );
     };
+
+    const handleAddPlayerDialog = () => {
+
+        get(create({ roster: roster.id }).url, {
+            onSuccess: (data) => {
+                setParams(data);
+                setOpen(true);
+            }
+        });
+
+
+    }
 
 
     return (
@@ -65,13 +83,21 @@ export default function RosterBuilder({ roster,
                         <SearchInput value={playerSearch} onChange={(e) => setPlayerSearch(e.target.value)}
                             placeholder="Search Player"
                         />
+
                         <Button
-                            //    variant="primary"
+                            onClick={() => handleAddPlayerDialog()}
                             size="xl"
                             className="">
                             <UserPlus />
                             Add New Player
+
+
                         </Button>
+                        <RosterPlayerCreateDialog 
+                        roster = {roster.id}
+                        open={open} setOpen={setOpen} params={params} />
+
+
                     </div>
                     {/* <!-- Player Selection List --> */}
                     <div className="space-y-3">
@@ -85,8 +111,8 @@ export default function RosterBuilder({ roster,
 
                             {players.data.map((player) => {
 
-                                const inRoster = roster_players.some(p => p.player_id === player.id);
-                                const rosterPlayer = roster_players.find(p => p.player_id === player.id);
+                                const inRoster = roster_players.data.some(p => p.player_id === player.id);
+                                const rosterPlayer = roster_players.data.find(p => p.player_id === player.id);
                                 return (<div
                                     className="group bg-surface-container-lowest  p-4 flex items-center justify-between transition-all hover:translate-x-1 hover:shadow-sm border-l-4 border-transparent hover:border-primary">
                                     <div className="flex items-center gap-4">
@@ -124,26 +150,36 @@ export default function RosterBuilder({ roster,
                     </div>
                 </div>
                 {/* <!-- Right Column: Roster Summary & Workflow (5/12) --> */}
-                <div className="lg:col-span-5 space-y-6">
+                <div className="lg:col-span-5  ">
                     {/* <!-- Roster Summary Card --> */}
                     <div
-                        className="bg-primary text-white dark:bg-primary-container text-on-primary rounded-2xl p-6 stadium-shadow relative overflow-hidden">
+                        className="bg-primary text-white    rounded-top-2xl p-6 stadium-shadow relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-10 rounded-full -mr-16 -mt-16">
                         </div>
                         <div className="relative z-10">
-                            <div className="flex justify-between items-start mb-6">
-                                <div>
-                                    <h3 className="font-label text-xs uppercase tracking-[0.2em] font-bold opacity-70">Active
-                                        Roster</h3>
+                            <div className="flex justify-between items-start mb-2">
+                                <div className="w-full">
+                                    <div className="flex items-center justify-between  ">
+                                        <h3 className="pb-0   font-label text-xs uppercase  tracking-[0.2em]   mb-0 font-bold  ">
+                                            Active Roster
+                                        </h3>
+
+                                        <span
+                                            className="text-[10px] bg-accent-secondary text-white px-2 py-0.5 rounded-full uppercase  ">Review</span>
+
+                                    </div>
+
+
+
                                     <div className="flex items-baseline gap-2 mt-1">
-                                        <span className="text-5xl font-black font-display tracking-tight">{roster_players.length}</span>
-                                        <span className="text-lg opacity-60 font-medium">/ {category.maximum_players} slots
+                                        <span className="text-5xl font-black font-display tracking-tight">{roster_players.data.length}</span>
+                                        <span className="text-lg opacity-60 font-medium">/ {category.maximum_players} players
 
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-4 mb-4">
+                            {/* <div class="grid grid-cols-2 gap-4 mb-4">
                                 <div class="bg-white/5 rounded-xl p-3 border border-white/10">
                                     <span class="block text-[10px] uppercase font-bold opacity-60 mb-1">Pitchers</span>
                                     <span class="text-xl font-bold">06</span>
@@ -152,65 +188,44 @@ export default function RosterBuilder({ roster,
                                     <span class="block text-[10px] uppercase font-bold opacity-60 mb-1">Officials</span>
                                     <span class="text-xl font-bold">02</span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     {/* <!-- Roster List (Mini) --> */}
-                    <div class="bg-surface-container-low rounded-2xl p-6">
-                        <h3 class="font-bold text-primary mb-4 flex items-center justify-between">
-                            Current Roster
-                            <span
-                                class="text-[10px] bg-primary text-on-primary px-2 py-0.5 rounded-full uppercase">Review</span>
-                        </h3>
-                        <div class="space-y-3 max-h-[300px] overflow-y-auto no-scrollbar pr-1">
-                            {/* <!-- Roster Item 1 --> */}
-                            <div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="font-bold text-xs text-on-surface-variant w-4">01</span>
-                                    <div>
-                                        <p class="font-bold text-sm text-primary">Elias Rodriguez</p>
-                                        <p class="text-[10px] font-medium text-on-surface-variant">SS • Age 18</p>
+                    <div class="bg-zinc-100   p-6">
+
+
+                        <div class="space-y-3  overflow-y-auto no-scrollbar pr-1">
+
+
+                            {roster_players.data.length < 1 && <div className="text-zinc-400 text-xs">Add players from the search bar</div>}
+
+
+                            {roster_players.data.map((player, index) =>
+                                <div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-bold text-xs text-on-surface-variant w-4">
+                                            {String((index + 1)).padStart(2, '0')}
+                                        </span>
+                                        <div>
+
+                                            <p className="font-bold text-sm text-primary">{player?.name} </p>
+                                            <p className="text-[10px] font-medium text-on-surface-variant">{player.position} • Age {player.age}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+
+
+                                        <Button variant="destructive" onClick={() => deletePlayer(player.id)}>
+                                            <X className="h-3" />
+                                        </Button>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-primary text-sm"
-                                    >verified</span>
-                                    <button class="text-on-surface-variant hover:text-secondary"><span
-                                        class="material-symbols-outlined text-lg">close</span></button>
-                                </div>
-                            </div>
-                            {/* <!-- Roster Item 2 --> */}
-                            <div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="font-bold text-xs text-on-surface-variant w-4">02</span>
-                                    <div>
-                                        <p class="font-bold text-sm text-primary">Toby Marshall</p>
-                                        <p class="text-[10px] font-medium text-on-surface-variant">P • Age 17</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-primary text-sm"
-                                    >verified</span>
-                                    <button class="text-on-surface-variant hover:text-secondary"><span
-                                        class="material-symbols-outlined text-lg">close</span></button>
-                                </div>
-                            </div>
-                            {/* <!-- Roster Item 3 --> */}
-                            <div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="font-bold text-xs text-on-surface-variant w-4">03</span>
-                                    <div>
-                                        <p class="font-bold text-sm text-primary">Kaleb Vance</p>
-                                        <p class="text-[10px] font-medium text-on-surface-variant">CF • Age 18</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-primary text-sm"
-                                    >verified</span>
-                                    <button class="text-on-surface-variant hover:text-secondary"><span
-                                        class="material-symbols-outlined text-lg">close</span></button>
-                                </div>
-                            </div>
+
+                            )}
+
+
                         </div>
                     </div>
                     {/* <!-- Finalize Roster Workflow --> */}

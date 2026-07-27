@@ -20,7 +20,7 @@ enum RosterActionEnum: string
     public function route(): string
     {
         return match ($this) {
-            self::CONTINUE => 'rosters.builder',
+            self::CONTINUE => 'rosters.rosters.builder',
             self::REVIEW => 'rosters.edit',
             self::VIEW => 'rosters.show',
         };

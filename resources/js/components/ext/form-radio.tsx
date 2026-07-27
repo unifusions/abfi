@@ -4,7 +4,9 @@ import FormLabel from "./form-label";
 import InputError from "../input-error";
 import { Field, FieldLabel } from "../ui/field";
 
-export default function FormRadio({ labelId, label, labelRequired = false, value, onValueChange, options, layout = 'row', hasError,
+export default function FormRadio({ labelId, label, labelRequired = false, value, 
+    onValueChange, options, layout = 'row', hasError,
+    disabled, 
     orientation ='horizontal'
  }) {
 
@@ -19,9 +21,11 @@ export default function FormRadio({ labelId, label, labelRequired = false, value
             <RadioGroup value={value} onValueChange={onValueChange} className={cn("w-full flex h-12  ",
                 {
                     "flex-row space-x-4": layout === "row",
-                    'flex-col': layout === "column"
+                    'flex-col': layout === "column",
+                    'text-zinc-400' : disabled
                 }
-            )}>
+            )} 
+            disabled={disabled}>
 
 
                 {options.map((option) =>

@@ -74,7 +74,7 @@ export default function ProfileUploader({
     }
 
     return (
-        <div className="space-y-4">
+        <div className=" h-full space-y-4">
             <div
                 onClick={() => !disabled && inputRef.current?.click()}
                 onDragOver={(e) => {
@@ -91,7 +91,7 @@ export default function ProfileUploader({
                     handleFiles(e.dataTransfer.files);
                 }}
                 className={[
-                    "relative flex h-max w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed transition",
+                    "relative flex h-full  w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-dashed transition",
                     dragging
                         ? "border-primary bg-primary/5"
                         : "border-muted-foreground/30",
@@ -132,7 +132,7 @@ export default function ProfileUploader({
                         {/* <div className="mb-2 text-4xl">📷</div> */}
                         <div><Camera />
                         </div>
-                        <div className="font-medium">
+                        <div className="font-medium text-sm text-slate-400">
                             Click or Drag Photo Here
                         </div>
 

@@ -34,7 +34,15 @@ createInertiaApp({
             <TooltipProvider delayDuration={0}>
             
                 {app}
-                <Toaster  position="top-right" />
+                <Toaster  position="top-center" 
+                
+                toastOptions={{
+                    classNames : {
+                        title: "ms-2 text-md"
+                    }
+                }}
+               
+                />
                  
             </TooltipProvider>
         );

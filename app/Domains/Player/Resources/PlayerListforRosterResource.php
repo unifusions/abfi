@@ -10,7 +10,8 @@ class PlayerListforRosterResource extends JsonResource{
     public function toArray($request){
         return [
             'id' => $this->id,
-            'name' => $this->first_name  . ' ' .$this->last_name,
+             'name' =>implode(' ' , [$this->first_name, $this->middle_name, $this->last_name]),
+        
             'position' => $this->positions->pluck('name'),
             'age' =>Carbon::parse($this->dob)->age,
             'code' => $this->player_code,

@@ -20,16 +20,24 @@ class TournamentCompetition extends Model
     protected $fillable = [
         'tournament_id',
         'name',
-        'gender',
+       
         'is_active',
         'competition_type'
     ];
 
     protected $casts = [
-        'gender'    => GenderEnum::class,
+      
         'is_active' => 'boolean',
     ];
  
+    public function gender(){
+        return match($this->competition_type){
+            'boys', 'men' => 'male',
+            'girls', 'women' => 'female',
+              default => throw new \RuntimeException('Invalid competition type.'),
+        };
+    }
+
     public function tournament (){
         return $this->belongsTo(Tournament::class);
     }

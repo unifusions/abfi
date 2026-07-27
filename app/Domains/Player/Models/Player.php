@@ -95,6 +95,9 @@ class Player extends Model
         static::addGlobalScope(new BaseOrganizationScope());
     }
 
+    public function scopeForCompetition($query, $competition){
+        return $query->whereGender($competition->gender());
+    }
   
 }
 
