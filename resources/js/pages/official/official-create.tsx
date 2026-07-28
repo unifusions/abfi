@@ -1,7 +1,7 @@
 import { UploadedMedia } from "@/components/ext/media/ProfileUploader";
 import PageHeader from "@/components/ext/page-header";
 import { dashboard } from "@/routes";
-import officials from "@/routes/officials";
+import officials, { create, store } from "@/routes/officials";
 import { useForm } from "@inertiajs/react";
 import { useState } from "react";
 import OfficialForm from "./official-form";
@@ -40,6 +40,7 @@ export default function OfficialCreate(
         const [photo, setPhoto] = useState<UploadedMedia | null>(null);
  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+        post(store().url);
       
     }
     return (
@@ -48,14 +49,17 @@ export default function OfficialCreate(
 
 
         </PageHeader>
-     
+     {JSON.stringify(errors)}
 <OfficialForm 
     data={data}
     setData = {setData}
     errors={errors}
      handleSubmit={handleSubmit}
- 
-    states={states}
+  organizations = {organizations?.data}
+        states = {states}
+        
+        can_select_organization = {can_select_organization}
+     
 />
         </>
     )

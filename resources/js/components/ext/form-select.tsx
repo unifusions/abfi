@@ -16,11 +16,11 @@ export default function FormSelect({ label, id, labelRequired = false,
         />
       }
       <Select items={items} value={value} onValueChange={onValueChange}
-        className="bg-zinc-50 h-12" >
+        className=" bg-white h-12" >
         <Field {...(hasError && { "data-invalid": true })}>
 
 
-          <SelectTrigger className="w-full  h-full" size="md">
+          <SelectTrigger className="w-full  h-full" size="md" {...(hasError && { "aria-invalid": true })}>
             <SelectValue placeholder={placeHolder} />
           </SelectTrigger>
         </Field>

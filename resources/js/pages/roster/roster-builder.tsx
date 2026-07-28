@@ -7,7 +7,8 @@ import { Minus, Plus, SendHorizonal, UserPlus, X } from "lucide-react";
 import { useState } from "react";
 import RosterPlayerCreateDialog from "./roster-player-create-dialog";
 import { create } from "@/routes/rosters/rosters/players";
- 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 
 
@@ -21,7 +22,7 @@ export default function RosterBuilder({ roster,
     const { get } = useHttp({});
     const addPlayer = (playerId: string) => {
         router.post(
-            (rosters.rosterplayers.store({roster:roster.id}).url),
+            (rosters.rosterplayers.store({ roster: roster.id }).url),
             {
                 roster: roster.id,
                 player_id: playerId,
@@ -36,7 +37,7 @@ export default function RosterBuilder({ roster,
     const deletePlayer = (playerId: string) => {
         router.delete(
             (rosters.rosterplayers.destroy({
-                roster : roster.id,
+                roster: roster.id,
                 rosterPlayer: playerId
             }).url),
 
@@ -81,74 +82,94 @@ export default function RosterBuilder({ roster,
 
                     <div className="   flex items-center justify-between gap-3">
                         <SearchInput value={playerSearch} onChange={(e) => setPlayerSearch(e.target.value)}
-                            placeholder="Search Player"
+                            placeholder="Search Player or Official"
                         />
 
-                        <Button
-                            onClick={() => handleAddPlayerDialog()}
-                            size="xl"
-                            className="">
-                            <UserPlus />
-                            Add New Player
-
-
-                        </Button>
-                        <RosterPlayerCreateDialog 
-                        roster = {roster.id}
-                        open={open} setOpen={setOpen} params={params} />
 
 
                     </div>
-                    {/* <!-- Player Selection List --> */}
-                    <div className="space-y-3">
-                        <div className="flex justify-between items-center px-2">
-                            <h3 className="font-label text-xs uppercase tracking-widest font-bold text-secondary">Available
-                                Players</h3>
-                            <span className="text-xs text-on-surface-variant">Showing {players?.data?.length} players</span>
+
+
+                    <Tabs defaultValue="overview" className=" w-full">
+                        <div className="  gap-6 border-b mb-3 ">
+                            <TabsList className="">
+                                <TabsTrigger value="players"  >Players</TabsTrigger>
+                                <TabsTrigger value="officials" >Officials</TabsTrigger>
+
+                            </TabsList>
                         </div>
-                        {/* <!-- Player Cards (Iterated) --> */}
-                        <div className="grid grid-cols-1 gap-3">
 
-                            {players.data.map((player) => {
-
-                                const inRoster = roster_players.data.some(p => p.player_id === player.id);
-                                const rosterPlayer = roster_players.data.find(p => p.player_id === player.id);
-                                return (<div
-                                    className="group bg-surface-container-lowest  p-4 flex items-center justify-between transition-all hover:translate-x-1 hover:shadow-sm border-l-4 border-transparent hover:border-primary">
-                                    <div className="flex items-center gap-4">
-                                        <div className="h-12 w-12 rounded-lg overflow-hidden bg-surface-variant">
-                                            <img className="h-full w-full object-cover"
-                                                data-alt="Close up portrait of a young athletic baseball player in a team jersey, outdoors on a sunny day with a blurred stadium background, professional sports photography style, bright and energetic."
-                                                src={player.profile} />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-primary">{player.name}</h4>
-                                            <p className="text-xs text-on-surface-variant font-medium">{player?.position} • Age {player.age} • {player.code}</p>
-                                        </div>
+                        <TabsContent value="players">
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center px-2">
+                                    <div>
+                                        <h3 className="font-label text-xs uppercase tracking-widest font-bold text-secondary">Available
+                                            Players</h3>
+                                        <span className="text-xs text-on-surface-variant">Showing {players?.data?.length} players</span>
                                     </div>
-                                    <div className="flex items-center gap-4">
-                                        {inRoster ?
-
-                                            <Button onClick={() => deletePlayer(rosterPlayer.id)} variant="destructive"> <Minus /></Button>
-
-                                            : <Button onClick={() => addPlayer(player.id)}
-                                                variant="outline"
-                                                className="rounded-none hover:bg-primary hover:text-white" size={"lg"}>
-                                                <Plus />
-                                            </Button>
+                                    <div>
+                                        <Button
+                                            onClick={() => handleAddPlayerDialog()}
+                                            size="xl"
+                                            className="">
+                                            <UserPlus />
+                                            Add New Player
 
 
-                                        }
-
+                                        </Button>
+                                        <RosterPlayerCreateDialog
+                                            roster={roster.id}
+                                            open={open} setOpen={setOpen} params={params} />
                                     </div>
-                                </div>)
-                            }
-                            )}
+                                </div>
 
 
-                        </div>
-                    </div>
+                                {/* <!-- Player Cards (Iterated) --> */}
+                                <div className="grid grid-cols-1 gap-3">
+
+                                    {players.data.map((player) => {
+
+                                        const inRoster = roster_players.data.some(p => p.player_id === player.id);
+                                        const rosterPlayer = roster_players.data.find(p => p.player_id === player.id);
+                                        return (<div
+                                            className="group bg-surface-container-lowest  p-4 flex items-center justify-between transition-all hover:translate-x-1 hover:shadow-sm border-l-4 border-transparent hover:border-primary">
+                                            <div className="flex items-center gap-4">
+                                                <div className="h-12 w-12 rounded-lg overflow-hidden bg-surface-variant">
+                                                    <img className="h-full w-full object-cover"
+                                                        data-alt="Close up portrait of a young athletic baseball player in a team jersey, outdoors on a sunny day with a blurred stadium background, professional sports photography style, bright and energetic."
+                                                        src={player.profile} />
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-primary">{player.name}</h4>
+                                                    <p className="text-xs text-on-surface-variant font-medium">{player?.position} • Age {player.age} • {player.code}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-4">
+                                                {inRoster ?
+
+                                                    <Button onClick={() => deletePlayer(rosterPlayer.id)} variant="destructive"> <Minus /></Button>
+
+                                                    : <Button onClick={() => addPlayer(player.id)}
+                                                        variant="outline"
+                                                        className="rounded-none hover:bg-primary hover:text-white" size={"lg"}>
+                                                        <Plus />
+                                                    </Button>
+
+
+                                                }
+
+                                            </div>
+                                        </div>)
+                                    }
+                                    )}
+
+
+                                </div>
+                            </div>
+                        </TabsContent>
+                    </Tabs>
                 </div>
+
                 {/* <!-- Right Column: Roster Summary & Workflow (5/12) --> */}
                 <div className="lg:col-span-5  ">
                     {/* <!-- Roster Summary Card --> */}

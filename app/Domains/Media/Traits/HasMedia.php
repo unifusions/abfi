@@ -80,6 +80,7 @@ trait HasMedia
         MediaCollectionEnum $collection
     ): bool {
 
+
         return $this->media()
 
             ->where(
@@ -168,8 +169,9 @@ trait HasMedia
 
     public function getMediaUrl(MediaCollectionEnum $collection): ?string
 {
+        
     $media = $this->mediaLinks
-        ->firstWhere('collection', $collection->value)
+    ?->firstWhere('collection', $collection->value)
         ?->media;
 
     if (! $media) {

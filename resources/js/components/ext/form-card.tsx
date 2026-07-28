@@ -14,7 +14,7 @@ export default function FormCard({ variant = "accent", icon: Icon, title, classN
     return (
         <div
 
-            className={cn('bg-zinc-25 space-y-6 relative  ', className,
+            className={cn('  space-y-6 relative  ', className,
 
             )}>
 
@@ -35,8 +35,8 @@ export default function FormCard({ variant = "accent", icon: Icon, title, classN
                 <h2 className="font-headline font-bold text-xl uppercase tracking-wider">{title}</h2>
             </div>
 
+            <div className="bg-neutral-50 py-12 px-6 ">  {children}</div>
 
-            {children}
         </div>
     )
 }

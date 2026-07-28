@@ -29,18 +29,18 @@ class PlayerController extends Controller
         $search = $request->input('search');
         $selectedAssociation = $request->input('association');
         $players = Player::search($search ?? '')
-        ->when($selectedAssociation, function ($query, $selectedAssociation){
-            return $query->where('organization_id', $selectedAssociation)->visibleTo(auth()->user());
-        })
-                ->orderByDesc('created_at')->paginate(15);
-        $associations = Organization:: orderBy('name')->get();
+            ->when($selectedAssociation, function ($query, $selectedAssociation) {
+                return $query->where('organization_id', $selectedAssociation);
+            })
+            ->orderByDesc('created_at')->paginate(15);
+        $associations = Organization::orderBy('name')->get();
         return inertia('player/player-index', [
             'registered_players' => Player::count(),
             'm_players' => Player::where('gender', 'male')->count(),
             'f_players' => Player::where('gender', 'female')->count(),
             'players' => PlayerListResource::collection($players),
             'filters' => $request->only(['search', 'associations']),
-            'associations' =>  $associations->map(function ($ass) {
+            'associations' => $associations->map(function ($ass) {
                 return ['label' => $ass->name, 'value' => $ass->id];
             })
         ]);
@@ -50,12 +50,12 @@ class PlayerController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    { 
+    {
         $this->authorize('create', Player::class);
         return inertia('player/player-create', [
             'organizations' => OrganizationDropdownResource::collection(Organization::orderBy('name')->get()),
             'can_select_organization' => auth()->user()->hasRole('federation.admin'),
-                    'default_organization' => auth()->user()->organization_id,
+            'default_organization' => auth()->user()->organization_id,
 
             'states' => State::all()->map(function ($state) {
                 return [
@@ -79,10 +79,10 @@ class PlayerController extends Controller
      */
     public function store(StorePlayerRequest $request)
     {
- 
+
 
         $player = $this->service->create($request->validated());
- 
+
         return redirect()->route('players.show', $player)->with(['success' => 'New player has been added to the registry']);
 
     }
@@ -92,7 +92,7 @@ class PlayerController extends Controller
      */
     public function show(Player $player)
     {
-        
+
         return inertia('player/player-view', ['player' => new PlayerResource($player)]);
     }
 

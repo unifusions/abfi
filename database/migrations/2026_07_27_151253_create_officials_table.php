@@ -13,6 +13,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('officials', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('official_code')->unique();
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
@@ -34,6 +36,7 @@ return new class extends Migration {
             $table->string('district')->nullable();
             $table->string('pincode', 10)->nullable();
 
+            $table->enum('marital_status', ['unmarried', 'married' , 'widowed']);
    
             $table->enum('type', ['state', 'tournament' , 'other']);
             $table->boolean('is_active')->default(true);

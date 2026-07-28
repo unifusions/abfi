@@ -10,6 +10,7 @@ class PlayerListResource extends JsonResource{
     {return[
         'id' => $this->id,
         'player_code'=>$this->player_code,
+        'name' => implode(' ',[ $this->first_name, $this->middle_name, $this->last_name]),
         'first_name' => $this->first_name,
         'middle_name' => $this->middle_name,
         'last_name' => $this->last_name,

@@ -4,7 +4,7 @@ import FormLabel from "./form-label";
 export default function FormCombobox(
     {
         label, id, labelRequired,
-        placeholder, 
+        placeholder, hasError,
         options, value, onValueChange, disabled = false
     }
 ) {
@@ -24,7 +24,7 @@ export default function FormCombobox(
             <Combobox items={options} value={selectedOption} onValueChange={onValueChange}
                  itemToStringValue={(option) => option?.value}
             >
-                <ComboboxInput placeholder={placeholder} className="h-12 bg-zinc-50 border-0" disabled={disabled} />
+                <ComboboxInput placeholder={placeholder} className="h-12 bg-zinc-50 border-0" disabled={disabled} {...(hasError ? { "aria-invalid": true } : {})} />
                 <ComboboxContent>
                     <ComboboxEmpty>No items found.</ComboboxEmpty>
                     <ComboboxList className="focus:text-white">

@@ -33,7 +33,7 @@ export default function FormInput({ id, name, type = "text", layout = "col", lab
 
                 type={type}
                 value={value}
-                className={`block border-0 p-3 w-full rounded-lg text-slate-900 bg-zinc-50 focus:bg-white 
+                className={`block border-0 p-3 w-full rounded-lg text-slate-900 bg-white focus:bg-white 
                 focus:ring-2 focus:ring-primary/20 placeholder:text-outline/60 transition-all
                 ${className} ${hasError && 'ring-1 ring-destructive'}`}
 placeholder= {placeholder}

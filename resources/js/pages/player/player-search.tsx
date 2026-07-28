@@ -1,8 +1,9 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, XCircle } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Button } from "@/components/ui/button";
 export default function PlayerSearch({ associations, searchValue, onSearch, selectedAssociation, onSelectAssociation }) {
     return (
         <div className="  py-4   flex flex-wrap items-center justify-start gap-4">
@@ -49,6 +50,12 @@ export default function PlayerSearch({ associations, searchValue, onSearch, sele
 
 
                 </div>
+
+                {(searchValue || selectedAssociation) && 
+                    <Button variant="destructive" onClick={() => {onSearch(""); onSelectAssociation("")}}>
+                        <XCircle />
+                         Clear Filter</Button>
+                }
 
                 {/* <button
                         className="bg-surface-container-lowest p-3 rounded-lg hover:bg-surface-container-highest transition-colors">
