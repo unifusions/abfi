@@ -10,6 +10,7 @@ use App\Domains\Tournament\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Requests\StoreRosterRequest;
+use App\Domains\Tournament\Roster\Resources\RosterDetailPlayerResource;
 use App\Domains\Tournament\Roster\Resources\RosterListResource;
 use App\Domains\Tournament\Roster\Services\RosterService;
 use App\Http\Controllers\Controller;
@@ -95,7 +96,10 @@ class RosterController extends Controller
     {
         return inertia('roster/roster-show', [
             'roster' => $roster,
-            'is_editable' => $roster
+            'players' => RosterDetailPlayerResource::collection($roster->players),
+            'competition' => $roster->competition,
+            'tournament' => $roster->competition->tournament
+            
         ]);
     }
     public function edit(Roster $roster)

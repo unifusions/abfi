@@ -1,6 +1,35 @@
 import PageHeader from "@/components/ext/page-header";
 
-export default function RosterShow({ roster }) {
+
+const PlayerCard = ({ player }) => {
+    return (
+        <div
+            className="bg-zinc-50 p-4 flex items-center gap-4 transition-transform hover:-translate-y-1 duration-300">
+            <div
+                className="w-16 h-16 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500">
+                <img className="w-full h-full object-cover"
+                    src="" />
+            </div>
+            <div className="flex-1">
+                <div className="flex items-center justify-between">
+                    <h4 className="font-headline font-bold text-on-surface">{player?.name}</h4>
+                    {/* <span className="material-symbols-outlined text-primary text-lg"
+                    >verified</span> */}
+                </div>
+                <div className="text-xs font-medium text-on-surface-variant mt-0.5">Starting Pitcher (P)
+                </div>
+                <div className="mt-2 flex items-center gap-3">
+                    <span className="text-[10px] text-on-surface-variant/60 font-black uppercase">Age:
+                        24</span>
+                    <span className="text-[10px] text-on-surface-variant/60 font-black uppercase">DOB:
+                        12/04/1999</span>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default function RosterShow({ roster, players, tournament }) {
     return (
         <>
             <PageHeader
@@ -16,7 +45,7 @@ export default function RosterShow({ roster }) {
 
             <div className="grid grid-cols-3 gap-6 mb-10">
                 <div
-                    class="bg-surface-container-lowest p-6 flex items-center justify-between relative overflow-hidden group">
+                    className="bg-surface-container-lowest p-6 flex items-center justify-between relative overflow-hidden group">
                     <div class="absolute left-0 top-0 h-full w-1 bg-primary"></div>
                     <div>
                         <p
@@ -75,30 +104,11 @@ export default function RosterShow({ roster }) {
 
                     <div class="grid grid-cols-2 gap-4">
 
-                        <div
-                            class="bg-surface-container-lowest p-4 rounded-xl flex items-center gap-4 transition-transform hover:-translate-y-1 duration-300">
-                            <div
-                                class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500">
-                                <img class="w-full h-full object-cover"
-                                    data-alt="A close-up portrait of a young professional athlete in a blue baseball jersey, high-key studio lighting, athletic aesthetic, minimal background, consistent with a clean sports registry UI."
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtW_uQ9Zj_RyxJHxXeJX6rltUKvWPGtCUSIe5y0BYBPs6qokh5EPwBWmP9kF0JwXrvKuvqpxuEKreob_95SolizwcOJcn4OeBFEmaMT0v7PAW8zQ1I78egyxoIuUlONi3HGTn0CvcUSWqe3PrCcVaX6ibxSbKUoWMrfZlgAu_-z1AACuA-Wr8BulBcZCoswS6Iv8h0gIbNey-WRpZut42_lZa3i-UW0iEvQLGsAAswiUn5Q3zamz0zUQ" />
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <h4 class="font-headline font-bold text-on-surface">Aditya Varma</h4>
-                                    <span class="material-symbols-outlined text-primary text-lg"
-                                    >verified</span>
-                                </div>
-                                <div class="text-xs font-medium text-on-surface-variant mt-0.5">Starting Pitcher (P)
-                                </div>
-                                <div class="mt-2 flex items-center gap-3">
-                                    <span class="text-[10px] text-on-surface-variant/60 font-black uppercase">Age:
-                                        24</span>
-                                    <span class="text-[10px] text-on-surface-variant/60 font-black uppercase">DOB:
-                                        12/04/1999</span>
-                                </div>
-                            </div>
-                        </div>
+                     {JSON.stringify(players, null, 2)}
+
+                        {players.data.map((player) => <PlayerCard key={player.id} player={player} />
+                        )}
+
 
 
 
