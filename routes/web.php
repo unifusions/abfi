@@ -13,9 +13,12 @@ use App\Domains\Tournament\Controllers\TournamentPublishController;
 use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Venue\Controllers\VenueSearchController;
 use App\Domains\Venue\Controllers\VenueController;
+use App\Http\Controllers\static\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'welcome')->name('home');
+// Route::inertia('/', 'welcome')->name('home');
+
+Route::get('/', HomeController::class)->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 

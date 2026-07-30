@@ -66,7 +66,7 @@ class Roster extends Model
     public function actionFor(User $user): RosterActionEnum
     {
         $ownsRoster = $this->organization_id === $user->organization_id ? true : false;
- 
+ $canReview = $user->can('roster.review') || $user->isSuperAdmin();
         // Builder mode
         if (
             $ownsRoster &&
@@ -76,14 +76,18 @@ class Roster extends Model
                 
             ])
         ) {
-            
+                
             return RosterActionEnum::CONTINUE;
         }
- 
-        if ($user->can('roster.review')) {
+  
+         
+        if ($canReview  ) {
+        if($this->status==RosterStatusEnum::SUBMITTED->value){
             return RosterActionEnum::REVIEW;
         }
-
+            return RosterActionEnum::VIEW;
+        }
+ 
         return match ($this->status) {
             RosterStatusEnum::DRAFT,
             RosterStatusEnum::REJECTED => RosterActionEnum::CONTINUE ,
