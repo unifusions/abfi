@@ -10,8 +10,10 @@ use App\Domains\Media\Models\Media;
 use App\Domains\Media\Models\Mediable;
 use App\Domains\Media\Traits\HasMedia;
 use App\Domains\Organization\Models\Organization;
+use Database\Factories\OfficialFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -31,7 +33,10 @@ class Official extends Model{
      use HasFactory, HasUuids, HasMedia, Searchable, HasScope;
 
 
-
+ protected static function newFactory(): Factory
+    {
+        return OfficialFactory::new();
+    }
     public function state()
     {
         return $this->belongsTo(State::class);

@@ -13,23 +13,32 @@ import FormSelect from "@/components/ext/form-select";
 
 import PlayerSearch from "./player-search";
 import PlayerList from "./player-list";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
     registered_players: number,
     players: {
         data: [],
 
-    }
+    },
+     filters: {
+        search?: string;
+        association?: string;
+    };
 }
 
-export default function PlayerIndex({ registered_players, m_players, f_players, players, associations }: Props) {
+export default function PlayerIndex({ registered_players, m_players, f_players, players, associations, filters }: Props) {
 
-    const [search, setSearch] = useState();
-    const [association, setAssociation] = useState();
+   const [search, setSearch] = useState(filters.search ?? "");
+const [association, setAssociation] = useState(filters.association ?? "");
     const [processing, setProcessing] = useState(false);
+const firstLoad = useRef(true);
 
     useEffect(() => {
+if (firstLoad.current) {
+        firstLoad.current = false;
+        return;
+    }
 
         const delayDebounce = setTimeout(() => {
             setProcessing(true);

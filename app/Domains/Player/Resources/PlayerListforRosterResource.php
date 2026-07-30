@@ -12,7 +12,7 @@ class PlayerListforRosterResource extends JsonResource{
             'id' => $this->id,
              'name' =>implode(' ' , [$this->first_name, $this->middle_name, $this->last_name]),
         
-            'position' => $this->positions->pluck('name'),
+            'position' => $this->positions->pluck('code')->toArray(),
             'age' =>Carbon::parse($this->dob)->age,
             'code' => $this->player_code,
             'profile' => $this->getMediaUrl(MediaCollectionEnum::PROFILE)

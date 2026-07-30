@@ -13,8 +13,12 @@ use App\Domains\Media\Models\Mediable;
 use App\Domains\Media\Traits\HasMedia;
 use App\Domains\Organization\Models\Organization;
 use App\Models\User;
+use Carbon\Carbon;
+use Database\Factories\PlayerFactory;
+
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -55,7 +59,16 @@ class Player extends Model
 {
     use HasFactory, HasUuids, HasMedia, Searchable, HasScope;
 
+    protected $casts = [
+        'dob' => 'date'
+    ];
 
+    // TBD
+
+    protected static function newFactory(): Factory
+    {
+        return PlayerFactory::new();
+    }
     public function positions()
     {
         return $this->belongsToMany(
@@ -95,9 +108,21 @@ class Player extends Model
         static::addGlobalScope(new BaseOrganizationScope());
     }
 
-    public function scopeForCompetition($query, $competition){
-        return $query->whereGender($competition->gender());
+    public function scopeForCompetition($query, $competition)
+    {
+        $category = $competition->tournament->category;
+        $tournamentYear = Carbon::parse($competition->starts_at)->year;
+        return $query->whereGender($competition->gender())
+            ->when($category->minimum_age, function ($q, $minAge) use ($tournamentYear) {
+                $latestBirthYear = $tournamentYear - $minAge;
+                $q->whereYear('dob', '<=', $latestBirthYear);
+            })
+            ->when($category->maximum_age, function ($q, $maxAge) use ($tournamentYear) {
+                  $latestBirthYear = $tournamentYear - $maxAge;
+                $q->whereYear('dob', '>=', $latestBirthYear);
+            });
+        ;
     }
-  
+
 }
 

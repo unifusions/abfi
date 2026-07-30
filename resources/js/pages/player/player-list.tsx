@@ -2,6 +2,8 @@ import AppPagination from "@/components/ext/app-pagination";
 import TableContainer from "@/components/ext/table-container";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { show } from "@/routes/players";
+import { Link } from "@inertiajs/react";
 
 export default function PlayerList({ players, disabled }) {
 
@@ -38,7 +40,7 @@ export default function PlayerList({ players, disabled }) {
                                 }
 
                                 <div>
-                                    <p className="font-bold text-primary">{player.first_name} {player.middle_name} {player.last_name}</p>
+                                    <p className="font-bold text-primary">{player.name}</p>
                                     <p className="text-[10px] text-on-surface-variant font-medium">
                                         {player.positions.join(', ')}
                                     </p>
@@ -46,8 +48,12 @@ export default function PlayerList({ players, disabled }) {
                             </div>
                         </TableCell>
                         <TableCell>{player.association}</TableCell>
-                        <TableCell>{player.gender}</TableCell>
+                        <TableCell>{player.age} Years |  {player.gender}</TableCell>
                         <TableCell>{player.created_at}</TableCell>
+                        <TableCell>
+                            <Link href={show({player: player?.id}).url}>
+                            View</Link>
+                        </TableCell>
                     </TableRow>)}
                 </TableBody>
             

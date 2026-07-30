@@ -63,6 +63,8 @@ export default function TournamentShow({ tournament }) {
                 />
 
             </div>
+
+            <div>{JSON.stringify(tournament, null, 2)}</div>
         </>
     )
 }

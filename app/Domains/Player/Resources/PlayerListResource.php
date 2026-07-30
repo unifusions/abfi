@@ -3,6 +3,7 @@
 namespace App\Domains\Player\Resources;
 
 use App\Domains\Media\Enums\MediaCollectionEnum;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlayerListResource extends JsonResource{
@@ -22,5 +23,6 @@ class PlayerListResource extends JsonResource{
        'positions' => $this->positions->pluck('name'),
         'created_at' => $this->created_at->format('d-m-Y H:i:s'),
          'profile_photo' => $this->getMediaUrl(MediaCollectionEnum::PROFILE),
+         'age' => Carbon::parse($this->dob)->age,
     ];}
 }

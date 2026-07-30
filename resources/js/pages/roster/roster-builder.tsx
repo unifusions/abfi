@@ -141,13 +141,24 @@ export default function RosterBuilder({ roster,
                                                 </div>
                                                 <div>
                                                     <h4 className="font-bold text-primary">{player.name}</h4>
-                                                    <p className="text-xs text-on-surface-variant font-medium">{player?.position} • Age {player.age} • {player.code}</p>
+                                                    <p className="text-xs  font-medium flex items-center gap-1.5">
+                                                        
+                                                         
+                                                            {player.position.map((position)=> 
+                                                                <div className="bg-indigo-100 text-indigo-600 p-1.5 font-bold rounded-md">{position}</div>
+                                                            )}
+                                                            
+                                                        
+                                                        
+                                                         • Age {player.age} • {player.code}</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-4">
                                                 {inRoster ?
 
-                                                    <Button onClick={() => deletePlayer(rosterPlayer.id)} variant="destructive"> <Minus /></Button>
+                                                    <Button onClick={() => deletePlayer(rosterPlayer.id)} variant="destructive" size={"lg"}
+                                                    
+                                                    > <Minus /></Button>
 
                                                     : <Button onClick={() => addPlayer(player.id)}
                                                         variant="outline"

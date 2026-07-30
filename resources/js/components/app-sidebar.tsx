@@ -20,8 +20,26 @@ import { index as TournamentIndex } from '@/routes/tournaments';
 import { index as OfficialIndex } from '@/routes/officials';
 import { useAuthorization } from '@/hooks/use-authorization';
 import {index as RosterIndex} from '@/routes/rosters';
+ 
 
+const tournamentSubMenu : NavItem[] = [
 
+    {
+        title: 'All Tournaments',
+        href : TournamentIndex(),
+        module: "Tournament"
+    },
+    {
+        title: 'Categories',
+        href :" #",
+        module: "Tournament"
+    },
+      {
+        title: 'Archive ',
+        href :" #",
+        module: "Tournament"
+    }
+];
 
 const mainNavItems: NavItem[] = [
     {
@@ -34,7 +52,8 @@ const mainNavItems: NavItem[] = [
         title: 'Tournaments',
         href: TournamentIndex(),
         icon: Trophy,
-        module: "Tournament"
+        module: "Tournament",
+        subMenus :  tournamentSubMenu
     },
     {
         title: 'Players',

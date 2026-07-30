@@ -28,18 +28,18 @@ class PlayerController extends Controller
     {
         $search = $request->input('search');
         $selectedAssociation = $request->input('association');
-        $players = Player::search($search ?? '')
+        $players = Player::search($search)
             ->when($selectedAssociation, function ($query, $selectedAssociation) {
                 return $query->where('organization_id', $selectedAssociation);
             })
-            ->orderByDesc('created_at')->paginate(15);
+            ->orderByDesc('created_at')->paginate(15)->withQueryString();
         $associations = Organization::orderBy('name')->get();
         return inertia('player/player-index', [
             'registered_players' => Player::count(),
             'm_players' => Player::where('gender', 'male')->count(),
             'f_players' => Player::where('gender', 'female')->count(),
             'players' => PlayerListResource::collection($players),
-            'filters' => $request->only(['search', 'associations']),
+            'filters' => $request->only(['search', 'association']),
             'associations' => $associations->map(function ($ass) {
                 return ['label' => $ass->name, 'value' => $ass->id];
             })

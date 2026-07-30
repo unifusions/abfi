@@ -29,7 +29,8 @@ class RosterController extends Controller
             'rosters' => RosterListResource::collection(Roster::paginate(15)),
             'drafts' => Roster::where('status', RosterStatusEnum::DRAFT->value)->count(),
             'total_rosters' => Roster::count(),
-            'approved_rosters' => Roster::where('status', RosterStatusEnum::APPROVED->value)->count()
+            'approved_rosters' => Roster::where('status', RosterStatusEnum::APPROVED->value)->count(),
+            
         ]);
     }
     public function create()
@@ -90,7 +91,7 @@ class RosterController extends Controller
     public function store(StoreRosterRequest $request)
     {
         $roster = $this->service->create($request->validated());
-        return redirect()->route('rosters.edit', $roster)->with(['success' => 'Roster has been created successfully']);
+        return redirect()->route('rosters.builder', $roster)->with(['success' => 'Roster has been created successfully']);
     }
     public function show(Roster $roster)
     {
@@ -98,8 +99,9 @@ class RosterController extends Controller
             'roster' => $roster,
             'players' => RosterDetailPlayerResource::collection($roster->players),
             'competition' => $roster->competition,
-            'tournament' => $roster->competition->tournament
-            
+            'tournament' => $roster->competition->tournament,
+            'officials' => $roster->officials,
+            'category' => $roster->competition->tournament->category
         ]);
     }
     public function edit(Roster $roster)

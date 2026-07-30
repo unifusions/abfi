@@ -16,15 +16,15 @@ class PlayerResource extends JsonResource
         return [
             'id' => $this->id,
             'player_code' => $this->player_code,
-            'first_name' => $this->first_name,
-            'middle_name' => $this->middle_name,
-            'last_name' => $this->last_name,
+             
+            'name' => implode(' ', [$this->first_name, $this->middle_name, $this->last_name]),
+
             'gender' => ucfirst($this->gender),
             'positions' => $this->positions->pluck('name'),
             'profile_photo' => $this->getMediaUrl(MediaCollectionEnum::PROFILE),
             'details' => [
                 'created_at' => $this->created_at->format('d-m-Y H:i:s'),
-                'dob' => Carbon::createFromFormat('Y-m-d', $this->dob)->format('d / M / Y'),
+                'dob' =>  $this->dob->format('d / M / Y'),
                 'blood_group' => $this->blood_group ?? null,
                 'association' => $this->organization?->name,
             ],

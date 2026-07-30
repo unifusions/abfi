@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
     Route::resource('players', \App\Domains\Player\Controllers\PlayerController::class);
     Route::resource('tournaments', \App\Domains\Tournament\Controllers\TournamentController::class);
-    Route::post('tournaments\create-and-publish', [TournamentPublishController::class, 'store'])->name('tournaments.createpublish');
+    Route::post('tournaments/create-and-publish', [TournamentPublishController::class, 'store'])->name('tournaments.createpublish');
     // Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
 
 
@@ -100,3 +100,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 require __DIR__ . '/settings.php';
 require __DIR__ .'/media.php';
 require __DIR__ .'/roster.php';
+require __DIR__ .'/tournament.php';

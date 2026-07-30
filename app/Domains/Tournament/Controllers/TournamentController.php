@@ -101,6 +101,7 @@ class TournamentController extends Controller
      */
     public function show(Tournament $tournament)
     {
+        $tournament->load('category');
         return inertia('tournament/tournament-show', ['tournament' => $tournament]);
     }
 
