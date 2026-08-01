@@ -4,7 +4,7 @@ import { index } from "@/routes/tournaments";
 import { Head } from "@inertiajs/react";
 import { Calendar, MapPin } from "lucide-react";
 
-export default function TournamentShow({ tournament }) {
+export default function TournamentShow({ tournament, rosters }) {
     return (
         <>
             <Head title={tournament?.name} />
@@ -14,7 +14,7 @@ export default function TournamentShow({ tournament }) {
                         <h1 className="text-5xl font-display font-black text-primary tracking-tighter leading-tight">{tournament?.name}</h1>
 
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-6">
                         <div className=" bg-blue-200  shrink-0 text-primary px-4 py-1 rounded-full flex items-center gap-2" >
                             {/* BelowPillIcon && <BelowPillIcon className="h-5" />  */}
                             <span className=" uppercase text-xs">{tournament.status}</span>
@@ -27,7 +27,7 @@ export default function TournamentShow({ tournament }) {
 
                         <div className="flex items-center gap-3 ">
                             <MapPin />
-                            {tournament?.venue}
+                            {tournament?.venue?.name}
                         </div>
 
                     </div>
@@ -42,7 +42,7 @@ export default function TournamentShow({ tournament }) {
             <div className="grid grid-cols-3 gap-6">
                 <TournamentStatCard
                     label="Total Registered Rosters"
-                    value=""
+                    value={rosters?.length}
                     variant="accent"
                     description=""
 
@@ -64,7 +64,16 @@ export default function TournamentShow({ tournament }) {
 
             </div>
 
-            <div>{JSON.stringify(tournament, null, 2)}</div>
+            <div className="grid grid-cols-2">
+                {Object.entries(rosters).map(([competition, roster]) => 
+                
+                <div>
+                    {competition}
+                    {roster.map((r) => <pre>{JSON.stringify(r, null,2 )}</pre>)}
+                </div>
+                )}
+                
+            </div>
         </>
     )
 }

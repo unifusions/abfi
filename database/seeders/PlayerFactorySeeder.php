@@ -17,7 +17,7 @@ class PlayerFactorySeeder extends Seeder
     public function run(): void
     {
         Player::withoutSyncingToSearch(function () {
-$runningNumber = 1;
+$runningNumber = 2601;
             $positionIds = BaseballPosition::pluck('id');
             $organizations = Organization::with('state')->get();
             $ageGroups = [

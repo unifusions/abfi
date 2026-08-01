@@ -40,7 +40,7 @@ export default function RosterShow({ roster, players, tournament, competition, c
                 <div
                     className="px-4 py-1.5 rounded-full bg-primary/20 text-primary text-xs font-black uppercase tracking-tighter flex items-center gap-1.5 shadow-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                    Active
+                   {roster.status}
                 </div>
             </PageHeader>
 

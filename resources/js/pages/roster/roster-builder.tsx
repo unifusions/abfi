@@ -8,12 +8,14 @@ import { useState } from "react";
 import RosterPlayerCreateDialog from "./roster-player-create-dialog";
 import { create } from "@/routes/rosters/rosters/players";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import OfficialBuilder from "./builder/official-builder";
+import RosterSSubmission from "./builder/roster-submission";
 
 
 
 
 export default function RosterBuilder({ roster,
-    players,
+    players, officials, roster_officials,
     category, last_date, roster_players }) {
 
     const [playerSearch, setPlayerSearch] = useState('');
@@ -74,10 +76,10 @@ export default function RosterBuilder({ roster,
                     </div>
                 </div>
             </PageHeader>
-            {/* {JSON.stringify(roster)} */}
+
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 px-0">
-                {/* <!-- Left Column: Directory & Search (7/12) --> */}
+
                 <div className="lg:col-span-7 space-y-8">
 
                     <div className="   flex items-center justify-between gap-3">
@@ -142,22 +144,22 @@ export default function RosterBuilder({ roster,
                                                 <div>
                                                     <h4 className="font-bold text-primary">{player.name}</h4>
                                                     <p className="text-xs  font-medium flex items-center gap-1.5">
-                                                        
-                                                         
-                                                            {player.position.map((position)=> 
-                                                                <div className="bg-indigo-100 text-indigo-600 p-1.5 font-bold rounded-md">{position}</div>
-                                                            )}
-                                                            
-                                                        
-                                                        
-                                                         • Age {player.age} • {player.code}</p>
+
+
+                                                        {player.position.map((position) =>
+                                                            <div className="bg-indigo-100 text-indigo-600 p-1.5 font-bold rounded-md">{position}</div>
+                                                        )}
+
+
+
+                                                        • Age {player.age} • {player.code}</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-4">
                                                 {inRoster ?
 
                                                     <Button onClick={() => deletePlayer(rosterPlayer.id)} variant="destructive" size={"lg"}
-                                                    
+
                                                     > <Minus /></Button>
 
                                                     : <Button onClick={() => addPlayer(player.id)}
@@ -177,6 +179,10 @@ export default function RosterBuilder({ roster,
 
                                 </div>
                             </div>
+                        </TabsContent>
+
+                        <TabsContent value="officials">
+                            <OfficialBuilder officials={officials?.data} roster={roster} roster_officials={roster_officials} />
                         </TabsContent>
                     </Tabs>
                 </div>
@@ -203,11 +209,20 @@ export default function RosterBuilder({ roster,
 
 
 
-                                    <div className="flex items-baseline gap-2 mt-1">
-                                        <span className="text-5xl font-black font-display tracking-tight">{roster_players.data.length}</span>
-                                        <span className="text-lg opacity-60 font-medium">/ {category.maximum_players} players
+                                    <div className="flex items-baseline gap-6 mt-1 ">
+                                        <div className="flex items-baseline gap-2 mt-1"><span className="text-5xl font-black font-display tracking-tight">{roster_players.data.length}</span>
+                                            <span className="text-lg opacity-60 font-medium uppercase">/ {category.maximum_players} players
 
-                                        </span>
+                                            </span>
+                                        </div>
+
+                                        <div className="flex items-baseline gap-2 mt-1"><span className="text-5xl font-black font-display tracking-tight">{roster_officials.data.length}</span>
+                                            <span className="text-lg opacity-60 font-medium uppercase">/ {category.maximum_officials} officials
+
+                                            </span>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -259,21 +274,42 @@ export default function RosterBuilder({ roster,
 
 
                         </div>
+                        {roster_officials?.data?.length > 0 &&
+                            <div className="space-y-3 border-t  overflow-y-auto no-scrollbar pr-1">
+                                <p className="ps-3 pt-3 pb-0 mb-0 font-display tracking-widest text-sm font-bold uppercase"> roster officials</p>
+
+
+
+                                {roster_officials.data.map((player, index) =>
+                                    <div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+
+                                            <div>
+
+                                                <p className="font-bold text-sm text-primary">{player?.name} </p>
+                                                <p className="text-[10px] font-medium text-on-surface-variant">{player.code} </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3">
+
+
+                                            <Button variant="destructive" onClick={() => deletePlayer(player.id)}>
+                                                <X className="h-3" />
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                )}
+
+
+                            </div>
+                        }
+
                     </div>
                     {/* <!-- Finalize Roster Workflow --> */}
-                    <div className="bg-surface-container-lowest rounded-2xl p-6 stadium-shadow accent-stripe w-full">
-                        <h3 className="font-display font-black text-xl text-primary mb-4">Finalize Roster</h3>
-                        <p className="text-sm text-on-surface-variant mb-6">Complete the submission of roster                             for official league review.</p>
-                        <Button
-                            className="w-full"
-                            variant="accentSecondary"
-                            size={"xl"}
-                        >
-                            Submit Roster
-                            <SendHorizonal />
-                        </Button>
-                        <p className="text-[10px] text-center mt-4 text-on-surface-variant font-medium">Submission deadline: {last_date}</p>
-                    </div>
+                    <RosterSSubmission lastDate = {last_date} roster={roster}/>
+                   
                 </div>
             </div>
 

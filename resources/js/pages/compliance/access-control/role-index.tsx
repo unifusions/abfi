@@ -7,10 +7,11 @@ import { compliance } from "@/routes";
  
 import { sync } from "@/routes/compliance/roles/permissions";
 import { useForm } from "@inertiajs/react";
+ 
 import { Info, Pencil, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function RoleIndex({ roles, permissions }) {
+export default function RoleIndex({ roles, permissions, uuid }) {
 
     const [selectedRole, setSelectedRole] = useState(null);
     const [selectedPermissions, setSelectedPermissions] = useState([]);
@@ -62,6 +63,7 @@ export default function RoleIndex({ roles, permissions }) {
 
             <div className="flex-1 flex flex-col min-w-0 bg-slate-50  relative">
  
+ {/* {JSON.stringify(uuid)} */}
 
                 {/* <!-- Dynamic Content Body --> */}
                 <div className="flex-1 flex overflow-hidden">

@@ -5,6 +5,7 @@ namespace App\Domains\Tournament\Roster\Controllers;
 use App\Domains\Player\Models\Player;
 use App\Domains\Player\Resources\PlayerListforRosterResource;
 use App\Domains\Tournament\Roster\Actions\BuilderRosterAction;
+use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Resources\RosterPlayerResource;
 use App\Http\Controllers\Controller;
@@ -19,10 +20,19 @@ class RosterBuilderController extends Controller
        
        return inertia('roster/roster-builder', $this->builderRosterAction->handle($roster) );
     }
-    public function save()
+    public function save(Roster $roster)
     {
+
     }
-    public function submit()
+    public function submit(Roster $roster)
     {
+       $roster->status = RosterStatusEnum::SUBMITTED->value;
+       $roster->submitted_at = now();
+       $roster->save();
+       return redirect()->route('rosters.show', $roster)->with(
+        [
+            'success' => "{$roster->name} has been submitted successfully"
+        ]
+       );
     }
 }

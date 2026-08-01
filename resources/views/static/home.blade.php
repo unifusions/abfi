@@ -451,7 +451,7 @@
             <!-- Copyright Area -->
             <div
                 class="pt-8 border-t border-on-tertiary/10 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-                <p class="font-label-sm text-label-sm opacity-60">© 2024 Amateur Baseball Federation of India. All
+                <p class="font-label-sm text-label-sm opacity-60">© 1983 - {{ now()->year }} Amateur Baseball Federation of India. All
                     Rights Reserved.</p>
                 <div class="font-label-sm text-label-sm opacity-60">
                     For best results use Mozilla or Chrome browsers

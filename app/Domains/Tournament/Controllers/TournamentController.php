@@ -27,8 +27,7 @@ class TournamentController extends Controller
      */
     public function __construct(
         protected TournamentService $service
-    ) {
-    }
+    ) {}
 
     public function index()
     {
@@ -47,7 +46,7 @@ class TournamentController extends Controller
 
         return inertia('tournament/tournament-index', [
 
-            'tournaments' => TournamentListResource::collection( Tournament::latest()->paginate(15)),
+            'tournaments' => TournamentListResource::collection(Tournament::latest()->paginate(15)),
             'activeTournament' => $activeTournament,
             'activeNow' => $activeNow,
             'registrationOpen' => $registrationOpen,
@@ -91,9 +90,7 @@ class TournamentController extends Controller
             return redirect()
                 ->back()
                 ->with('success', 'Tournament created successfully and yet to be published.');
-
         }
-
     }
 
     /**
@@ -101,8 +98,16 @@ class TournamentController extends Controller
      */
     public function show(Tournament $tournament)
     {
-        $tournament->load('category');
-        return inertia('tournament/tournament-show', ['tournament' => $tournament]);
+       
+        $tournament->load('venue');
+        return inertia(
+            'tournament/tournament-show',
+            [
+                'tournament' => $tournament,
+                'rosters' => $tournament->rosters()->with('competition')->orderBy('created_at')->get()->groupBy('competition.competition_type')
+                
+            ]
+        );
     }
 
     /**

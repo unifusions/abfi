@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Str;
 
 class RoleController extends Controller
 {
@@ -35,6 +36,8 @@ class RoleController extends Controller
                 ->orderBy('module')
                 ->orderBy('name')
                 ->get()->groupBy('module'),
+            
+                'uuid' => Str::uuid()
         ]);
     }
 

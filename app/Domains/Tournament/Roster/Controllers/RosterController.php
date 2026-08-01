@@ -91,7 +91,7 @@ class RosterController extends Controller
     public function store(StoreRosterRequest $request)
     {
         $roster = $this->service->create($request->validated());
-        return redirect()->route('rosters.builder', $roster)->with(['success' => 'Roster has been created successfully']);
+        return redirect()->route('rosters.rosters.builder', $roster)->with(['success' => 'Roster has been created successfully']);
     }
     public function show(Roster $roster)
     {
@@ -106,10 +106,11 @@ class RosterController extends Controller
     }
     public function edit(Roster $roster)
     {
+        
         abort_unless(
-            in_array($roster->status, [
-                RosterStatusEnum::DRAFT,
-                RosterStatusEnum::REJECTED,
+            in_array($roster->status->value, [
+                RosterStatusEnum::DRAFT->value,
+                RosterStatusEnum::REJECTED->value,
             ]),
             403
         );

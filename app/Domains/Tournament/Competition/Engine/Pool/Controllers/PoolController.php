@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Tournament\Competition\PoolPlay\Controllers;
+namespace App\Domains\Tournament\Competition\Engine\Pool\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

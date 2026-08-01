@@ -5,12 +5,12 @@ namespace App\Domains\Tournament\Models;
 use App\Domains\Category\Models\Category;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Tournament\Enums\TournamentStatus;
+use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Venue\Models\Venue;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
- 
-
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Tournament extends Model
 {
@@ -38,7 +38,7 @@ class Tournament extends Model
         'ends_at',
         'published_at',
         'created_by',
-        'updated_by'
+        'updated_by',  
     ];
     protected $casts = [
 
@@ -67,6 +67,16 @@ class Tournament extends Model
     public function competitions(){
         return $this->hasMany(TournamentCompetition::class);
     }
+
+    public function rosters(): HasManyThrough{
+        return $this->hasManyThrough(
+            Roster::class,
+            TournamentCompetition::class,
+
+            
+        );
+    }
+
     // TOURNAMENT SCOPES
 
     public function scopePublished($query)

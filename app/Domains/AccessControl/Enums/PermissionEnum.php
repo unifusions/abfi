@@ -33,6 +33,7 @@ enum PermissionEnum: string
     // Roster
     case ROSTER_VIEW = 'roster.view';
     case ROSTER_CREATE = 'roster.create';
+    case ROSTER_EDIT = 'roster.edit';
     case ROSTER_UPDATE = 'roster.update';
     case ROSTER_APPROVE = 'roster.approve';
     case ROSTER_BUILDER = 'roster.builder';

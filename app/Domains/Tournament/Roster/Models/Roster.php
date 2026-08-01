@@ -54,43 +54,42 @@ class Roster extends Model
         return $this->hasMany(RosterPlayer::class);
     }
 
-    public function officials(){
+    public function officials()
+    {
         return $this->hasMany(RosterOfficial::class);
     }
 
-    // public function officials() 
-    // {
-    //     return $this->hasMany(RosterOfficial::class);
-    // }
 
     public function actionFor(User $user): RosterActionEnum
     {
         $ownsRoster = $this->organization_id === $user->organization_id ? true : false;
- $canReview = $user->can('roster.review') || $user->isSuperAdmin();
+        $canReview = $user->can('roster.review') || $user->isSuperAdmin();
         // Builder mode
         if (
             $ownsRoster &&
             in_array($this->status, [
                 RosterStatusEnum::DRAFT,
                 RosterStatusEnum::REJECTED,
-                
+
             ])
         ) {
-                
+
             return RosterActionEnum::CONTINUE;
         }
-  
-         
-        if ($canReview  ) {
-        if($this->status==RosterStatusEnum::SUBMITTED->value){
-            return RosterActionEnum::REVIEW;
-        }
+
+
+        if ($canReview) {
+          
+            if ($this->status->value === RosterStatusEnum::SUBMITTED->value) {
+              
+                return RosterActionEnum::REVIEW;
+            }
             return RosterActionEnum::VIEW;
         }
- 
+
         return match ($this->status) {
             RosterStatusEnum::DRAFT,
-            RosterStatusEnum::REJECTED => RosterActionEnum::CONTINUE ,
+            RosterStatusEnum::REJECTED => RosterActionEnum::CONTINUE,
 
             default => RosterActionEnum::VIEW,
         };
@@ -99,5 +98,4 @@ class Roster extends Model
     {
         static::addGlobalScope(new BaseOrganizationScope());
     }
-
 }

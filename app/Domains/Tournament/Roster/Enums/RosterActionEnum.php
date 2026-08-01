@@ -21,7 +21,7 @@ enum RosterActionEnum: string
     {
         return match ($this) {
             self::CONTINUE => 'rosters.rosters.builder',
-            self::REVIEW => 'rosters.edit',
+            self::REVIEW => 'rosters.review.index',
             self::VIEW => 'rosters.show',
         };
     }

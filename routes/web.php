@@ -7,8 +7,9 @@ use App\Domains\Compliance\Controllers\ComplianceController;
 use App\Domains\Compliance\Controllers\StateController;
 use App\Domains\Compliance\Controllers\UserController;
 use App\Domains\Organization\Controllers\OrganizationController;
+use App\Domains\Tournament\Competition\Engine\Pool\Controllers\PoolController;
 use App\Domains\Tournament\Competition\PoolPlay\Controllers\FixtureController;
-use App\Domains\Tournament\Competition\PoolPlay\Controllers\PoolController;
+ 
 use App\Domains\Tournament\Controllers\TournamentPublishController;
 use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Venue\Controllers\VenueSearchController;

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Domains\Tournament\Enums;
-enum CompetitionFormat : string{
+enum TournamentFormatEnum : string{
     case POOL_PLAY = 'pool_play';
     case ROUND_ROBIN = 'round_robin';
     case SINGLE_ELIMINATION = 'single_elimination';
