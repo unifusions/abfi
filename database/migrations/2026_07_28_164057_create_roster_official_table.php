@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->foreignUuidFor(Roster::class);
             $table->foreignUuidFor(Official::class);
-            $table->enum('type', ['manager', 'coach', 'other']);
+            $table->enum('type', ['manager', 'coach', 'other'])->nullable();
             $table->timestamps();
             $table->unique(['roster_id', 'official_id']);
         

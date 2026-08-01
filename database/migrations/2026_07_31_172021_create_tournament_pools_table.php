@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('tournament_pools', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid(TournamentCompetition::class);
+            $table->foreignUuidFor(TournamentCompetition::class);
             $table->string('name')->nullable();
             $table->string('code', 10)->nullable();
             $table->integer('display_order')->nullable();

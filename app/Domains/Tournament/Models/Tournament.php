@@ -24,12 +24,12 @@ class Tournament extends Model
         'name',
         'slug',
         'description',
-       
+
         'venue_id',
         'organization_id',
         'category_id',
-        
-      
+
+
         'competition_format',
         'status',
         'registration_open_at',
@@ -38,7 +38,7 @@ class Tournament extends Model
         'ends_at',
         'published_at',
         'created_by',
-        'updated_by',  
+        'updated_by',
     ];
     protected $casts = [
 
@@ -50,31 +50,39 @@ class Tournament extends Model
         'published_at' => 'datetime',
     ];
 
-    
+
     //RELATIONSHIPS
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
-    public function venue(){
+    public function venue()
+    {
         return $this->belongsTo(Venue::class);
     }
 
-    public function organization(){
+    public function organization()
+    {
         return $this->belongsTo(Organization::class);
     }
-    
-    public function competitions(){
+
+    public function competitions()
+    {
         return $this->hasMany(TournamentCompetition::class);
     }
 
-    public function rosters(): HasManyThrough{
+    public function rosters(): HasManyThrough
+    {
         return $this->hasManyThrough(
             Roster::class,
             TournamentCompetition::class,
-
-            
         );
+    }
+
+    public function submittedRoster(): HasManyThrough
+    {
+        return $this->rosters()->submitted();
     }
 
     // TOURNAMENT SCOPES

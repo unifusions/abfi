@@ -30,7 +30,9 @@ const PlayerCard = ({ player }) => {
     )
 }
 
-export default function RosterShow({ roster, players, tournament, competition, category }) {
+export default function RosterShow({ roster, players, tournament,
+    officials,
+    competition, category }) {
     return (
         <>
             <PageHeader
@@ -63,8 +65,8 @@ export default function RosterShow({ roster, players, tournament, competition, c
                     <div>
                         <p
                             class="text-[10px] font-label font-black text-on-surface-variant/60 uppercase tracking-[0.2em] mb-1">
-                            Staff Count</p>
-                        <h3 class="text-3xl font-headline font-extrabold text-on-surface">{officials?.length > 1 || 0}<span
+                            Staff Count</p> 
+                        <h3 class="text-3xl font-headline font-extrabold text-on-surface">{officials?.length >  0 ? officials?.length : 0 } <span
                             class="text-on-surface-variant/30 text-xl">/{category.maximum_officials}</span></h3>
                     </div>
 

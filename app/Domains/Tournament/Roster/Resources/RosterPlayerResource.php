@@ -11,6 +11,9 @@ class RosterPlayerResource extends JsonResource
     public function toArray($request)
     {
         $player = $this->player;
+        if(!$player){
+            return [];
+        }
         return [
             'id' => $this->id,
             'code' => $player->player_code,

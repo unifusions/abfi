@@ -4,14 +4,18 @@ namespace App\Domains\Tournament\Roster\Models;
 
 use App\Domains\AccessControl\Scopes\BaseOrganizationScope;
 use App\Domains\Organization\Models\Organization;
+use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPool;
+use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPoolRoster;
 use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Enums\RosterActionEnum;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
@@ -59,7 +63,20 @@ class Roster extends Model
         return $this->hasMany(RosterOfficial::class);
     }
 
+    public function pools()
+{
+    return $this->belongsTo(TournamentPoolRoster::class);
+}
 
+    public function scopeApproved(Builder $query)
+    {
+        return $query->where('status', RosterStatusEnum::APPROVED);
+    }   
+
+    public function scopeSubmitted(Builder $query)
+    {
+        return $query->where('status', RosterStatusEnum::SUBMITTED)->orWhere('status', RosterStatusEnum::APPROVED);
+    }
     public function actionFor(User $user): RosterActionEnum
     {
         $ownsRoster = $this->organization_id === $user->organization_id ? true : false;

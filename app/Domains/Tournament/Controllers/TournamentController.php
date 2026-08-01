@@ -13,6 +13,9 @@ use App\Domains\Tournament\Requests\StoreTournamentRequest;
 use App\Domains\Tournament\Requests\UpdateTournamentRequest;
 use App\Domains\Tournament\Resources\ActiveTournamentResource;
 use App\Domains\Tournament\Resources\TournamentListResource;
+use App\Domains\Tournament\Resources\TournamentRosterResource;
+use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
+use App\Domains\Tournament\Roster\Resources\RosterListResource;
 use App\Domains\Tournament\Services\TournamentService;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -27,7 +30,8 @@ class TournamentController extends Controller
      */
     public function __construct(
         protected TournamentService $service
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -98,14 +102,27 @@ class TournamentController extends Controller
      */
     public function show(Tournament $tournament)
     {
-       
+
         $tournament->load('venue');
         return inertia(
             'tournament/tournament-show',
             [
                 'tournament' => $tournament,
-                'rosters' => $tournament->rosters()->with('competition')->orderBy('created_at')->get()->groupBy('competition.competition_type')
-                
+                'competitions' => $tournament->competitions,
+                'registered_rosters' => $tournament->rosters()->where('status', '!=', RosterStatusEnum::DRAFT)->count(),
+                'rosters' => $tournament->submittedRoster()
+                    ->with('competition')
+                    ->orderBy('created_at', 'desc')
+                    ->get()->groupBy('competition.competition_type')->map(function ($rosters){
+                        return RosterListResource::collection($rosters);
+                    }),
+                // ->with(['competition', 'organization.state'])->orderBy('created_at')->get()),
+                'approvedRosters' => $tournament->rosters()
+                    ->where('status', RosterStatusEnum::APPROVED)
+                    ->with('competition')
+                    ->orderBy('created_at')
+                    ->get()
+                    ->groupBy('competition.competition_type'),
             ]
         );
     }

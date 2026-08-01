@@ -20,16 +20,15 @@ export default function CompetitionPool({ pool, teams }) {
 
             <div class="space-y-2">
 
+ 
                 {teams.map((team) => <div
                     class="team-chip flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-transparent hover:border-primary-fixed cursor-move">
                     <div class="flex items-center gap-3">
                         <div
                             class="w-6 h-4 bg-primary/10 rounded-sm overflow-hidden flex items-center justify-center">
-                            <img class="w-full h-full object-cover"
-                                data-alt="A small, minimalist vector graphic representing the state flag of Maharashtra, India, with saffron and blue elements. Simple, clean, high-contrast athletic style."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3cwU2tskNa6nu5CnSjcxItP3BO81-Bic-j-3f6qGhatPx2ORQDYoJzW4LDVb-Mh0wr1fwRumI02qXmw-5-ivv1CPjCvsvaI-MLCXuzwmD_cMXOYv_KPfBktucJ64mRmvHuQK1YlPuBVgkuzPMi5WHa7cQULDmNxFgoCL9IZ4gsMs0wCr_M_I7pA01IqAnnr1pJCahf_ROKyZGSWj9zLZFmSQ8B0NY6NY1gaLjMvqS7e3lEhw0JXgW9Q" />
+                           
                         </div>
-                        <span class="text-label-md font-medium">{team}</span>
+                        <span class="text-label-md font-medium">{team?.name}</span>
                     </div>
                     <Grip className="h-3 text-secondary/40" />
 

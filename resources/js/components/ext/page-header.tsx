@@ -16,7 +16,7 @@ export default function PageHeader({ title, subText, belowPill, belowPillIcon : 
 
             <div className="flex justify-between items-end mb-6 ">
                 <div className="flex flex-col items-start">
-                    <div className="max-w-2xl">
+                    <div className="max-w-3xl">
                         <h1 className="text-5xl font-display font-black text-primary tracking-tighter leading-tight">{title}</h1>
                         <p className="text-slate-600 mt-1">{subText}</p>
                     </div>

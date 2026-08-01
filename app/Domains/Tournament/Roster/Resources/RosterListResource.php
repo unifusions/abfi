@@ -18,6 +18,7 @@ class RosterListResource extends JsonResource
             'tournament' => $this->competition->tournament->name,
             'division' => $this->competition->tournament->category->name,
             'max_players' => $this->competition->tournament->category->maximum_players,
+            'state' => $this->organization->state?->short_code,
             'roster_players' => $this->players->count(),
             'status' => [
                 'value' => $this->status->value,

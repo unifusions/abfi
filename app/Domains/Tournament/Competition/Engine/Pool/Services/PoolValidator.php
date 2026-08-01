@@ -2,13 +2,14 @@
 
 namespace App\Domains\Tournament\Competition\Engine\Pool\Services;
 
+use App\Domains\Tournament\Competition\Engine\Pool\DTOs\PoolGenerationData;
 use App\Domains\Tournament\Enums\TournamentFormatEnum;
 use App\Domains\Tournament\Models\TournamentCompetition;
 use DomainException;
 
 class PoolValidator
 {
-    public function validate(TournamentCompetition $competition): void
+    public function validate(TournamentCompetition $competition, PoolGenerationData $data): void
     {
         $teams = $competition->approvedRosters()->count();
 
@@ -19,7 +20,7 @@ class PoolValidator
         } 
         if (
             $competition->tournament->format === TournamentFormatEnum::POOL_PLAY &&
-            $competition->pool_count < 4
+            $data->poolCount < 4
         ) {
             throw new DomainException(
                 'Pool Play requires a minimum of four pools.'
@@ -30,15 +31,15 @@ class PoolValidator
             throw new DomainException('Pools have already been generated.');
         }
 
-        if (! $competition->registration_closed_at) {
-            throw new DomainException('Registration is not closed.');
-        }
+        // if (! $competition->registration_closed_at) {
+        //     throw new DomainException('Registration is not closed.');
+        // }
 
         if ($competition->approvedRosters()->count() < 2) {
             throw new DomainException('Not enough approved rosters.');
         }
 
-        if ($competition->pool_count < 1) {
+        if ($data->poolCount < 1) {
             throw new DomainException('Invalid pool count.');
         }
         

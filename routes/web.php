@@ -74,16 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('tournaments/{tournament}/competition')->name('tournaments.competition.')->
         group(
             function () {
-                Route::controller(PoolController::class)
-                    ->prefix('pools')
-                    ->name('pools.')
-                    ->group(function () {
-
-                        Route::get('/', 'index')->name('index');
-
-
-
-                    });
+               
 
                 Route::controller(FixtureController::class)->prefix('fixtures')->name('fixtures.')->group(
                     function () {

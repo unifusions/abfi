@@ -6,8 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import ComplianceLayout from './layouts/compliance/layout';
-import RoleLayout from './layouts/role/layout';
-import { PermissionProvider } from './context/PermissionContext';
+ 
 
 const appName = import.meta.env.VITE_APP_NAME || 'ABFI Admin';
 

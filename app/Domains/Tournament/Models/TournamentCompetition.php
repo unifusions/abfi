@@ -3,6 +3,7 @@
 namespace App\Domains\Tournament\Models;
 
 use App\Domains\Shared\Enums\GenderEnum;
+use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPool;
 use App\Domains\Tournament\Roster\Models\Roster;
  
  
@@ -22,7 +23,8 @@ class TournamentCompetition extends Model
         'name',
        
         'is_active',
-        'competition_type'
+        'competition_type',
+        'pool_count', 'pools_generated_at', 'pools_locked_at'
     ];
 
     protected $casts = [
@@ -42,11 +44,18 @@ class TournamentCompetition extends Model
         return $this->belongsTo(Tournament::class);
     }
 
+    public function pools() : HasMany
+    {
+        return $this->hasMany(TournamentPool::class);
+    }
     public function rosters(): HasMany
     {
         return $this->hasMany(Roster::class);
     }
-
+public function approvedRosters()
+{
+    return $this->rosters()->approved();
+}
     public function getDisplayNameAttribute(): string
     {
         return $this->name ?: "{$this->tournamentCategory->category->code} {$this->gender->label()}";
