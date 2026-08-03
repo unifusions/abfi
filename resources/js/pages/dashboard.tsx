@@ -5,7 +5,7 @@ import WidgetCard from '@/components/ext/dashboard/widget-card';
 import EventTimeline from '@/components/ext/dashboard/event-timeline';
 import IndiaMap from '@/components/ext/dashboard/india-map';
 
-export default function Dashboard() {
+export default function Dashboard({ states_data}) {
     return (
         <>
             <Head title="Dashboard" />
@@ -50,7 +50,7 @@ export default function Dashboard() {
                         </div>
                         <div
                             class="relative w-full  bg-white rounded-lg   border border-outline-variant/15 flex items-center justify-center">
-                           <IndiaMap className="w-fit  " />
+                           <IndiaMap className="w-fit" stateInfo={states_data} />
                             {/* <div
                                 class="absolute top-4 right-4 bg-white/90 backdrop-blur p-4 rounded-lg shadow-sm border border-slate-100 space-y-3">
                                 <div class="space-y-0.5">
