@@ -2,6 +2,7 @@
 
 namespace App\Domains\Tournament\Competition\Engine\Pool\Controllers;
 
+use App\Domains\Tournament\Competition\Engine\Fixture\Services\FixtureGenerator;
 use App\Domains\Tournament\Competition\Engine\Pool\Actions\AddRosterToPool;
 use App\Domains\Tournament\Competition\Engine\Pool\Actions\DeletePools;
 use App\Domains\Tournament\Competition\Engine\Pool\Actions\GeneratePools;
@@ -30,7 +31,7 @@ class PoolController extends Controller
         GeneratePools $action
     ) {
 
- 
+
         $action->handle(
             $competition,
             new PoolGenerationData(
@@ -48,13 +49,14 @@ class PoolController extends Controller
         // return inertia('tournament/competition/pool-generate');
     }
 
-    public function add(TournamentPool $pool, Roster $roster, AddRosterToPool $action)
+    public function add(Tournament $tournament, TournamentCompetition $competition, TournamentPool $tournamentPool, Roster $roster, AddRosterToPool $action)
     {
-        $action->handle($pool, $roster);
-        return back();
+
+        $action->handle($competition, $tournamentPool, $roster);
+        return back()->with(['success' => "{$roster->name} has been added {$tournamentPool->name}"]);
     }
 
-     public function remove(TournamentPool $pool, Roster $roster, RemoveRosterFromPool $action)
+    public function remove(TournamentPool $pool, Roster $roster, RemoveRosterFromPool $action)
     {
         $action->handle($pool, $roster);
 
@@ -70,18 +72,17 @@ class PoolController extends Controller
         return back();
     }
 
-    public function lock(TournamentCompetition $competition, LockPools $action)
+    public function lock(Tournament $tournament, TournamentCompetition $competition, LockPools $action)
     {
         $action->handle($competition);
-
-        return back();
+        
+        return back()->with(['success' => 'Pools has been locked and now ready to generate match fixtures']);
     }
 
     public function destroy(TournamentCompetition $competition, DeletePools $action)
     {
         $action->handle($competition);
-
         return back();
     }
-    
+
 }

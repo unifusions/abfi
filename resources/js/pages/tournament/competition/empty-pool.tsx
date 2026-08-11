@@ -6,49 +6,7 @@ import { cn } from "@/lib/utils";
 import { generate } from "@/routes/tournaments/competition/pools";
 import { useForm } from "@inertiajs/react";
 import { Grid, Play } from "lucide-react";
-
-const stateColors = {
-    HP: "bg-sky-600 text-white",
-    PB: "bg-amber-500 text-white",
-    UK: "bg-teal-600",
-    HR : "bg-lime-600",
-    UP: "bg-orange-600",
-    RJ : "bg-yellow-500",
-
-    GJ : "bg-amber-600",
-    MH: "bg-indigo-600",
-    GA : "bg-emerald-500",
-    MP: "bg-orange-500",
-    CG:"bg-green-600",
-
-    BR: "bg-red-600",
-    JH: "bg-emerald-700",
-    OD:"bg-cyan-600",
-    WB:"bg-indigo-500",
-
-    AP: "bg-teal-500 text-white",
-    TS : "bg-rose-500",
-    KA :"bg-yellow-600",
-    KL : "bg-green-500",
-    TN : "bg-blue-600",
-
-    SK : "bg-lime-500",
-    AR:"bg-violet-600",
-    AS : 'bg-emerald-600',
-    NL:"bg-fuchsia-600",
-    MN:"bg-pink-600",
-    MZ:"bg-rose-600",
-    TR:"bg-[#E25822]",
-    ML:"bg-cyan-500",
-
-    AN:"bg-teal-400 text-white",
-    CH : "bg-stone-500 text-white",
-    DH : 'bg-neutral-600',
-    DL : 'bg-purple-600',
-    LA : "bg-zinc-500",
-    LD : "bg-blue-400",
-    PY : "bg-pink-500",
-};
+import { stateColors } from "@/lib/stateColors";
 
 export default function EmptyPool({ tournament, competition, category, rosters }) {
     

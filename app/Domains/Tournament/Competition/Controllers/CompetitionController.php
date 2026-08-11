@@ -3,16 +3,19 @@
 
 namespace App\Domains\Tournament\Competition\Controllers;
 
+use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStageEnum;
+use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
+use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureTypeEnum;
+use App\Domains\Tournament\Competition\Engine\Pool\Resources\PoolStandingResource;
+use App\Domains\Tournament\Competition\Resources\FixtureResource;
+use App\Domains\Tournament\Competition\Resources\LockedFixtureListResource;
+use App\Domains\Tournament\Competition\Services\CompetitionCompletion;
 use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 
 class CompetitionController
 {
-    public function index()
-    {
-        // return inertia('tournament/competition/index');
-    }
 
     public function builder(Tournament $tournament, TournamentCompetition $competition)
     {
@@ -22,7 +25,7 @@ class CompetitionController
             ->with([
                 'organization.state',
             ])
-             
+
             ->get();
 
         $assignedRosterIds = $competition->pools
@@ -33,18 +36,115 @@ class CompetitionController
             ->whereNotIn('id', $assignedRosterIds)
             ->values();
 
+        if ($competition->fixturesGenerated()) {
+
+            $competition->load([
+                'fixtures',
+                'fixtures.pool',
+                'fixtures.homeRoster.organization.state',
+                'fixtures.awayRoster.organization.state',
+            ]);
+            $competition->fixtures;
+        }
         return inertia(
             'tournament/competition/pool-index',
             [
                 'tournament' => $tournament,
                 'category' => $tournament->category->code,
                 'competition' => $competition,
-                'pools' => $competition->pools,
+                'pools' => $competition->pools()->with('rosters.organization.state')->get(),
                 'approvedRosters' => $approvedRosters,
                 'unassignedRosters' => $unassignedRosters,
-                
+                'pools_roster' => $competition->pools()->withCount('rosters')->get()->sum('rosters_count'),
+                'avg_roster' => $competition->pools()->withCount('rosters')->get()->avg('rosters_count'),
+                'pool_fixture' => $competition->pools()->with([
+                    'fixtures.homeRoster.organization.state',
+                    'fixtures.awayRoster.organization.state',
+                ])->get()->groupBy('name'),
+                'fixtures' => $competition->fixturesGenerated()
+                    ? $competition->fixtures()->where('fixture_type', FixtureTypeEnum::POOL)->with([
+                        'pool',
+                        'homeRoster.organization.state',
+                        'awayRoster.organization.state',
+                    ])->orderBy('pool_id')
+                        ->orderBy('round')
+                        ->orderBy('match_number')
+                        ->get()
+                    : collect(),
+
+                'locked_fixtures' => $competition->fixturesGenerated() ?
+                    LockedFixtureListResource::collection($competition->fixtures()
+                        ->where('status', FixtureStatusEnum::SCHEDULED)
+
+                        ->orderBy('round')
+                        ->get())
+                    : collect()
+
+
+            ]
+        );
+    }
+    public function fixtures(
+        Tournament $tournament,
+        TournamentCompetition $competition,
+    ) {
+
+        return inertia(
+            'tournament/competition/pool-index',
+            [
+                'tournament' => $tournament,
+                'competition' => $competition,
+                'poolStageCompleted' => app(CompetitionCompletion::class)
+                    ->isPoolStageCompleted($competition),
+
+                'fixtures' => $competition?->fixtures
+                    ->sortBy([
+                        ['pool.code', 'asc'],
+                        ['round', 'asc'],
+                        ['match_number', 'asc'],
+                    ])
+                    ->values(),
+                'knockout_fixtures' => $competition->fixtures()->with([
+                    'homeRoster.organization.state',
+                    'awayRoster.organization.state'
+                ])
+                    ->where('fixture_type', FixtureTypeEnum::KNOCKOUT)
+                    ->orderBy('stage')
+                    ->orderBy('match_number')
+                    ->get(),
             ]
         );
     }
 
+    public function standings(Tournament $tournament, TournamentCompetition $competition)
+    {
+
+        return inertia(
+            'tournament/competition/standings/standings-index',
+            [
+                'pools' => PoolStandingResource::collection($competition->pools),
+                'poolStageCompleted' => app(CompetitionCompletion::class)
+                    ->isPoolStageCompleted($competition),
+                'standings' => $competition->standings()->where('fixture_type', FixtureTypeEnum::POOL)->with('pool')->get()->groupBy('tournament_pool_id'),
+                'quarter_finals' => $competition->fixtures()
+                    ->where('fixture_type', FixtureTypeEnum::KNOCKOUT->value)
+                    ->where('stage', FixtureStageEnum::QUARTER_FINAL)
+                    ->with([
+                        'homeRoster.organization.state',
+                        'awayRoster.organization.state',
+                    ])
+                    ->orderBy('match_number')
+                    ->get(),
+                'semi_finals' => $competition->fixtures()
+                    ->where('fixture_type', FixtureTypeEnum::KNOCKOUT->value)
+                    ->where('stage', FixtureStageEnum::SEMI_FINAL)
+                    ->with([
+                        'homeRoster.organization.state',
+                        'awayRoster.organization.state',
+                    ])
+                    ->orderBy('match_number')
+                    ->get(),
+            ]
+        );
+    }
 }

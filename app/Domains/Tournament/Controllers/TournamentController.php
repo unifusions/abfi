@@ -108,7 +108,9 @@ class TournamentController extends Controller
             'tournament/tournament-show',
             [
                 'tournament' => $tournament,
-                'competitions' => $tournament->competitions,
+                'competitions' => $tournament->competitions()->with([
+                    'rosters'
+                ])->get(),
                 'registered_rosters' => $tournament->rosters()->where('status', '!=', RosterStatusEnum::DRAFT)->count(),
                 'rosters' => $tournament->submittedRoster()
                     ->with('competition')

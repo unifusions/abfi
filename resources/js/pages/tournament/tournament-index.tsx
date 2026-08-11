@@ -14,7 +14,7 @@ import { Search, Plus } from "lucide-react";
 
 export default function TournamentIndex({ tournaments, activeNow, completedMTD, activeTournament }) {
     const { can } = useAuthorization();
-     
+
 
     return (
         <>
@@ -55,7 +55,7 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
 
-                {activeTournament?.data  && <div className="row-span-3">
+                {activeTournament?.data && <div className="row-span-3">
                     <ActiveTournament tournament={activeTournament?.data} />    </div>}
 
 

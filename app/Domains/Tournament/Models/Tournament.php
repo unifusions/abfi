@@ -4,6 +4,7 @@ namespace App\Domains\Tournament\Models;
 
 use App\Domains\Category\Models\Category;
 use App\Domains\Organization\Models\Organization;
+use App\Domains\Tournament\Enums\TournamentFormatEnum;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Venue\Models\Venue;
@@ -43,6 +44,7 @@ class Tournament extends Model
     protected $casts = [
 
         'status' => TournamentStatus::class,
+        'competition_format' => TournamentFormatEnum::class,
         'registration_open_at' => 'datetime',
         'registration_close_at' => 'datetime',
         'starts_at' => 'date:Y-m-d',

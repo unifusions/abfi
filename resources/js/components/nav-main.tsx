@@ -64,7 +64,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                     {item.subMenus.map((item) => (
                                         <SidebarMenuSubItem key={item.title} className='font-display text-xs uppercase font-bold hover:text-primary transition-all'>
 
-                                            <Link href={item.url}>{item.title}</Link>
+                                            <Link href={item.href?.url}>{item.title} </Link>
 
                                         </SidebarMenuSubItem>
                                     ))}

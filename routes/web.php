@@ -9,7 +9,7 @@ use App\Domains\Compliance\Controllers\UserController;
 use App\Domains\Organization\Controllers\OrganizationController;
 use App\Domains\Tournament\Competition\Engine\Pool\Controllers\PoolController;
 use App\Domains\Tournament\Competition\PoolPlay\Controllers\FixtureController;
- 
+
 use App\Domains\Tournament\Controllers\TournamentPublishController;
 use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Venue\Controllers\VenueSearchController;
@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/venue-search', VenueSearchController::class)->name('venue.search');
     Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
- 
+
     Route::middleware('rbac:role, Federation Admin')->group(function () {
         Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
         Route::get('compliance', [ComplianceController::class, 'index'])->name('compliance');
@@ -72,25 +72,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
 
 
-    Route::prefix('tournaments/{tournament}/competition')->name('tournaments.competition.')->
-        group(
-            function () {
-               
-
-                Route::controller(FixtureController::class)->prefix('fixtures')->name('fixtures.')->group(
-                    function () {
-                        Route::get('/', 'index')->name('index');
-                    }
-                );
-
-            }
-        );
+    
 });
 
 
 
 
 require __DIR__ . '/settings.php';
-require __DIR__ .'/media.php';
-require __DIR__ .'/roster.php';
-require __DIR__ .'/tournament.php';
+require __DIR__ . '/media.php';
+require __DIR__ . '/roster.php';
+require __DIR__ . '/tournament.php';

@@ -1,30 +1,55 @@
-export default function MatchFixtureItem({ order, home, away }) {
+import { stateColors } from "@/lib/stateColors"
+import { cn } from "@/lib/utils"
+
+const RosterIcon = ({ state }) => (
+    <div className={cn("flex h-8 items-center justify-center w-8 font-bold font-display text-xs rounded-md",
+        stateColors[state])
+
+    }>
+        {state}
+    </div>
+)
+
+const RosterContainer = ({ children }) => (
+    <div className="col-span-4 flex flex-col items-center justify-center text-center ">
+        {children}
+    </div>
+)
+const RosterInfo = ({ name, association }) => (
+    <div className="flex flex-col  ">
+        <span className="text-xs font-bold text-primary uppercase mt-3 ">{
+            name}</span>
+        <p className="  text-center text-xs text-zinc-500    ">{association}</p>
+    </div>
+)
+const RosterTeam = ({ roster }) => (<RosterContainer>
+    <RosterIcon state={roster?.organization?.state?.short_code} />
+    <RosterInfo name={roster?.name} association={roster?.organization?.name} />
+</RosterContainer>)
+
+export default function MatchFixtureItem({ order, home, away, round }) {
     return (
 
         <div
-            class="bg-surface-container-low p-3   border-l-2 border-primary/40 flex flex-col gap-2">
+            className="bg-zinc-50 p-3     flex flex-col gap-2">
             <div
-                class="flex justify-between text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-tighter">
+                className="w-full  text-[10px] text-center font-bold text-on-surface-variant/70 uppercase tracking-tighter">
                 <span>Match {order}</span>
-                {/* <span>Jun 15 • 09:00 AM</span> */}
+
             </div>
-            <div class="grid grid-cols-7  items-center justify-between">
+            <div className="grid grid-cols-9  items-center justify-between">
 
-                 
-                    <div class="col-span-3 flex flex-col items-start ">
-                        <span class="text-xs font-bold text-primary">{home}</span>
-                        {/* <span
-                                                    class="text-[10px] font-bold text-secondary uppercase tracking-tighter">Seed
-                                                    #1</span> */}
-                    </div>
-                    <span class="text-xs text-gray-600 text-outline text-center">VS</span>
-                    <div class="col-span-3  flex flex-col items-end ">
-                        <span class="text-xs font-bold text-primary">{away}</span>
+                <RosterTeam roster={home} />
 
-                    </div>
-                </div>
 
-             
+
+                <span class="text-xs text-gray-600 text-outline text-center">VS</span>
+                <RosterTeam roster={away} />
+
+
+            </div>
+
+
 
         </div>
     )

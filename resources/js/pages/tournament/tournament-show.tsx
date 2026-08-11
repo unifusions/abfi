@@ -1,11 +1,14 @@
 import TournamentStatCard from "@/components/ext/tournament/tournament-stats-card";
 import { dashboard } from "@/routes";
 import { index } from "@/routes/tournaments";
-import { builder, generatePools } from "@/routes/tournaments/competition";
+import competition, { builder, generatePools } from "@/routes/tournaments/competition";
 import { Head, Link } from "@inertiajs/react";
 import { Calendar, CheckCircle, Info, MapPin } from "lucide-react";
+import TournamentCompetitionStatus from "./competition/tournament-competition-status";
 
-export default function TournamentShow({ tournament, rosters, competitions, approvedRosters,
+export default function TournamentShow({ tournament,
+    rosters, competitions,
+    approvedRosters,
     registered_rosters
 }: { tournament: any, rosters: any, competitions: any }) {
     return (
@@ -38,18 +41,11 @@ export default function TournamentShow({ tournament, rosters, competitions, appr
 
                     </div>
                 </div>
-                <div className="flex space-x-3">
-                    {competitions.map((competition: any) => <Link href={builder({ tournament: tournament.id, competition: competition.id }).url}
-                        className="bg-zinc-50 border border-outline-variant/20 p-4 flex flex-col gap-3 w-48">
-                        <div>
+                <div className="flex items-center space-x-3">
+                    <TournamentCompetitionStatus competitions={competitions}
+                        approvedRosters={approvedRosters}
+                    />
 
-                            <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">{competition?.name}</p>
-                            <p className="text-sm font-bold text-primary">{approvedRosters[competition.competition_type]?.length ?? 0} Teams Finalized</p>
-                        </div>
-                        <div
-                            className="w-full py-2 bg-primary text-white text-center uppercase text-xs font-bold hover:opacity-90 transition-opacity">Generate
-                            Pools</div>
-                    </Link>)}
 
 
 
@@ -84,12 +80,15 @@ export default function TournamentShow({ tournament, rosters, competitions, appr
             </div>
 
             <div className="grid grid-cols-2 gap-6">
+{competitions.map((competition) => 
+    <div>ds</div>
+)}
                 {Object.entries(rosters).map(([competition, roster]) =>
                     <div>
                         <div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
                             <h3 class="font-headline font-bold text-primary uppercase tracking-tighter text-xl">
-                                {competition}  Rosters ({roster.length})</h3>
-
+                                {competition}  Rosters ({roster?.data?.length})</h3>
+                          
                         </div>
 
                         <div className="grid   md:grid-cols-4 divide-x divide-y divide-outline-variant/10">

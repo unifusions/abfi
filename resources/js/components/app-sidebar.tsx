@@ -31,12 +31,12 @@ const tournamentSubMenu : NavItem[] = [
     },
     {
         title: 'Categories',
-        href :" #",
+        href :"#",
         module: "Tournament"
     },
       {
         title: 'Archive ',
-        href :" #",
+        href :"#",
         module: "Tournament"
     }
 ];
