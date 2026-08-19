@@ -1,18 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Info } from "lucide-react";
+import PlayerApprove from "./player-approve";
 
-export default function PlayerReview({ player }) {
+export default function PlayerReview({roster, player }) {
     return (
-        <div class="flex-1 flex overflow-hidden">
-            <div class="flex-1 flex flex-col overflow-y-auto bg-surface">
-                <div class="p-8">
-                    <div class="flex justify-between items-start mb-8">
-                        <div class="flex items-center gap-6">
-                            <div class="w-20 h-20 rounded-lg bg-surface-container-high border-2 border-primary/10 overflow-hidden">
-                                <img class="w-full h-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH6l1x4_VkmIXlAJPrfjpOZkYCjM7OPeKNTwinrjQWATgObm7napeQYM6bfwExCyGE1l6pSeIxUClm-8YTifX3OcdKpRDx4xvtxAVDipdQl8nNwmlVlbiQrZ2niQHoFhwWvSVqhWd6NLdQ4dMxu8S0WtIo45OOI2bNKIeoRGe8BMBy9ofaYza1GWelmzD4fcnezYpx7en8qsb8jkBQc32myzj6WVkPipG42edDn9aTlYrrw2cpAFC6nw" />
+        <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 flex flex-col overflow-y-auto bg-surface">
+                <div className="p-8">
+                    <div className="flex justify-between items-start mb-8">
+                        <div className="flex items-center gap-6">
+                            <div className="w-20 h-20 rounded-lg bg-surface-container-high border-2 border-primary/10 overflow-hidden">
+                                <img className="w-full h-full object-cover"
+                                    src={player?.profile_photo} />
                             </div>
                             <div>
+
                                 <h2 className="font-headline font-black text-3xl text-primary tracking-tighter uppercase">{player.name}
                                 </h2>
                                 <div className="flex gap-3 mt-1">
@@ -37,12 +39,15 @@ export default function PlayerReview({ player }) {
                                 <div
                                     className="w-1/2 aspect-square bg-surface-container-high rounded-lg overflow-hidden border border-outline-variant/10">
                                     <img class="w-full h-full object-cover"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH6l1x4_VkmIXlAJPrfjpOZkYCjM7OPeKNTwinrjQWATgObm7napeQYM6bfwExCyGE1l6pSeIxUClm-8YTifX3OcdKpRDx4xvtxAVDipdQl8nNwmlVlbiQrZ2niQHoFhwWvSVqhWd6NLdQ4dMxu8S0WtIo45OOI2bNKIeoRGe8BMBy9ofaYza1GWelmzD4fcnezYpx7en8qsb8jkBQc32myzj6WVkPipG42edDn9aTlYrrw2cpAFC6nw" />
+                                        src={player?.profile_photo} />
                                 </div>
                                 <div class="w-1/2 flex flex-col justify-center">
-                                    <p class="text-sm text-on-surface-variant mb-4">Please verify that the uploaded photo matches the
+                                    <p class="text-md text-on-surface-variant mb-4">Please verify that the uploaded photo matches the
                                         athlete's official identification and meets the league's quality standards.</p>
                                     <div class="space-y-2">
+                                        <div className="text-sm font-semibold">
+                                            Instructions for approval:
+                                        </div>
                                         <div class="flex items-center gap-2 text-xs text-green-700 font-medium">
                                             <CheckCircle /> Face clearly visible
                                         </div>
@@ -68,10 +73,10 @@ export default function PlayerReview({ player }) {
                     <h3 class="font-headline font-bold text-primary uppercase text-xs tracking-widest mb-4">Verification Actions
                     </h3>
                     <div class="space-y-3 w-full">
-                        <Button
-                            size="xl"
-                            className="w-full uppercase  font-bold text-xs tracking-wider">Approve
-                            Player</Button>
+                       <PlayerApprove 
+                        roster = {roster}
+                        player = {player?.id}
+                       />
                         <Button
                             variant="outline"
                             size="xl"

@@ -12,7 +12,7 @@ export default function PlayerView({ player }) {
         <>
 
 
-          
+        
             {/* <!-- Athlete Header Canvas --> */}
             <div className="px-8 py-4 space-y-8   w-full">
                 {/* <!-- High-Fidelity Athlete Header --> */}
@@ -31,13 +31,14 @@ export default function PlayerView({ player }) {
 
                                 src={data.profile_photo} />
                         </div>
+                       
                         <div className="flex-1 space-y-2">
                             <div className="inline-flex items-center space-x-2 bg-secondary px-3 py-1 rounded-full mb-2">
                                 <BadgeCheck />
                                 <span className="font-label text-[10px] font-bold uppercase tracking-widest">Federation Verified</span>
                             </div>
                             <h2 className="text-5xl md:text-7xl font-headline font-black tracking-tighter uppercase italic leading-none">
-                                {data.first_name} {data.last_name}
+                                {data.name}
                             </h2>
                             <div className="flex flex-wrap gap-4 items-center font-label text-sm text-primary-fixed space-y-2">
                                 <div className="grid grid-cols-2 gap-x-8 gap-y-2">
@@ -77,7 +78,7 @@ export default function PlayerView({ player }) {
             
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
                 {/* <!-- Performance Metrics (Primary Column) --> */}
-
+ 
                 <div className="md:col-span-4 space-y-8">
                     <EligibilityCard
                         details={data.details}

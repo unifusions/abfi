@@ -3,8 +3,9 @@
 namespace App\Domains\Tournament\Competition\Engine\Pool\Services;
 
 use App\Domains\Tournament\Competition\Engine\Pool\DTOs\PoolGenerationData;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Enums\TournamentFormatEnum;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
 use DomainException;
 
 class PoolValidator

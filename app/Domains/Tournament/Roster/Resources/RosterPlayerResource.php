@@ -23,7 +23,9 @@ class RosterPlayerResource extends JsonResource
             'position_names' => $player?->positions()->orderBy('display_order')->pluck('name'),
             'age' => Carbon::parse($player?->dob)->age,
             'profile_photo' => $player->getMediaUrl(MediaCollectionEnum::PROFILE),
-            'dob' => $player->dob->format('d/m/Y')
+            'dob' => $player->dob->format('d/m/Y'),
+            'approved' => $this->is_approved,
+            'requestedResubmission' => $this->is_request_resubmission
         ];
     }
 }

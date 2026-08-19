@@ -6,8 +6,9 @@ use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStageEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureTypeEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Models\TournamentFixture;
-use App\Domains\Tournament\Models\TournamentCompetition;
  
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 

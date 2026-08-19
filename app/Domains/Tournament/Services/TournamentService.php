@@ -8,6 +8,7 @@ use App\Domains\Tournament\Actions\CreateAndPublishTournament;
 use App\Domains\Tournament\Actions\CreateTournament;
 use App\Domains\Tournament\Actions\PublishTournament;
 use App\Domains\Tournament\Actions\UpdateTournament;
+use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
 use App\Domains\Tournament\Models\Tournament;
 
 class TournamentService
@@ -55,6 +56,7 @@ class TournamentService
             $tournament->competitions()->create([
                 'name' => ucfirst($competition),
                 'competition_type' => $competition,
+                'phase' => CompetitionPhaseEnum::REGISTRATION_OPEN
             ]);
 
         }

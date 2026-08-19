@@ -2,7 +2,8 @@
 
 namespace App\Domains\Tournament\Competition\Engine\Pool\Services;
 
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use Illuminate\Support\Collection;
 
 class SeedResolver

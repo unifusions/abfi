@@ -1,5 +1,8 @@
 <?php
 
+use App\Domains\Tournament\Competition\Certificate\Controllers\CertificateController;
+use App\Domains\Tournament\Competition\Certificate\Controllers\RosterCertificateController;
+use App\Domains\Tournament\Roster\Controllers\RosterAccreditationController;
 use App\Domains\Tournament\Roster\Controllers\RosterBuilderController;
 use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Tournament\Roster\Controllers\RosterOfficialController;
@@ -14,11 +17,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('rosters/{roster}')->name('rosters.')
         ->group(function () {
-
+          
             Route::controller(RosterReviewController::class)->name('review.')->group(
                 function () {
                     Route::get('/review', 'review')->name('index');
                     Route::post('/approve', 'approve')->name('approve');
+                    Route::post('/approve-player/{rosterPlayer}', 'approvePlayer')->name('approvePlayer');
                 }
             );
 
@@ -32,12 +36,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 );
 
             Route::controller(RosterOfficialController::class)->prefix('officials')->name('rosterofficials.')->group(
-                    function () {
-                        Route::get('/search', 'search')->name('search');
-                        Route::post('/store', 'store')->name('store');
-                        Route::delete('/{rosterOfficial}', 'destroy')->name('destroy');
-                    }
-                );
+                function () {
+                    Route::get('/search', 'search')->name('search');
+                    Route::post('/store', 'store')->name('store');
+                    Route::delete('/{rosterOfficial}', 'destroy')->name('destroy');
+                }
+            );
+
+            Route::controller(RosterAccreditationController::class)->prefix('accreditations')->name('accreditations.')->group(
+                function () {
+                    Route::get('/print', 'print')->name('printAll');
+                    Route::get('/{accreditation/print', 'printIndividual')->name('printIndividual');
+                }
+            );
+
+            Route::controller(RosterCertificateController::class)->prefix('certificates')->name('certificates.')->group(
+                function(){
+                    Route::get('{certficate}/download', 'downloadSingle')->name('downloadSingle');
+                    Route::get('/download-all', 'downloadForRoster')->name('downloadForRoster');
+                }
+            );
+
+              Route::get('/print',[ RosterController::class, 'print'])->name('rosters.printRosters');
+
             Route::get('/builder', [RosterBuilderController::class, 'show'])
                 ->name('rosters.builder');
 

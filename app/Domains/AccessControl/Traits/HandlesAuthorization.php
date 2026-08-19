@@ -61,4 +61,9 @@ trait HandlesAuthorization
     ): bool {
         return $this->can($user, $permission);
     }
+
+    protected function isFederationAdmin(User $user): bool
+    {
+        return $user->hasRole('federation.admin');
+    }
 }

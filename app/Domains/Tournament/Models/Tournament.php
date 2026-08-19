@@ -4,6 +4,7 @@ namespace App\Domains\Tournament\Models;
 
 use App\Domains\Category\Models\Category;
 use App\Domains\Organization\Models\Organization;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Enums\TournamentFormatEnum;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Tournament\Roster\Models\Roster;

@@ -10,6 +10,7 @@ import { create } from "@/routes/rosters/rosters/players";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OfficialBuilder from "./builder/official-builder";
 import RosterSSubmission from "./builder/roster-submission";
+import AddPlayerDialog from "./builder/add-player-dialog";
 
 
 
@@ -22,6 +23,8 @@ export default function RosterBuilder({ roster,
     const [open, setOpen] = useState(false);
     const [params, setParams] = useState({});
     const { get } = useHttp({});
+    // const [selectedPlayer, setSelectedPlayer] = useState(null);
+    // const [addDialogOpen, setAddDialogOpen] = useState(false)
     const addPlayer = (playerId: string) => {
         router.post(
             (rosters.rosterplayers.store({ roster: roster.id }).url),
@@ -170,7 +173,7 @@ export default function RosterBuilder({ roster,
 
 
                                                 }
-
+ 
                                             </div>
                                         </div>)
                                     }
@@ -249,9 +252,9 @@ export default function RosterBuilder({ roster,
 
 
                             {roster_players.data.map((player, index) =>
-                                <div class="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <span class="font-bold text-xs text-on-surface-variant w-4">
+                                <div className="bg-surface-container-lowest p-3 rounded-xl flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-bold text-xs text-on-surface-variant w-4">
                                             {String((index + 1)).padStart(2, '0')}
                                         </span>
                                         <div>

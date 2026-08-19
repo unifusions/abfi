@@ -4,7 +4,8 @@ namespace App\Domains\Tournament\Competition\Engine\Pool\Models;
 
 use App\Domains\Tournament\Competition\Engine\Fixture\Models\TournamentFixture;
 use App\Domains\Tournament\Competition\Engine\Standing\Models\PoolStanding;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Models\Roster;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

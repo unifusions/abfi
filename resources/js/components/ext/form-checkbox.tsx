@@ -26,7 +26,9 @@ export function FormCheckbox({ label, labelId, labelRequired, layout = 'row',
                     'grid grid-cols-4': layout === "row"
                 })}>
                     {options.map((option) => {
-                        const isChecked = value?.includes(option.value);
+                          const optionValue = String(option.value);
+                          const isChecked = (value ?? []).some((selectedValue) => String(selectedValue) === optionValue
+    );
 
                         return (
                             <Field orientation="horizontal" {...(hasError ? { "data-invalid": true } : {})}>

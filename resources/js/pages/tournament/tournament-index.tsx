@@ -1,12 +1,12 @@
 import LinkButton from "@/components/ext/link-button";
 import PageHeader from "@/components/ext/page-header";
 import ActiveTournament from "@/components/ext/tournament/active-tournament";
-import TournamentDraft from "@/components/ext/tournament/tournament-draft";
+ 
 import TournamentList from "@/components/ext/tournament/tournament-list";
 import TournamentStatCard from "@/components/ext/tournament/tournament-stats-card";
-import UpcomingTournament from "@/components/ext/tournament/upcoming-tournament";
+ 
 import { useAuthorization } from "@/hooks/use-authorization";
-import usePermission from "@/hooks/use-permissions";
+ 
 
 import { dashboard } from "@/routes";
 import { create, index } from "@/routes/tournaments";
@@ -50,46 +50,54 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
 
             </PageHeader>
 
-
-
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-
-                {activeTournament?.data && <div className="row-span-3">
+            <div className="grid grid-cols-4 gap-6">
+                {activeTournament?.data && <div className=" ">
                     <ActiveTournament tournament={activeTournament?.data} />    </div>}
 
+                <div className="col-span-3">
 
-
-                <TournamentStatCard
-                    label="Active Now"
-                    value={activeNow}
-                    description=""
-
-                />
-
-                <TournamentStatCard
-                    label="Verified Rosters"
-                    value="672"
-                    description=""
-
-                />
-
-                <TournamentStatCard
-                    label="Completed (MTD)"
-                    value={completedMTD}
-                    description="Tournaments"
-
-                />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
 
 
 
 
 
+                        <TournamentStatCard
+                            label="Active Now"
+                            value={activeNow}
+                            description=""
+
+                        />
+
+                        <TournamentStatCard
+                            label="Verified Rosters"
+                            value="672"
+                            description=""
+
+                        />
+
+                        <TournamentStatCard
+                            label="Completed (MTD)"
+                            value={completedMTD}
+                            description="Tournaments"
+
+                        />
+
+
+<div className="col-span-3">
+ <TournamentList tournaments={tournaments} />
+</div>
+
+    
 
 
 
 
+                    </div>
+                </div>
             </div>
+
+
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
@@ -101,7 +109,7 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
                 {/* <TournamentDraft /> */}
             </div>
 
-            <TournamentList tournaments={tournaments} />
+       
 
 
 

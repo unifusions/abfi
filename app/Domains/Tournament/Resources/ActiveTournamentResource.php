@@ -18,7 +18,8 @@ class ActiveTournamentResource extends JsonResource
             'ends_at' => $this->ends_at?->format('M j, Y'),
             'status' => $this->status,
             'venue' => $this->venue?->name . ',' . $this->venue?->state?->short_code,
-'organization' => $this->organization?->name
+            'organization' => $this->organization?->name,
+            'competitions' => $this->competitions()->withCount('rosters')->get()
         ];
     }
 }

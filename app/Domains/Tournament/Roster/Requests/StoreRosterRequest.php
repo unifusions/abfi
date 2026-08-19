@@ -14,7 +14,7 @@ class StoreRosterRequest extends FormRequest
     {
         return [
             'tournament_competition_id' => ['required', 'uuid', Rule::exists('tournament_competitions', 'id')],
-               'organization_id' => ['required', 'uuid', Rule::exists('organizations', 'id')],
+            'organization_id' => ['required', 'uuid', Rule::exists('organizations', 'id')],
             'name' => ['required']
         ];
     }

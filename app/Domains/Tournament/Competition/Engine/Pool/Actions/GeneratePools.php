@@ -4,7 +4,8 @@ namespace App\Domains\Tournament\Competition\Engine\Pool\Actions;
 
 use App\Domains\Tournament\Competition\Engine\Pool\DTOs\PoolGenerationData;
 use App\Domains\Tournament\Competition\Engine\Pool\Services\PoolGenerator;
-use App\Domains\Tournament\Models\TournamentCompetition;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
+ 
 
 class GeneratePools
 {

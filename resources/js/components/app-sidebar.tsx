@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, IdCard, LayoutGrid, Shield, Trophy, User, UserCog, Users } from 'lucide-react';
+import { Award, BookOpen, FolderGit2, IdCard, LayoutGrid, Shield, Trophy, User, UserCog, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,30 +13,26 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { compliance, dashboard } from '@/routes';
+import { categories, compliance, dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 import { index as PlayerIndex } from '@/routes/players';
 import { index as TournamentIndex } from '@/routes/tournaments';
 import { index as OfficialIndex } from '@/routes/officials';
 import { useAuthorization } from '@/hooks/use-authorization';
-import {index as RosterIndex} from '@/routes/rosters';
- 
+import { index as RosterIndex } from '@/routes/rosters';
 
-const tournamentSubMenu : NavItem[] = [
+
+const tournamentSubMenu: NavItem[] = [
 
     {
         title: 'All Tournaments',
-        href : TournamentIndex(),
+        href: TournamentIndex(),
         module: "Tournament"
     },
+
     {
-        title: 'Categories',
-        href :"#",
-        module: "Tournament"
-    },
-      {
         title: 'Archive ',
-        href :"#",
+        href: "#",
         module: "Tournament"
     }
 ];
@@ -53,7 +49,13 @@ const mainNavItems: NavItem[] = [
         href: TournamentIndex(),
         icon: Trophy,
         module: "Tournament",
-        subMenus :  tournamentSubMenu
+        subMenus: tournamentSubMenu
+    },
+    {
+        title: 'Tournament Categories',
+        href: categories(),
+        module: "Tournament",
+        icon: Award
     },
     {
         title: 'Players',
@@ -65,20 +67,20 @@ const mainNavItems: NavItem[] = [
         title: "Officials",
         href: OfficialIndex(),
         icon: UserCog,
-        module:"Official"
+        module: "Official"
     },
     {
         title: 'Rosters',
         href: RosterIndex(),
         icon: IdCard,
-        module:"Roster"
+        module: "Roster"
 
     },
     {
         title: 'Compliance',
         href: compliance(),
         icon: Shield,
-        module : "Compliance"
+        module: "Compliance"
     }
 ];
 const footerNavItems: NavItem[] = [
@@ -97,13 +99,13 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
 
     const { canModule } = useAuthorization();
-const visibleItems = mainNavItems.filter(item => canModule(item.module));
+    const visibleItems = mainNavItems.filter(item => canModule(item.module));
 
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
-               
+
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={dashboard()} prefetch>
@@ -115,10 +117,10 @@ const visibleItems = mainNavItems.filter(item => canModule(item.module));
             </SidebarHeader>
 
             <SidebarContent>
-              
+
                 <NavMain items={visibleItems} />
             </SidebarContent>
- 
+
             <SidebarFooter >
                 {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />

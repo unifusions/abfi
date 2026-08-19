@@ -173,7 +173,7 @@ trait HasMedia
     $media = $this->mediaLinks
     ?->firstWhere('collection', $collection->value)
         ?->media;
-
+ 
     if (! $media) {
         return null;
     }

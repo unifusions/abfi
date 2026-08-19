@@ -24,6 +24,11 @@ enum PermissionEnum: string
     case TOURNAMENT_PUBLISH = 'tournament.publish';
     case TOURNAMENT_DELETE = 'tournament.delete';
 
+    case CATEGORY_VIEW = 'category.view';
+    
+    case COMPETITION_VIEW = 'competition.view';
+    case COMPETITION_UPDATE = 'competition.update';
+
     // Player
     case PLAYER_VIEW = 'player.view';
     case PLAYER_CREATE = 'player.create';

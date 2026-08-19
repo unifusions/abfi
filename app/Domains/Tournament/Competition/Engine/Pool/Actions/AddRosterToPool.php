@@ -4,7 +4,8 @@ namespace App\Domains\Tournament\Competition\Engine\Pool\Actions;
 
 use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPool;
  
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Models\Roster;
 use DomainException;
 

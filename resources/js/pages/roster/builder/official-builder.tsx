@@ -1,38 +1,34 @@
 import { Button } from "@/components/ui/button";
-import { store } from "@/routes/rosters/rosterofficials";
+
+import { destroy, store } from "@/routes/rosters/rosterofficials";
 import { router, useHttp } from "@inertiajs/react";
 import { Minus, Plus, UserPlus } from "lucide-react";
+import AddRosterOfficialDialog from "./add-roster-official-dialog";
+import { useState } from "react";
 
 export default function OfficialBuilder({ roster, officials, roster_officials }) {
 
 
-   
-    const deletePlayer = (officialId: string) => {
-        // router.delete(
-        //     (rosters.rosterplayers.destroy({
-        //         roster: roster.id,
-        //         rosterPlayer: playerId
-        //     }).url),
-
-        //     {
-        //         preserveScroll: true,
-        //         preserveState: true,
-        //     }
-        // );
-    };
-
-    const addOfficial = (officialId: string) => {
-        router.post(
-            (store({ roster: roster.id }).url),
-            {
+    const [open, setOpen] = useState(false);
+    const [selectedOfficial, setSelectedOfficial] = useState(null);
+    const deleteOfficial = (officialId: string) => {
+        router.delete(
+            (destroy({
                 roster: roster.id,
-                official_id: officialId,
-            },
+                rosterOfficial: officialId
+            }).url),
+
             {
                 preserveScroll: true,
                 preserveState: true,
             }
         );
+    };
+
+    const addOfficial = (official) => {
+        setSelectedOfficial(official);
+        setOpen(true);
+
     };
 
 
@@ -43,7 +39,7 @@ export default function OfficialBuilder({ roster, officials, roster_officials })
                     <div>
                         <h3 className="font-label text-xs uppercase tracking-widest font-bold text-secondary">Available
                             Officials</h3>
-                        <span className="text-xs text-on-surface-variant">Showing {officials?.length} players</span>
+                        <span className="text-xs text-on-surface-variant">Showing {officials?.length} Officials</span>
                     </div>
                     <div>
                         <Button
@@ -60,9 +56,9 @@ export default function OfficialBuilder({ roster, officials, roster_officials })
                 </div>
 
 
-               
+
                 <div className="grid grid-cols-1 gap-3">
- 
+
                     {officials.map((official) => {
 
                         const inRoster = roster_officials?.data?.some(p => p.official_id === official.id);
@@ -89,12 +85,12 @@ export default function OfficialBuilder({ roster, officials, roster_officials })
                                 {inRoster ?
 
                                     <Button variant="destructive" size={"lg"}
-
+                                        onClick={() => deleteOfficial(rosterOfficial.id)}
                                     > <Minus /></Button>
 
                                     : <Button
                                         variant="outline"
-                                        onClick={() => addOfficial(official.id)}
+                                        onClick={() => addOfficial(official)}
                                         className="rounded-none hover:bg-primary hover:text-white" size={"lg"}>
                                         <Plus />
                                     </Button>
@@ -109,6 +105,13 @@ export default function OfficialBuilder({ roster, officials, roster_officials })
 
 
                 </div>
+             {selectedOfficial && <AddRosterOfficialDialog
+                    roster={roster?.id}
+                    open={open}
+                    onOpenChange={setOpen}
+                    selectedOfficial={selectedOfficial}
+                    resetOfficial={() => { setOpen(false); setSelectedOfficial(null) }}
+                />  }   
             </div>
         </>
     )

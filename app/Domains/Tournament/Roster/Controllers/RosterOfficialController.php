@@ -11,6 +11,7 @@ class RosterOfficialController extends Controller
 {
     public function store(Roster $roster, Request $request)
     {
+        
         if ($roster->officials->count() >= $roster->competition->tournament->category->maximum_officials)
             return back()->with([
                 'error' => "Official cannot be added furthur. Only 2 officials is allowed per roster"
@@ -18,7 +19,8 @@ class RosterOfficialController extends Controller
 
         $rosterOfficial = RosterOfficial::create([
             'roster_id' => $roster->id,
-            'official_id' => $request->official_id
+            'official_id' => $request->official_id,
+            'type' => $request->type
         ]);
         $message = "Official " . $rosterOfficial->official->official_code . "  has been added to roster";
         return back()->with([

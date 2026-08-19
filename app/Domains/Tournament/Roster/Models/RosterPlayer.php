@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['roster_id', 'player_id', 'jersey_number', 'is_captain', 'is_vice_captain'])]
+#[Fillable(['roster_id', 'player_id', 'jersey_number', 
+'is_captain', 'is_vice_captain', 
+'is_approved', 'is_request_resubmissions', 'snapshot'])]
 
 class RosterPlayer extends Model{
     use HasUuids;
 
     protected $casts = [
         'is_captain' => 'boolean',
-        'is_vice_captain' => 'boolean'
+        'is_vice_captain' => 'boolean',
+        'is_approved' => 'boolean',
+        'is_request_resubmissions' => 'boolean'
     ];
 
     public function roster(){

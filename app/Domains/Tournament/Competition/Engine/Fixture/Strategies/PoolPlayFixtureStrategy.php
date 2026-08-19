@@ -6,7 +6,8 @@ namespace App\Domains\Tournament\Competition\Engine\Fixture\Strategies;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Models\TournamentFixture;
 use App\Domains\Tournament\Competition\Engine\Fixture\Services\RoundRobinGenerator;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use Illuminate\Support\Facades\DB;
 
 class PoolPlayFixtureStrategy implements FixtureStrategy

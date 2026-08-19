@@ -134,6 +134,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                     onCreate={(query) => { setVenueQuery(query); setVenueDialogOpen(true) }}
 
                                 />
+                             
                                 <AddVenueDialog
                                     open={venueDialogOpen}
                                     onOpenChange={setVenueDialogOpen}

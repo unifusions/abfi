@@ -2,16 +2,18 @@ import AppPagination from "@/components/ext/app-pagination";
 import TableContainer from "@/components/ext/table-container";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { show } from "@/routes/players";
+
+import { show, edit } from "@/routes/players";
 import { Link } from "@inertiajs/react";
+import { Eye, Pencil } from "lucide-react";
 
 export default function PlayerList({ players, disabled }) {
 
     const { data, ...paginationData } = players;
     return (
-<>
-        <TableContainer>
-            
+        <>
+            <TableContainer>
+
                 <TableHeader>
                     <TableRow>
                         <TableHead>Player ID</TableHead>
@@ -51,15 +53,22 @@ export default function PlayerList({ players, disabled }) {
                         <TableCell>{player.age} Years |  {player.gender}</TableCell>
                         <TableCell>{player.created_at}</TableCell>
                         <TableCell>
-                            <Link href={show({player: player?.id}).url}>
-                            View</Link>
+                            <div className="inline-flex gap-3">
+                                <Link href={show({ player: player?.id }).url}
+                                ><Eye className="h-4 w-4" />
+                                </Link>
+
+                                <Link href={edit({ player: player?.id }).url}>
+                                    <Pencil className="h-4 w-4" /></Link>
+                            </div>
+
                         </TableCell>
                     </TableRow>)}
                 </TableBody>
-            
-           
-        </TableContainer>
- <AppPagination paginationData={paginationData} />
- </>
+
+
+            </TableContainer>
+            <AppPagination paginationData={paginationData} />
+        </>
     )
 }

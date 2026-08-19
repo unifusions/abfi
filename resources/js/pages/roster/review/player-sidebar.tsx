@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Info, LockOpenIcon, Plus } from "lucide-react";
+import { CheckCircle, Info, LockOpenIcon, Plus } from "lucide-react";
 
 export default function PlayerSidebar({ players, onSelect, selectedPlayer }) {
     return (
@@ -21,10 +21,13 @@ export default function PlayerSidebar({ players, onSelect, selectedPlayer }) {
                             >
                                 <div class="flex justify-between items-start mb-1">
                                     <span class="font-display font-bold uppercase  ">{player?.name}</span>
-                                    <Info className="text-orange-300" />
+                                      {player.approved? <CheckCircle className="text-green-600" /> : <Info className="text-orange-300" /> }
                                 </div>
                                 <p class="text-xs text-zinc-600 font-medium">AGE: {player?.age} | {player?.position_names}</p>
-                                <p class="text-[10px] text-accent-secondary  mt-2 font-bold tracking-widest uppercase">Photo Pending Review</p>
+                            {player.approved? 
+                              <p class="text-[10px] text-green-600  mt-2 font-bold tracking-widest uppercase">Player has been approved</p>
+                            :
+                                <p class="text-[10px] text-accent-secondary  mt-2 font-bold tracking-widest uppercase">Photo Pending Review</p>}
                             </div>
 
                         </>

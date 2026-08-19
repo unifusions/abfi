@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Domains\Tournament\Competition\Engine\Pool\Actions;
-
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use Illuminate\Support\Facades\DB;
 use DomainException;
 

@@ -10,8 +10,9 @@ use App\Domains\Tournament\Competition\Format\Contracts\TournamentFormatDriver;
 use App\Domains\Tournament\Competition\Format\Drivers\SingleEliminationDriver;
 use App\Domains\Tournament\Competition\Format\Drivers\SingleEliminationFormatDriver;
 use App\Domains\Tournament\Competition\Format\Exceptions\UnsupportedTournamentFormatException;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Enums\TournamentFormatEnum;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
 
 class TournamentDriverManager
 {

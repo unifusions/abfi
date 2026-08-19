@@ -1,5 +1,11 @@
+import LinkButton from "@/components/ext/link-button";
 import PageHeader from "@/components/ext/page-header";
+import { Button } from "@/components/ui/button";
 import officials from "@/routes/officials";
+import { printAll } from "@/routes/rosters/accreditations";
+import { downloadForRoster } from "@/routes/rosters/certificates";
+import rosters, { printRosters } from "@/routes/rosters/rosters";
+import { Download, Medal, Printer } from "lucide-react";
 
 
 const PlayerCard = ({ player }) => {
@@ -31,8 +37,10 @@ const PlayerCard = ({ player }) => {
 }
 
 export default function RosterShow({ roster, players, tournament,
-    officials,
+    officials, hasAccreditations,
     competition, category }) {
+
+    const isComplete = roster.status === 'completed';
     return (
         <>
             <PageHeader
@@ -42,8 +50,9 @@ export default function RosterShow({ roster, players, tournament,
                 <div
                     className="px-4 py-1.5 rounded-full bg-primary/20 text-primary text-xs font-black uppercase tracking-tighter flex items-center gap-1.5 shadow-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                   {roster.status}
+                    {roster.status}
                 </div>
+
             </PageHeader>
 
             <div className="grid grid-cols-3 gap-6 mb-10">
@@ -65,8 +74,8 @@ export default function RosterShow({ roster, players, tournament,
                     <div>
                         <p
                             class="text-[10px] font-label font-black text-on-surface-variant/60 uppercase tracking-[0.2em] mb-1">
-                            Staff Count</p> 
-                        <h3 class="text-3xl font-headline font-extrabold text-on-surface">{officials?.length >  0 ? officials?.length : 0 } <span
+                            Staff Count</p>
+                        <h3 class="text-3xl font-headline font-extrabold text-on-surface">{officials?.length > 0 ? officials?.length : 0} <span
                             class="text-on-surface-variant/30 text-xl">/{category.maximum_officials}</span></h3>
                     </div>
 
@@ -103,7 +112,7 @@ export default function RosterShow({ roster, players, tournament,
                         <div class="space-y-4">
                             <div class="flex items-center gap-3">
                                 <img src="https://placehold.co/60x60.jpg" />
-                                
+
                                 <div>
                                     <p class="font-headline font-bold text-sm text-on-surface leading-tight">Vikram
                                         Singh</p>
@@ -112,7 +121,7 @@ export default function RosterShow({ roster, players, tournament,
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
-                              <img src="https://placehold.co/60x60.jpg" />
+                                <img src="https://placehold.co/60x60.jpg" />
                                 <div>
                                     <p class="font-headline font-bold text-sm text-on-surface leading-tight">Anjali
                                         Gupta</p>
@@ -120,12 +129,12 @@ export default function RosterShow({ roster, players, tournament,
                                         General Manager</p>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
 
-                    <div class="bg-primary text-white p-6 rounded-lg relative overflow-hidden">
-                       
+                    <div className="bg-primary text-white p-6 rounded-lg relative overflow-hidden">
+
                         <h3 class="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-primary/60 mb-4">
                             Tournament Event</h3>
                         <div class="space-y-3 relative z-10">
@@ -146,6 +155,25 @@ export default function RosterShow({ roster, players, tournament,
                         </div>
                     </div>
 
+                    <div className="flex flex-col gap-3">
+
+                        {hasAccreditations &&
+                            <>
+                                <LinkButton href={printRosters({ roster: roster }).url} target="_blank">
+                                    <Printer /> Print Roster Sheet
+                                </LinkButton>
+
+                                <LinkButton href={printAll({ roster: roster }).url} target="_blank">
+                                    <Download /> Download ID Cards
+                                </LinkButton>
+                            </>}
+
+                        {competition.phase === 'completed' && <LinkButton href={downloadForRoster({ roster: roster }).url} className="bg-secondary" target="_blank">
+                            <Medal /> Download  Certificates
+                        </LinkButton>
+                        }
+
+                    </div>
                     {/* <div class="bg-surface-container-low p-6 rounded-lg">
                         <h3
                             class="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-4">

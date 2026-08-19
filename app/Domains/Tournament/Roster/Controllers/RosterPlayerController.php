@@ -19,7 +19,7 @@ class RosterPlayerController extends Controller
     public function search()
     {
     }
-    public function store(Roster $roster, Request $request)
+    public function store(  Request $request, Roster $roster)
     {
 
  
@@ -30,9 +30,10 @@ class RosterPlayerController extends Controller
         $rosterPlayer = RosterPlayer::create([
             'roster_id' => $roster->id,
             'player_id' => $request->player_id,
+
         ]);
 
-                $message = "Player " . $rosterPlayer->player->player_code . "  has been added to roster";
+        $message = "Player " . $rosterPlayer->player->player_code . "  has been added to roster";
 
         return back()->with([
             'success' => $message
@@ -44,7 +45,7 @@ class RosterPlayerController extends Controller
     public function destroy(Roster $roster, RosterPlayer $rosterPlayer)
     {
         $rosterPlayer->delete();
-         $message = "Player " . $rosterPlayer->player->player_code . "  has been removed from roster";
+        $message = "Player " . $rosterPlayer->player->player_code . "  has been removed from roster";
         return back()->with([
             'success' => $message
         ]);

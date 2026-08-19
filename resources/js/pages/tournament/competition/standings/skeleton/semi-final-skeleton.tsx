@@ -1,8 +1,6 @@
 export default function SemifinalSkeleton(){
     return (
-            <>      <h4
-                        class="text-center font-black text-[10px] uppercase tracking-widest text-on-surface-variant mb-4">
-                        Semifinals</h4>
+            <>   
 
                     <div class="bracket-connector space-y-1">
                         <div

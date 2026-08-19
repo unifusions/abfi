@@ -3,7 +3,9 @@
 
 namespace App\Domains\Tournament\Competition\Format\Contracts;
 
-use App\Domains\Tournament\Models\TournamentCompetition;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
+
+ 
 
 interface TournamentFormatDriver
 {

@@ -32,7 +32,9 @@ use Laravel\Scout\Searchable;
 class Official extends Model{
      use HasFactory, HasUuids, HasMedia, Searchable, HasScope;
 
-
+protected $casts = [
+    'dob' => 'date',
+];
  protected static function newFactory(): Factory
     {
         return OfficialFactory::new();

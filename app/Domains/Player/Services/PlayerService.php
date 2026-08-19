@@ -5,6 +5,7 @@ namespace App\Domains\Player\Services;
 use App\Domains\AccessControl\Enums\RoleEnum;
 use App\Domains\Player\Actions\CreatePlayer;
 use App\Domains\Player\Actions\GeneratePlayerCode;
+use App\Domains\Player\Actions\UpdatePlayer;
 use App\Domains\Player\Models\Player;
 use App\Models\User;
 use DB;
@@ -13,6 +14,7 @@ class PlayerService
 {
     public function __construct(
         protected CreatePlayer $createPlayer,
+        protected UpdatePlayer $updatePlayer,
         protected GeneratePlayerCode $generatePlayerCode
     ) {
 
@@ -39,8 +41,9 @@ class PlayerService
 
 
     }
-    public function update(): Player
+    public function update(Player $player, array $data): Player
     {
+          return $this->updatePlayer->handle($player, $data);
     }
     public function verify(): Player
     {

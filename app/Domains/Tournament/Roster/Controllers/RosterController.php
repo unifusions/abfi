@@ -4,21 +4,25 @@ namespace App\Domains\Tournament\Roster\Controllers;
 
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Organization\Resources\OrganizationDropdownResource;
+use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Tournament\Models\Tournament;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Requests\StoreRosterRequest;
 use App\Domains\Tournament\Roster\Resources\RosterDetailPlayerResource;
 use App\Domains\Tournament\Roster\Resources\RosterListResource;
+use App\Domains\Tournament\Roster\Services\RosterPrintService;
 use App\Domains\Tournament\Roster\Services\RosterService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class RosterController extends Controller
 {
-    public function __construct(protected RosterService $service)
+    public function __construct(protected RosterService $service, 
+    protected RosterPrintService $printService
+    )
     {
     }
 
@@ -26,7 +30,7 @@ class RosterController extends Controller
     {
 
         return inertia('roster/roster-index', [
-            'rosters' => RosterListResource::collection(Roster::paginate(15)),
+            'rosters' => RosterListResource::collection(Roster::orderBy('created_at', 'desc')->paginate(15)),
             'drafts' => Roster::where('status', RosterStatusEnum::DRAFT->value)->count(),
             'total_rosters' => Roster::count(),
             'approved_rosters' => Roster::where('status', RosterStatusEnum::APPROVED->value)->count(),
@@ -73,8 +77,8 @@ class RosterController extends Controller
                         return [
                             'value' => $c->id,
                             'label' => $c->name,
-                            'disabled' => $c->has_roster
-                            // 'disabled' => true
+                            'disabled' => $c->has_roster ||  $c->phase != CompetitionPhaseEnum::REGISTRATION_OPEN,
+                            'phase' => $c->phase
                         ];
                     }))
                 ];
@@ -93,15 +97,19 @@ class RosterController extends Controller
         $roster = $this->service->create($request->validated());
         return redirect()->route('rosters.rosters.builder', $roster)->with(['success' => 'Roster has been created successfully']);
     }
+
+    
     public function show(Roster $roster)
     {
+        $roster->load('certificates');
         return inertia('roster/roster-show', [
             'roster' => $roster,
             'players' => RosterDetailPlayerResource::collection($roster->players),
             'competition' => $roster->competition,
             'tournament' => $roster->competition->tournament,
             'officials' => $roster->officials,
-            'category' => $roster->competition->tournament->category
+            'category' => $roster->competition->tournament->category,
+            'hasAccreditations' => $roster->accreditations()->count() > 0
         ]);
     }
     public function edit(Roster $roster)
@@ -131,6 +139,12 @@ class RosterController extends Controller
     public function update(Roster $roster)
     {
     }
+
+    public function print(Roster $roster){
+       return  $this->printService->print($roster);
+         
+    }
+
     public function destroy(Roster $roster)
     {
     }

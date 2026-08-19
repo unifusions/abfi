@@ -4,6 +4,7 @@ namespace App\Domains\Player\Controllers;
 
 use App\Domains\Compliance\Models\BaseballPosition;
 use App\Domains\Compliance\Models\State;
+use App\Domains\Media\Enums\MediaCollectionEnum;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Organization\Resources\OrganizationDropdownResource;
 use App\Domains\Player\Models\Player;
@@ -99,17 +100,48 @@ class PlayerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Player $player)
     {
-        //
+
+        return inertia('player/player-edit', [
+            'player' => $player,
+            'profile_photo' => [
+                'id' => $player->profile_media?->id,
+                'url' => $player->getMediaUrl(MediaCollectionEnum::PROFILE),
+            ],
+            'states' => State::all()->map(function ($state) {
+                return [
+                    'label' => $state->name,
+                    'value' => $state->id,
+
+                ];
+            }),
+            'selected_positions' => $player->positions->map(fn($position) => [
+
+                $position->id,
+            ])->values(),
+            'baseball_positions' => BaseballPosition::orderBy('display_order', 'asc')->get()->map(function ($position) {
+                return [
+                    'value' => $position->id,
+                    'label' => $position->name . ' [' . $position->code . ']'
+                ];
+            }),
+            'organizations' => OrganizationDropdownResource::collection(Organization::orderBy('name')->get()),
+            'can_select_organization' => auth()->user()->hasRole('federation.admin'),
+            'default_organization' => auth()->user()->organization_id,
+
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Player $player)
     {
-        //
+
+
+        $player = $this->service->update($player, $request->all());
+        return back()->with(['success' => "Player {$player->player_code} has been updated successfully"]);
     }
 
     /**

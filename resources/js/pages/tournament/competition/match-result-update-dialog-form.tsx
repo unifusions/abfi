@@ -35,13 +35,13 @@ const RosterRadioOption = ({ side, option, onSelect }) => {
     )
 }
 export default function MatchResultUpdateDialogForm({
-   
-     open, onOpenChange, fixture, resetFixture }) {
-    const { tournament, competition } = usePage().props;
+    tournament, competition,
+    open, onOpenChange, fixture, resetFixture }) {
+
     const { data, setData, processing, errors, put, reset, resetAndClearErrors } = useForm({
         'winner_roster_id': '',
-        'home_score': null,
-        'away_score': null,
+        'home_score': 0,
+        'away_score': 0,
         'remarks': null,
     });
 
@@ -67,12 +67,17 @@ export default function MatchResultUpdateDialogForm({
     const handleOpenChange = (open) => resetAll()
 
     useEffect(() => {
-        if (data?.away_score > data?.home_score)
-            setWinner(fixture?.away_roster)
-        else if (data?.away_score < data?.home_score)
-            setWinner(fixture?.home_roster)
-        else setWinner(null);
-    }, [data.away_score, data.home_score])
+        if (!data || !fixture) return;
+        const awayScore = Number(data.away_score) || 0;
+        const homeScore = Number(data.home_score) || 0;
+        if (awayScore > homeScore) {
+            setWinner(fixture.away_roster);
+        } else if (awayScore < homeScore) {
+            setWinner(fixture.home_roster);
+        } else {
+            setWinner(null);
+        }
+    }, [data, fixture])
     return (
         <>
             <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -80,7 +85,7 @@ export default function MatchResultUpdateDialogForm({
                 <DialogContent onInteractOutside={(e) => { e.preventDefault(); }}>
 
                     <div className="bg-primary text-white px-8 py-6 flex justify-between items-end relative overflow-hidden">
- 
+
 
                         <div className="relative z-10">
                             <span
@@ -88,8 +93,8 @@ export default function MatchResultUpdateDialogForm({
                                 Result Entry</span>
                             <h2
                                 className="font-display text-3xl text-on-primary font-black tracking-tight leading-none mb-1">
-                                Match #{fixture?.match_number}</h2>
-                            <p className="font-body text-inverse-primary text-sm">{fixture?.home_roster?.name} vs. {fixture?.away_roster?.name}  </p>
+                                {fixture?.stage === 'final' && 'Final'} Match {fixture?.stage != "final" && `#${fixture?.match_number}`}</h2>
+                            <p className="font-body text-inverse-primary text-sm">{fixture?.home_roster?.organization?.state?.short_code} vs. {fixture?.away_roster?.organization?.state?.short_code}  </p>
                         </div>
 
                         <div className="relative z-10">
@@ -132,7 +137,7 @@ export default function MatchResultUpdateDialogForm({
                                         <div className="font-semibold capitalize">{fixture?.away_roster?.name}</div>
                                         <div><FormInput
                                             className="text-right w-8 bg-zinc-50"
-                                            id="home_score"
+                                            id="away_score"
                                             type="number"
                                             hasError={errors.away_score}
                                             onChange={(e) => setData('away_score', e.target.value)} />
@@ -152,26 +157,26 @@ export default function MatchResultUpdateDialogForm({
                                         <div
                                             className="flex items-center justify-between p-4 rounded-xl border-2 border-surface-container-highest bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary-fixed/10 transition-all">
                                             <div>
-                                                
+
                                                 <div className="flex items-center gap-2">
-                                                        <div className={cn("flex h-12  items-center justify-center w-12 font-bold font-display text-md rounded-md", stateColors[winner?.organization?.state?.short_code])}>
-                                                            {winner?.organization?.state?.short_code}
-                                                        </div>
-                                                        <div className="flex flex-col">
-                                                            <div className="text-primary font-bold font-display tracking-tight text-2xl capitalize">{winner?.name}</div>
-                                                            <div className="text-zinc-400 text-sm">{winner?.organization?.name}</div>
+                                                    <div className={cn("flex h-12  items-center justify-center w-12 font-bold font-display text-md rounded-md", stateColors[winner?.organization?.state?.short_code])}>
+                                                        {winner?.organization?.state?.short_code}
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <div className="text-primary font-bold font-display tracking-tight text-2xl capitalize">{winner?.name}</div>
+                                                        <div className="text-zinc-400 text-sm">{winner?.organization?.name}</div>
 
 
-                                                        </div>
-                                                
+                                                    </div>
+
+                                                </div>
                                             </div>
-                                            </div>
 
-                                            
+
                                         </div>
                                     }
 
-                                    
+
                                 </div>
                                 <div className="mt-4">
                                     <Label>Remarks</Label>

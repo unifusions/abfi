@@ -1,7 +1,8 @@
 <?php
 
 use App\Domains\Organization\Models\Organization;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;

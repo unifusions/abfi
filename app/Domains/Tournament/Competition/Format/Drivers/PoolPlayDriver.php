@@ -3,7 +3,8 @@
 namespace App\Domains\Tournament\Competition\Drivers;
 
 use App\Domains\Tournament\Competition\Format\Contracts\TournamentFormatDriver;
-use App\Domains\Tournament\Models\TournamentCompetition;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
+ 
 
 class PoolPlayDriver implements TournamentFormatDriver
 {

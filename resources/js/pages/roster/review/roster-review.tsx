@@ -15,21 +15,21 @@ export default function RosterReview({
         setSelectedPlayer(player);
 
     }
-    const {post} = useForm();
+    const { post } = useForm();
     return (
 
         <>
             <PageHeader title="Roster Review & Verification" subText={roster?.name}>
                 <div className="flex items-center ">
-                    <Button size="xl" onClick={()=> post(approve({roster:roster.id}).url)} >Approve Roster</Button>
+                    <Button size="xl" onClick={() => post(approve({ roster: roster.id }).url)} >Approve Roster</Button>
                     <Button size="xl">Disapprove Roster</Button>
                 </div>
             </PageHeader>
 
             <div className="flex-1 flex overflow-hidden border-t ">
 
-                <PlayerSidebar players={roster_players?.data} selectedPlayer={selectedPlayer} onSelect={onSelectPlayer} />
-                {selectedPlayer && <PlayerReview player={selectedPlayer} />
+            <PlayerSidebar players={roster_players?.data} selectedPlayer={selectedPlayer} onSelect={onSelectPlayer} />
+                {selectedPlayer && <PlayerReview roster={roster?.id} player={selectedPlayer} />
 
                 }
 

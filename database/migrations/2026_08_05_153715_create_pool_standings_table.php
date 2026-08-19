@@ -1,7 +1,8 @@
 <?php
 
 use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPool;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Models\Roster;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

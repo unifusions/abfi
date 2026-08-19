@@ -13,7 +13,7 @@ export function useAuthorization() {
     }>().props;
 
     const can = (permission: string): boolean => {
-        console.log(auth)
+         
         if (auth.is_super_admin) {
             return true;
         }

@@ -4,8 +4,9 @@ namespace App\Domains\Tournament\Competition\Engine\Fixture\Services;
 
 use App\Domains\Tournament\Competition\Engine\Fixture\Strategies\FixtureStrategy;
 use App\Domains\Tournament\Competition\Engine\Fixture\Strategies\PoolPlayFixtureStrategy;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Enums\TournamentFormatEnum;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
 
  
 class FixtureGenerator

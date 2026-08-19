@@ -3,8 +3,9 @@
 namespace  App\Domains\Tournament\Competition\Engine\Fixture\Controllers;
 use App\Domains\Tournament\Competition\Engine\Fixture\Actions\GenerateFixtures;
 use App\Domains\Tournament\Competition\Engine\Fixture\Actions\LockFixtures;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Models\Tournament;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

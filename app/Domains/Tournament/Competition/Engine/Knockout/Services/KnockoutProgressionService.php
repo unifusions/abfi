@@ -6,6 +6,7 @@ use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStageEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureTypeEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Models\TournamentFixture;
+use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
@@ -41,12 +42,45 @@ class KnockoutProgressionService
                 1
             ),
 
-            FixtureStageEnum::FINAL => null,
+            FixtureStageEnum::FINAL => $this->completeCompetition($fixture),
 
             default => null,
         };
     }
 
+
+    protected function completeCompetition($fixture)
+    {
+        $competition = $fixture->competition;
+        $final = $fixture;
+        $winnerId = $final->winner_roster_id;
+
+        $runnerUpId = $final->home_roster_id === $winnerId
+            ? $final->away_roster_id
+            : $final->home_roster_id;
+
+
+        $semiFinals = TournamentFixture::query()
+            ->where('tournament_competition_id', $competition->id)
+            ->where('fixture_type', FixtureTypeEnum::KNOCKOUT)
+            ->where('stage', FixtureStageEnum::SEMI_FINAL)
+            ->where('status', FixtureStatusEnum::COMPLETED)
+            ->get();
+        $thirdPlaceIds = $semiFinals
+            ->map(function (TournamentFixture $semiFinal) {
+                return $semiFinal->home_roster_id === $semiFinal->winner_roster_id
+                    ? $semiFinal->away_roster_id
+                    : $semiFinal->home_roster_id;
+            })
+            ->values();
+        $competition->update([
+            'phase' => CompetitionPhaseEnum::COMPLETED,
+            'winner_roster_id' => $winnerId,
+            'runner_up_roster_id' => $runnerUpId,
+            'third_place_roster_id' => $thirdPlaceIds->first(),
+            'third_place_2_roster_id' => $thirdPlaceIds->get(1),
+        ]);
+    }
     protected function generateNextRound(
         TournamentFixture $fixture,
         FixtureStageEnum $currentStage,

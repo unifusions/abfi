@@ -7,8 +7,9 @@ use App\Domains\Tournament\Competition\Engine\Fixture\Events\FixtureCompletedEve
 use App\Domains\Tournament\Competition\Engine\Fixture\Models\TournamentFixture;
 use App\Domains\Tournament\Competition\Engine\Fixture\Requests\UpdateFixtureRequest;
 use App\Domains\Tournament\Competition\Engine\Fixture\Services\FixtureResultService;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Models\Tournament;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
 use App\Http\Controllers\Controller;
 
 class FixtureResultController extends Controller

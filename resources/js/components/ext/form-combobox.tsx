@@ -8,7 +8,7 @@ export default function FormCombobox(
         options, value, onValueChange, disabled = false
     }
 ) {
-    const selectedOption = options.find((opt) => opt.value === value) || null;
+    const selectedOption = options?.find((opt) => opt.value === value) || null;
     return (
         <div className="flex flex-col gap-1.5  w-full">
 
@@ -28,7 +28,7 @@ export default function FormCombobox(
                 <ComboboxContent>
                     <ComboboxEmpty>No items found.</ComboboxEmpty>
                     <ComboboxList className="focus:text-white">
-                        {options.map((option) => (
+                        {options?.map((option) => (
                             <ComboboxItem key={option.value} value={option.value} className={"data-highlighted:text-white"} >
                                 {option.label}
                             </ComboboxItem>

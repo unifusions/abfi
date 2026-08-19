@@ -3,6 +3,7 @@ import InputError from "../input-error";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import FormLabel from "./form-label";
+import { cn } from "@/lib/utils";
 
 type Props = {
     hasError?: string
@@ -10,15 +11,15 @@ type Props = {
     name?: string;
     type?: string;
     label?: string;
-    value?:string;
+    value?: string;
     className?: string;
     layout?: string;
     labelRequired?: boolean;
     placeholder?: string;
-    onChange ?:  React.ChangeEventHandler<HTMLInputElement>;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
 
 }
-export default function FormInput({ id, name, type = "text", layout = "col", label, className, placeholder, labelRequired = false, hasError,value, ...props }: Props) {
+export default function FormInput({ id, name, type = "text", layout = "col", label, className, placeholder, labelRequired = false, hasError, value, disabled=false,  ...props }: Props) {
     return (
         <div className="flex flex-col gap-1.5  w-full">
             {label &&
@@ -33,10 +34,15 @@ export default function FormInput({ id, name, type = "text", layout = "col", lab
 
                 type={type}
                 value={value}
-                className={`block border-0 p-3 w-full rounded-lg text-slate-900 bg-white focus:bg-white 
-                focus:ring-2 focus:ring-primary/20 placeholder:text-outline/60 transition-all
-                ${className} ${hasError && 'ring-1 ring-destructive'}`}
-placeholder= {placeholder}
+                className={cn('block border-0 p-3 w-full rounded-lg text-slate-900 bg-white focus:bg-white',
+                    'focus:ring-2 focus:ring-primary/20 placeholder:text-outline/60 transition-all', className,
+                    { 'ring-1 ring-destructive': hasError,
+
+                        'bg-zinc-100' : disabled
+                     })
+                }
+
+                placeholder={placeholder}
                 {...props}
             />
 

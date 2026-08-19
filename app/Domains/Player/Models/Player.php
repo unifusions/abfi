@@ -73,7 +73,7 @@ class Player extends Model
     {
         return $this->belongsToMany(
             BaseballPosition::class,
-            'player_positions'
+            'player_positions', 'player_id', 'baseball_position_id'
         );
     }
 

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import rosters from "@/routes/rosters";
 import competition from "@/routes/tournaments/competition";
 import { useForm } from "@inertiajs/react";
-import { ArrowRight, BookLock, Fingerprint, MoveRight, ShieldAlert } from "lucide-react";
+import { ArrowRight, BookLock, Fingerprint, MessageCircleWarning, MoveRight, ShieldAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function RosterCreate({
@@ -24,7 +24,7 @@ export default function RosterCreate({
         'tournament_id': '',
     })
 
-
+    const [selectedTournament, setSelectedTournament] = useState();
 
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export default function RosterCreate({
         setSelectedTournament(competition.find(c => c.value === data.tournament_id));
 
     }, [data.tournament_id]);
-    const [selectedTournament, setSelectedTournament] = useState();
+
 
 
     const handleSubmit = (e) => {
@@ -63,6 +63,7 @@ export default function RosterCreate({
                                     id="tournament_id"
                                     items={competition}
                                     placeHolder="Select Tournament"
+                                    value={data.tournament_id}
                                     onValueChange={(val) =>
                                         setData('tournament_id', val)
                                     }
@@ -116,10 +117,10 @@ export default function RosterCreate({
                     </form>
                 </div>
                 {/* <!-- Guidance / Summary Panel (Asymmetric balance) --> */}
-                <div class="lg:col-span-4 space-y-6">
+                <div className="lg:col-span-4 space-y-6">
                     {/* <!-- Helper Card --> */}
 
-                    <div class="bg-primary text-white p-8 rounded-xl relative overflow-hidden">
+                    <div className="bg-primary text-white p-8 rounded-xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -mr-16 -mt-16"></div>
                         <h3 className="font-headline font-bold text-xl mb-4 flex items-center gap-3">
                             <ShieldAlert />
@@ -147,17 +148,20 @@ export default function RosterCreate({
                                     begins.
                                 </div>
                             </div>
+
+                            {selectedTournament && <div className="flex gap-4 items-start">
+
+                                {selectedTournament?.competition?.map((c) =>
+
+                                    c.disabled && <div className="bg-secondary p-3 flex items-center gap-4">
+                                        <MessageCircleWarning />
+                                        {`Cannot register for ${c.label} division.`} </div>
+
+                                )}
+                            </div>}
                         </div>
                     </div>
-                    {/* <!-- Dynamic Preview (Placeholder for real-time update) -->
-                    <div
-                        className="bg-surface-container border-2 border-dashed border-outline-variant/30 p-8 rounded-xl flex flex-col items-center justify-center text-center">
-                        <span className="material-symbols-outlined text-5xl text-on-surface-variant/20 mb-4"
-                        >badge</span>
-                        <h4 className="font-headline font-bold text-on-surface-variant/40">Roster Preview</h4>
-                        <p className="font-body text-xs text-on-surface-variant/40 mt-2 italic">Select a tournament to view
-                            <br />specific registry requirements</p>
-                    </div> */}
+                     
                 </div>
             </div>
 

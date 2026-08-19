@@ -16,7 +16,7 @@ import KnockoutFixtures from "./knockout-fixtures";
 
 
 export default function PoolIndex({
-    tournament, competition,
+    tournament, competition,pool_fixture,
     approvedRosters, competition_for, category, pools, pools_roster,
     avg_roster, unassignedRosters, fixtures, locked_fixtures,
     poolStageCompleted, knockout_fixtures
@@ -56,12 +56,13 @@ export default function PoolIndex({
 
     if (!poolStageCompleted) {
         return <MatchResultUpdate
+           tournament = {tournament}  competition = {competition} pool_fixture={pool_fixture}
             fixtures={fixtures} />
     }
 
     if (knockout_fixtures) { return <KnockoutFixtures 
-        // tournament={tournament}
-        // competition={competition}
+        tournament={tournament}
+        competition={competition}
         fixtures={knockout_fixtures} /> }
 
     return (

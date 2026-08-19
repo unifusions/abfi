@@ -7,7 +7,8 @@ use App\Domains\Tournament\Competition\Engine\Pool\Enums\PoolGenerationMethod;
 use App\Domains\Tournament\Competition\Engine\Pool\Enums\PoolStatus;
 use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPool;
 use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPoolRoster;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use Illuminate\Support\Facades\DB;
 
 class PoolGenerator

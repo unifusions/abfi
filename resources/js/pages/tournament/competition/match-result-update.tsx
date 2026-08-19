@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const MatchCard = ({ fixture, onClick, enableScoreUpdate=false }) => {
-
+const isCompleted = fixture.status === 'completed';
 const isHomeWinner = fixture.winner_roster_id === fixture.home_roster_id;
 const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
     return (
@@ -20,7 +20,7 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
             <div className="flex justify-between items-start mb-3">
                 <span
                     className="inline-flex items-center  py-0.5 rounded-full text-[10px] font-label font-bold uppercase tracking-widest bg-surface-variant text-on-surface-variant">
-                    Pending Result {fixture.pool}
+                    Pending Result {fixture.pool} 
                 </span>
                 <span className="font-label text-xs text-on-surface-variant">Round #{fixture.round} Match #{fixture.match_number}</span>
             </div>
@@ -31,10 +31,10 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
                 )}>
                     <span className="font-headline font-semibold text-on-surface text-lg capitalize">{fixture?.home_roster?.name}</span>
                     <span className={cn("font-display    font-bold text-sm", 
-                        {'text-green-800' : isHomeWinner,
-                            'text-red-600' : !isHomeWinner
+                        {'text-green-800' : isCompleted && isHomeWinner,
+                            'text-red-600' : isCompleted && !isHomeWinner
                          }
-                    )}>{isHomeWinner ? 'W'  : 'L'}</span>
+                    )}>{isCompleted && (isHomeWinner ? 'W'  : 'L')}</span>
                 </div>
                <div className={cn("flex justify-between items-center p-3 ", 
                      {'bg-green-50' : isAwayWinner, }
@@ -44,7 +44,7 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
                         {'text-green-800' : isAwayWinner,
                             'text-red-600' : !isAwayWinner
                          }
-                    )}>{isAwayWinner ? 'W' : 'L'}</span>
+                    )}>{isCompleted && (isAwayWinner ? 'W' : 'L')}</span>
                 </div>
             </div>
             {enableScoreUpdate && 
@@ -52,6 +52,7 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
 
 
                 <Button
+                onClick={onClick}
                     variant="accentSecondary"
                     size={"lg"}
                     className="w-full  text-sm text-white  tracking-tight normal-case">
@@ -65,9 +66,9 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
     )
 }
 
-export default function MatchResultUpdate({ fixtures }) {
+export default function MatchResultUpdate({   tournament, competition, fixtures, pool_fixture }) {
     const [selectedFixture, setSelectedFixture] = useState();
-    const { tournament, competition, pool_fixture } = usePage().props;
+   
     const [open, setOpen] = useState(false);
     const dialogScoreUpdate = (fixture) => {
         setSelectedFixture(fixture)
@@ -124,7 +125,9 @@ export default function MatchResultUpdate({ fixtures }) {
 
                                             </div>
                                         </div>
-                                        <MatchResultUpdateDialogForm open={open} onOpenChange={setOpen} fixture={selectedFixture} resetFixture={() => setSelectedFixture(null)} />
+                                        <MatchResultUpdateDialogForm open={open} onOpenChange={setOpen} fixture={selectedFixture} 
+                                           tournament = {tournament} competition ={competition}
+                                        resetFixture={() => setSelectedFixture(null)} />
 
                                     </>
                                 )

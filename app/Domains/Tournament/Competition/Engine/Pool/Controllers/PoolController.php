@@ -14,8 +14,9 @@ use App\Domains\Tournament\Competition\Engine\Pool\Enums\PoolGenerationMethod;
 use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPool;
 use App\Domains\Tournament\Competition\Engine\Pool\Requests\GeneratePoolRequest;
 use App\Domains\Tournament\Competition\Enums\CompetitionTypeEnum;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Models\Tournament;
-use App\Domains\Tournament\Models\TournamentCompetition;
+ 
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

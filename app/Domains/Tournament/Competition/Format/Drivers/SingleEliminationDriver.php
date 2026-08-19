@@ -4,7 +4,8 @@ namespace   App\Domains\Tournament\Competition\Format\Drivers;
 
  
 use App\Domains\Tournament\Competition\Format\Contracts\TournamentFormatDriver;
-use App\Domains\Tournament\Models\TournamentCompetition;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
+ 
 
 class SingleEliminationDriver implements TournamentFormatDriver
 {

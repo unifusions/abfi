@@ -7,6 +7,9 @@ use App\Domains\Compliance\Models\State;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Shared\Resources\SelectCategoryResource;
 use App\Domains\Shared\Resources\SelectStateResource;
+use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStageEnum;
+use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
+use App\Domains\Tournament\Competition\Services\CompetitionResultService;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Requests\StoreTournamentRequest;
@@ -108,14 +111,30 @@ class TournamentController extends Controller
             'tournament/tournament-show',
             [
                 'tournament' => $tournament,
-                'competitions' => $tournament->competitions()->with([
-                    'rosters'
-                ])->get(),
+                'competitions' => $tournament->competitions()->get()->map(function ($c) {
+                    return
+                        array_merge(
+                            $c->toArray(),
+                            [
+                                'can' => [
+                                    'progress' => auth()->user()->can('progress', $c),
+                                ],
+                                'rosters' => RosterListResource::collection($c->rosters),
+                                'standings' => $c->standings()->with('roster')->get(),
+                                'results' => app(CompetitionResultService::class)->results($c),
+                                'winner' => $c->winnerRoster()->with('organization.state')->first(),
+                                'runner' => $c->runnerRoster()->with('organization.state')->first(),
+                                'third_place' =>$c->thirdPlaceRoster()->with('organization.state')->first(),
+                                'third_place2' =>$c->thirdPlace2Roster()->with('organization.state')->first()
+                            ]
+                        );
+                }),
+
                 'registered_rosters' => $tournament->rosters()->where('status', '!=', RosterStatusEnum::DRAFT)->count(),
                 'rosters' => $tournament->submittedRoster()
                     ->with('competition')
                     ->orderBy('created_at', 'desc')
-                    ->get()->groupBy('competition.competition_type')->map(function ($rosters){
+                    ->get()->groupBy('competition.competition_type')->map(function ($rosters) {
                         return RosterListResource::collection($rosters);
                     }),
                 // ->with(['competition', 'organization.state'])->orderBy('created_at')->get()),
