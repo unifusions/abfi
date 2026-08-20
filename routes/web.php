@@ -10,6 +10,7 @@ use App\Domains\Organization\Controllers\OrganizationController;
 use App\Domains\Tournament\Competition\Engine\Pool\Controllers\PoolController;
 use App\Domains\Tournament\Competition\PoolPlay\Controllers\FixtureController;
 
+use App\Domains\Tournament\Controllers\TournamentArchiveController;
 use App\Domains\Tournament\Controllers\TournamentPublishController;
 use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Venue\Controllers\VenueSearchController;
@@ -30,44 +31,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/venue-search', VenueSearchController::class)->name('venue.search');
     Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
 
-    Route::middleware('rbac:role, Federation Admin')->group(function () {
-        Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
-        Route::get('compliance', [ComplianceController::class, 'index'])->name('compliance');
-
-        Route::prefix('compliance')->name('compliance.')->group(
-            function () {
-                Route::resource('roles', RoleController::class);
-                Route::resource('organizations', OrganizationController::class);
-                Route::patch(
-                    'compliance/roles/{role}/permissions',
-                    [RoleController::class, 'syncPermissions']
-                )->name('roles.permissions.sync');
-                Route::controller(\App\Domains\User\Controllers\UserController::class)->prefix('users')->name('users.')->group(
-                    function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::post('/', 'store')->name('store');
-                        Route::get('/create', 'create')->name('create');
-                    }
-                );
-
-                Route::controller(StateController::class)->prefix('states')->name('states.')->group(
-                    function () {
-                        Route::get('/', 'index')->name('index');
-                    }
-                );
-                Route::controller(AuditLogController::class)->prefix('audit')->name('logs.')->group(
-                    function () {
-                        Route::get('/', 'index')->name('index');
-                    }
-                );
-            }
-        );
-    });
-
+   
 
 
     Route::resource('players', \App\Domains\Player\Controllers\PlayerController::class);
     Route::resource('tournaments', \App\Domains\Tournament\Controllers\TournamentController::class);
+    Route::patch('tournaments/{tournament}/archive', TournamentArchiveController::class )->name('archive');
     Route::post('tournaments/create-and-publish', [TournamentPublishController::class, 'store'])->name('tournaments.createpublish');
     // Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
 
@@ -82,3 +51,4 @@ require __DIR__ . '/settings.php';
 require __DIR__ . '/media.php';
 require __DIR__ . '/roster.php';
 require __DIR__ . '/tournament.php';
+require __DIR__ . '/compliance.php';

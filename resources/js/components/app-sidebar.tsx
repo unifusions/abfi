@@ -51,12 +51,7 @@ const mainNavItems: NavItem[] = [
         module: "Tournament",
         subMenus: tournamentSubMenu
     },
-    {
-        title: 'Tournament Categories',
-        href: categories(),
-        module: "Tournament",
-        icon: Award
-    },
+   
     {
         title: 'Players',
         href: PlayerIndex(),

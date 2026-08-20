@@ -27,10 +27,10 @@ export default function OfficialIndex(
 
             >
 
-                <LinkButton href={create()}
-
+                <LinkButton 
+href={create().url}
                     icon={UserRoundPlus}
-                    class="bg-primary   px-8 py-4 rounded-xl flex items-center gap-3 hover:shadow-lg transition-all active:scale-95 group">
+                    >
 
 
                     Register New Official

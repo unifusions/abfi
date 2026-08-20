@@ -1,10 +1,19 @@
+import LinkButton from "@/components/ext/link-button"
 import PageHeader from "@/components/ext/page-header"
+import PdfPreview from "@/components/ext/pdf-preivew"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInput } from "@/components/ui/sidebar"
-import { Switch } from "@base-ui/react"
+import { downloadSingle, emailCertificate } from "@/routes/tournaments/competition/certificates"
+import { DownloadIcon, Mail } from "lucide-react"
 
-export default function CertificateRoster({ roster, certificates }) {
+
+import { useState } from "react"
+import { Document } from 'react-pdf';
+
+export default function CertificateRoster({
+    tournament, competition, roster, certificates }) {
+    const [selectedCertificate, setSelectedCertificate] = useState();
     return (
         <>
 
@@ -20,12 +29,14 @@ export default function CertificateRoster({ roster, certificates }) {
 
                             key={certificate?.id}
                             className="flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                            onClick={() => setSelectedCertificate(certificate)}
                         >
                             <div className="flex w-full items-center gap-2">
                                 <span>{certificate?.recipient_name} </span>{" "}
                                 <span className="ml-auto text-xs">{certificate?.snapshot?.recipient?.role} </span>
                             </div>
                             <span className="font-medium">
+                                {certificate?.id}
                                 <pre>
 
                                 </pre>
@@ -38,15 +49,43 @@ export default function CertificateRoster({ roster, certificates }) {
 
                 </div>
                 <div className="col-span-9 px-4">
-                    <div className="flex items-center justify-between">
-                        <div className="">
-                            <h3>Certificate #</h3>
-                        </div>
-                        <div className="gap-4">
-                            <Button >Download Certificate</Button>
-                            <Button >Email Certificate</Button>
-                        </div>
-                    </div>
+                    {selectedCertificate &&
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between">
+                                <div className="">
+                                    <h3>Certificate #{selectedCertificate?.certificate_number}</h3>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <LinkButton href={downloadSingle({
+                                        tournament: tournament?.id,
+                                        competition: competition?.id,
+                                        certificate: selectedCertificate?.id
+                                    }).url} target="_blank">
+                                        <DownloadIcon />Download Certificate</LinkButton>
+
+                                        
+                                    <LinkButton href={emailCertificate({
+                                        tournament: tournament?.id,
+                                        competition: competition?.id,
+                                        certificate: selectedCertificate?.id
+                                    }).url} className="bg-secondary">
+                                        <Mail />Email Certificate</LinkButton>
+
+
+                                </div>
+
+
+                            </div>
+                            <div className="w-full">
+
+                                <PdfPreview
+                                    fileUrl={selectedCertificate.pdf_url}
+
+                                />
+
+                            </div>
+                        </div>}
+
                 </div>
             </div>
 

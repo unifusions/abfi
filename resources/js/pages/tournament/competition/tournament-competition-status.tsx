@@ -73,6 +73,24 @@ function getActionButtonConfig(competition, tournament) {
             return null;
     }
 }
+
+const DivisionContainer = ({ division, label }) => {
+    return (<>
+
+        <div>
+            <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">{division} Division
+
+
+            </p>
+
+        </div>
+        <div
+            className="w-full py-2 bg-primary text-white text-center uppercase text-xs font-bold hover:opacity-90 transition-opacity">
+            {label}
+
+        </div></>)
+
+}
 export default function TournamentCompetitionStatus({ competitions, approvedRosters }) {
 
     const { tournament } = usePage().props;
@@ -95,18 +113,11 @@ export default function TournamentCompetitionStatus({ competitions, approvedRost
                             className={containerStyle}
                         >
 
-                            <div>
-                                <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">{competition?.name}
+                            <DivisionContainer
+                                division={competition?.name}
+                                label={config?.label} />
 
 
-                                </p>
-                                <p className="text-sm font-bold text-primary group-hover:text-white">{approvedRosters[competition.competition_type]?.length ?? 0} Teams Finalized</p>
-                            </div>
-                            <div
-                                className="w-full py-2 bg-primary text-white text-center uppercase text-xs font-bold hover:opacity-90 transition-opacity">
-                                {config?.label}
-
-                            </div>
                         </button>
                     );
                 }
@@ -115,16 +126,10 @@ export default function TournamentCompetitionStatus({ competitions, approvedRost
                     <Link
                         href={config?.href}
                         className={containerStyle}>
-                       
-                        <div>
-                            <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">{competition?.name}</p>
-                            <p className="text-sm font-bold text-primary group-hover:text-white">{approvedRosters[competition.competition_type]?.length ?? 0} Teams Finalized</p>
-                        </div>
-                        {config && <div
-                            className="w-full py-2 bg-primary text-white text-center uppercase text-xs font-bold hover:opacity-90 transition-opacity">
-                            {config?.label}
 
-                        </div>}
+                        <DivisionContainer
+                            division={competition?.name}
+                            label={config?.label} />
                     </Link>
                 )
 

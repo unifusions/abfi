@@ -10,12 +10,13 @@ use App\Domains\Tournament\Competition\Certificate\Models\CompetitionCertificate
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStageEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureTypeEnum;
- 
+
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Models\Roster;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 
 class CompetitionCertificateService
@@ -55,7 +56,7 @@ class CompetitionCertificateService
                             competition: $competition,
                             roster: $roster,
                             recipient: $recipient['person'],
-                            recipientType : $recipient['type'], 
+                            recipientType: $recipient['type'],
 
                             type: $type,
                         )
@@ -71,7 +72,7 @@ class CompetitionCertificateService
                             competition: $competition,
                             roster: $roster,
                             recipient: $recipient['person'],
-                            recipientType : $recipient['type'], 
+                            recipientType: $recipient['type'],
 
                             type: CertificateTypeEnum::THIRD_PLACE,
                         )
@@ -183,7 +184,7 @@ class CompetitionCertificateService
                             competition: $competition,
                             roster: $roster,
                             recipient: $recipient['person'],
-                            recipientType : $recipient['type'], 
+                            recipientType: $recipient['type'],
                             type: CertificateTypeEnum::PARTICIPANT,
                         )
                     );
@@ -219,8 +220,8 @@ class CompetitionCertificateService
     ): CompetitionCertificate {
 
         $recipientName = $this->recipientName($recipient);
- 
-        return CompetitionCertificate::firstOrCreate(
+
+        $certificate = CompetitionCertificate::firstOrCreate(
             [
                 'tournament_competition_id' => $competition->id,
                 'recipient_type' => $recipient::class,
@@ -244,7 +245,7 @@ class CompetitionCertificateService
                     'roster' => [
                         'id' => $roster->id,
                         'name' => $roster->name,
-                     
+
                     ],
                     'organization' => [
                         'id' => $roster->organization->id,
@@ -275,6 +276,15 @@ class CompetitionCertificateService
                 'pdf_disk' => 'public',
             ]
         );
+
+        $pdfService = app(CertificatePdfService::class);
+        if (
+            !$certificate->pdf_path ||
+            !Storage::disk($certificate->pdf_disk)->exists($certificate->pdf_path)
+        ) {
+            $pdfService->generate($certificate);
+        }
+        return $certificate->refresh();
     }
 
     protected function recipientName(Model $recipient): string

@@ -8,7 +8,7 @@ use App\Domains\Tournament\Competition\Certificate\Services\CompetitionCertifica
 use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Models\Tournament;
- 
+
 use App\Http\Controllers\Controller;
 
 class CertificateController extends Controller
@@ -19,11 +19,11 @@ class CertificateController extends Controller
     ) {
     }
 
-    public function generateAllCertificates(Tournament $tournament, TournamentCompetition  $competition)
+    public function generateAllCertificates(Tournament $tournament, TournamentCompetition $competition)
     {
         $competition->update([
             'phase' => CompetitionPhaseEnum::PROCESS_CERTIFICATES
-            ]);
+        ]);
         $this->service->generateAllCertificates($competition);
         return back()->with(['success' => 'All Certificates has been generated ssuccessfully. Generate PDF for final versions']);
     }
@@ -41,5 +41,15 @@ class CertificateController extends Controller
 
     }
 
-    
+    public function downloadSingle(Tournament $tournament, TournamentCompetition $competition, CompetitionCertificate $certificate)
+    {
+        return $this->pdfService->downloadSingle($certificate);
+    }
+
+    public function emailCertificate(Tournament $tournament, TournamentCompetition $competition, CompetitionCertificate $certificate){
+        return back()->with([
+            'success' => "Certificate {$certificate->certificate_number} has been emailed successfully"
+        ]);
+    }
+
 }

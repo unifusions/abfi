@@ -18,6 +18,7 @@ use App\Domains\Tournament\Resources\ActiveTournamentResource;
 use App\Domains\Tournament\Resources\TournamentListResource;
 use App\Domains\Tournament\Resources\TournamentRosterResource;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
+use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Resources\RosterListResource;
 use App\Domains\Tournament\Services\TournamentService;
 use App\Http\Controllers\Controller;
@@ -43,11 +44,10 @@ class TournamentController extends Controller
 
         $registrationOpen = Tournament::where('registration_open_at', '>=', Carbon::now())->where('registration_close_at', '<=', Carbon::now())->get()->count();
         $activeTournament = Tournament::latest()->first();
-        // $totalTeams = Team::count();
+        $totalTeams = Roster::where('status', RosterStatusEnum::APPROVED)->count();
         $activeTournament = $activeTournament ? new ActiveTournamentResource($activeTournament) : [];
-        $completedMTD = Tournament::where('status', 'completed')
-            ->whereMonth('starts_at', Carbon::now()->month)
-            ->whereYear('ends_at', Carbon::now()->year)
+        $completedMTD = Tournament::where('status', TournamentStatus::ARCHIVED)->orWhere('status', TournamentStatus::COMPLETED)
+
             ->count();
 
 
@@ -57,7 +57,7 @@ class TournamentController extends Controller
             'activeTournament' => $activeTournament,
             'activeNow' => $activeNow,
             'registrationOpen' => $registrationOpen,
-            // 'totalTeams' => $totalTeams,
+            'totalTeams' => $totalTeams,
             'completedMTD' => $completedMTD,
         ]);
     }
@@ -124,8 +124,8 @@ class TournamentController extends Controller
                                 'results' => app(CompetitionResultService::class)->results($c),
                                 'winner' => $c->winnerRoster()->with('organization.state')->first(),
                                 'runner' => $c->runnerRoster()->with('organization.state')->first(),
-                                'third_place' =>$c->thirdPlaceRoster()->with('organization.state')->first(),
-                                'third_place2' =>$c->thirdPlace2Roster()->with('organization.state')->first()
+                                'third_place' => $c->thirdPlaceRoster()->with('organization.state')->first(),
+                                'third_place2' => $c->thirdPlace2Roster()->with('organization.state')->first()
                             ]
                         );
                 }),

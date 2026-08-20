@@ -12,7 +12,7 @@ import { dashboard } from "@/routes";
 import { create, index } from "@/routes/tournaments";
 import { Search, Plus } from "lucide-react";
 
-export default function TournamentIndex({ tournaments, activeNow, completedMTD, activeTournament }) {
+export default function TournamentIndex({ tournaments, activeNow, completedMTD, activeTournament, totalTeams }) {
     const { can } = useAuthorization();
 
 
@@ -71,15 +71,15 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
 
                         <TournamentStatCard
                             label="Verified Rosters"
-                            value="672"
+                            value={totalTeams}
                             description=""
 
                         />
 
                         <TournamentStatCard
-                            label="Completed (MTD)"
+                            label="Completed "
                             value={completedMTD}
-                            description="Tournaments"
+                            
 
                         />
 

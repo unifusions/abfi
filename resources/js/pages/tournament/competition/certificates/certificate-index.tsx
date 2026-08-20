@@ -1,11 +1,15 @@
 import PageHeader from "@/components/ext/page-header";
-import { Award, Badge, Group, IdCard, RotateCcw, SendHorizonal, UserRound, Users, UsersRound } from "lucide-react";
+import { ArrowRight, Award, Badge, Group, IdCard, RotateCcw, SendHorizonal, UserRound, Users, UsersRound } from "lucide-react";
 import ProcessParticipantCertificate from "./process-participant-certificate";
 import ProcessAllCertificate from "./process-all-certificate";
 import { Button } from "@/components/ui/button";
 import { Link } from "@inertiajs/react";
 import { preview } from "@/routes/tournaments/competition/certificates";
 import { certificatesForRoster } from "@/routes/tournaments/competition";
+import TableContainer from "@/components/ext/table-container";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
+import { stateColors } from "@/lib/stateColors";
 
 export default function CertificateIndex({ tournament, competition, certificates,
     participating_rosters, participant_players, winning_players }) {
@@ -21,8 +25,7 @@ export default function CertificateIndex({ tournament, competition, certificates
                             tournament={tournament}
                             competition={competition}
                         /> </div>}
-
-
+           
             </PageHeader>
 
 
@@ -38,10 +41,10 @@ export default function CertificateIndex({ tournament, competition, certificates
                             </div>
 
                         </div>
-                        <div className="grid grid-cols-3 gap-1 bg-surface-container">
+                        <div className="grid grid-cols-4 p-4 gap-3 bg-surface-container">
 
                             <div
-                                className="bg-surface-container-lowest p-6 hover:bg-surface transition-colors cursor-pointer group">
+                                className="bg-white p-6 hover:bg-surface transition-colors cursor-pointer group">
                                 <div
                                     className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                     <span className="text-secondary font-black font-headline">1st</span>
@@ -49,25 +52,40 @@ export default function CertificateIndex({ tournament, competition, certificates
                                 <h4 className="font-headline font-bold text-zinc-600  text-label-md mb-1">Champion
                                 </h4>
 
-                                <h4 className="font-headline font-bold text-secondary text-label-md mb-1">
-                                         {winning_players?.winner?.name}
+                                <h4 className="font-headline font-bold text-2xl text-secondary text-label-md mb-1">
+                                    {winning_players?.winner?.name}
                                 </h4>
 
                                 <p className="text-label-sm   mb-4">
 
-                               {winning_players?.winner?.organization?.name}
+                                    {winning_players?.winner?.organization?.name}
 
 
                                 </p>
-                                {winning_players?.winner && <Link href={certificatesForRoster({
-                                    tournament: tournament?.id,
-                                    competition: competition?.id,
-                                    roster: winning_players?.winner?.id
-                                }).url} target="_blank">View Certificates</Link>}
+                                {winning_players?.winner &&  
+                                  <Link
+                                            href={certificatesForRoster({
+                                                tournament: tournament?.id,
+                                                competition: competition?.id,
+                                              roster: winning_players?.winner?.id
+                                            }).url}
+                                            className="w-full text-primary font-bold text-sm flex items-center  gap-1 hover:underline">
+
+                                            <div className=" ">
+                                                View Certificates
+                                            </div>
+
+                                            <ArrowRight className="h-5 w-5" />
+
+
+
+                                        </Link>
+
+                                }
                             </div>
 
                             <div
-                                className="bg-surface-container-lowest p-6 hover:bg-surface transition-colors cursor-pointer group">
+                                className="bg-white  p-6 hover:bg-surface transition-colors cursor-pointer group">
                                 <div
                                     className="w-10 h-10 rounded-full bg-outline-variant/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                     <span className="  font-black font-headline">2nd</span>
@@ -82,7 +100,7 @@ export default function CertificateIndex({ tournament, competition, certificates
                             </div>
 
                             <div
-                                className="bg-surface-container-lowest p-6 hover:bg-surface transition-colors cursor-pointer group">
+                                className="col-span-2 bg-white p-6 hover:bg-surface transition-colors cursor-pointer group">
                                 <div
                                     className="w-10 h-10 rounded-full bg-tertiary-container/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                     <span className="text-tertiary font-black font-headline">3rd</span>
@@ -135,12 +153,63 @@ export default function CertificateIndex({ tournament, competition, certificates
 
                             </div>
 
-                            <div className="flex flex-col">
-                                {participating_rosters.map((roster) => <div>
-                                    {JSON.stringify(roster)}
-                                </div>)}
+
+                            <div className="grid grid-cols-4 gap-4  mt-3">
+
+
+                                {participating_rosters.map((roster) =>
+                                    <div key={roster.id} className="bg-white p-3 border-zinc-50 border space-y-4  ">
+
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <h4 className="font-headline text-xl font-bold text-primary group-hover:text-secondary transition-colors">
+                                                    {roster?.name}
+                                                </h4>
+                                                <h6 className="text-sm font-semibold text-zinc-600">{roster?.organization?.name}</h6>
+                                            </div>
+                                            <div className={cn("w-6 h-6 p-5  text-sm rounded-sm overflow-hidden flex items-center font-bold justify-center", stateColors[roster?.organization?.state?.short_code])}>
+                                                {roster?.organization?.state?.short_code}
+                                            </div>
+                                        </div>
+
+
+                                        <div className=" w-full flex justify-between items-center py-4 border-y border-outline-variant/20">
+
+                                            <div className="text-left">
+                                                <p className="text-[10px] font-bold text-on-surface-variant uppercase">Players</p>
+                                                <p className="text-xl font-black text-primary">{roster.players_count}</p>
+
+                                            </div>
+
+                                            <div className="text-right">
+                                                <p className="text-[10px] font-bold text-on-surface-variant uppercase">Officials</p>
+                                                <p className="text-xl font-black text-primary">{roster.officials_count}</p>
+
+                                            </div>
+                                        </div>
+
+                                        <Link
+                                            href={certificatesForRoster({
+                                                tournament: tournament?.id,
+                                                competition: competition?.id,
+                                                roster:  roster?.id
+                                            }).url}
+                                            className="w-full text-primary font-bold text-sm flex items-center justify-between gap-1 hover:underline">
+
+                                            <div className=" ">
+                                                View Certificates
+                                            </div>
+
+                                            <ArrowRight className="h-5 w-5" />
+
+
+
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                         </div>
+
                     </div>
                 </section>
 

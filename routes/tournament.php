@@ -10,7 +10,7 @@ use App\Domains\Tournament\Controllers\TournamentCategoryController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/tournament-categories', [TournamentCategoryController::class, 'index'])->name('categories');
+    
 
     Route::prefix('tournaments/{tournament}')->name('tournaments.')->group(function () {
         Route::controller(CompetitionController::class)->prefix('competition/{competition}')
@@ -68,6 +68,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/generate-all', 'generateAllCertificates')->name('generateAllCertificates');
             Route::post('/generate', 'generateParticipantCertificates')->name('generateParticipantCertificates');
             Route::get('{certificate}/preview', 'preview')->name('preview');
+            Route::get('{certificate}/download', 'downloadSingle')->name('downloadSingle');
+            Route::get('{certificate}/email', 'emailCertificate')->name('emailCertificate');
 
         });
 

@@ -17,7 +17,7 @@ class CertificatePdfService
             'certificate' => $certificate,
             'achievement' => $certificate->type->achievement(),
             'year' => $certificate->issued_at?->year ?? now()->year,
-            'background' => $this->background($certificate),
+            'background' => asset('images/certificate-bg.jpg'),
         ]);
     }
 
@@ -30,14 +30,37 @@ class CertificatePdfService
             ->download($certificate->certificate_number . '.pdf');
     }
 
+    public function downloadSingle(CompetitionCertificate $certificate)
+    {
+        if (
+            !$certificate->pdf_path || !Storage::disk($certificate->pdf_disk)->exists($certificate->pdf_path)
+        ) {
+            $this->generate($certificate);
+            $certificate->refresh();
+              return back()->with(['error' => 'Error downloading']);
+        }
+
+        $path = Storage::disk($certificate->pdf_disk)
+            ->path($certificate->pdf_path);
+
+        return response()->download(
+            $path,
+            "{$certificate->certificate_number}.pdf",
+            [
+                'Content-Type' => 'application/pdf',
+            ]
+        );
+      
+    }
+
     public function downloadRoster(string $rosterId)
     {
         $certificates = CompetitionCertificate::query()
             ->where('roster_id', $rosterId)
             ->with([
-        'competition.tournament.organization',
-        'competition.tournament.venue',
-    ])
+                'competition.tournament.organization',
+                'competition.tournament.venue',
+            ])
             ->orderBy('recipient_name')
             ->get();
 
@@ -61,9 +84,10 @@ class CertificatePdfService
         $type = $certificate->type;
         $pdf = Pdf::loadView('certificates.competition', [
             'certificate' => $certificate,
+            'tournament' => $certificate->competition->tournament,
             'achievement' => $type->achievement(),
             'year' => $certificate->issued_at?->year ?? now()->year,
-            'background' => $this->background($certificate),
+            'background' => public_path('images/certificate-bg.jpg'),
             'qrCode' => $this->qrCode($certificate),
 
         ])->setPaper('a4', 'landscape');
@@ -80,6 +104,7 @@ class CertificatePdfService
 
         $certificate->update([
             'pdf_path' => $path,
+            'generated_at' => now(),
         ]);
 
         return $certificate->refresh();

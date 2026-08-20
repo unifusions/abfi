@@ -24,4 +24,8 @@ export default defineConfig({
             formVariants: true,
         }),
     ],
+     optimizeDeps: {
+    // 💡 Add this block to force Vite to bundle react-pdf with your main React copy
+    include: ['react-pdf'],
+  },
 });

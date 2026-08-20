@@ -9,6 +9,7 @@ import { certificates, fixtures } from "@/routes/tournaments/competition";
 import { useAuthorization } from "@/hooks/use-authorization";
 import CompetitionStandings from "./competition-standings/competition-standings";
 import FinalistsDisplay from "./competition-standings/finalists-display";
+import ArchiveTournament from "./archive-tournament";
 
 const RegisteredRosters = ({ rosters }) => <div>
 
@@ -70,10 +71,15 @@ export default function TournamentShow({ tournament,
 
                     </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                    <TournamentCompetitionStatus competitions={competitions}
+                <div className="flex flex-col items-end  space-y-3">
+                    {tournament?.status === 'completed' && <ArchiveTournament tournament={tournament.id} /> }
+                    
+                    <div className="flex items-end space-x-3">
+    <TournamentCompetitionStatus competitions={competitions}
                         approvedRosters={approvedRosters}
                     />
+                    </div>
+                
 
 
 

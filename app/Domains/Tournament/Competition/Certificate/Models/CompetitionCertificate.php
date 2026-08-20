@@ -4,14 +4,16 @@ namespace App\Domains\Tournament\Competition\Certificate\Models;
 
 use App\Domains\Player\Models\Player;
 use App\Domains\Tournament\Competition\Certificate\Enums\CertificateTypeEnum;
- 
- 
+
+
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Models\Roster;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Storage;
 
 class CompetitionCertificate extends Model
 {
@@ -24,7 +26,8 @@ class CompetitionCertificate extends Model
         'roster_id',
         'recipient_id',
         'recipient_type',
-        'type', 'snapshot',
+        'type',
+        'snapshot',
         'recipient_name',
         'competition_name',
         'category_name',
@@ -34,7 +37,7 @@ class CompetitionCertificate extends Model
         'pdf_disk',
         'pdf_path',
         'issued_at',
-        
+
     ];
 
     protected function casts(): array
@@ -45,6 +48,10 @@ class CompetitionCertificate extends Model
             'snapshot' => 'array',
         ];
     }
+
+    protected $appends = [
+    'pdf_url',
+];
 
     public function competition(): BelongsTo
     {
@@ -58,9 +65,18 @@ class CompetitionCertificate extends Model
     {
         return $this->belongsTo(Roster::class);
     }
-public function recipient(): MorphTo
+    public function recipient(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    protected function pdfUrl(): Attribute
 {
-    return $this->morphTo();
+    return Attribute::make(
+        get: fn () => $this->pdf_path
+            ? Storage::disk($this->pdf_disk)->url($this->pdf_path)
+            : null,
+    );
 }
-   
+
 }

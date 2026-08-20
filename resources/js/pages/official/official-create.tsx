@@ -49,7 +49,7 @@ export default function OfficialCreate(
 
 
         </PageHeader>
-     {JSON.stringify(errors)}
+     
 <OfficialForm 
     data={data}
     setData = {setData}

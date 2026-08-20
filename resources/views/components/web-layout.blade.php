@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>{{  $title ?? 'Amateur Baseball Federation of India' }}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#eeedf2",
+                        "on-tertiary-fixed": "#001d34",
+                        "primary-fixed": "#d8e2ff",
+                        "surface": "#faf9fe",
+                        "on-secondary-fixed-variant": "#92001b",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c4c6d1",
+                        "primary-container": "#022a5e",
+                        "on-primary-fixed": "#001a41",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#ffdad8",
+                        "ink-black": "#0A111F",
+                        "tertiary-fixed": "#cfe5ff",
+                        "inverse-on-surface": "#f1f0f5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e3e2e7",
+                        "primary-fixed-dim": "#adc7ff",
+                        "on-secondary-fixed": "#410007",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e9e7ed",
+                        "secondary-fixed-dim": "#ffb3b0",
+                        "primary": "#001638",
+                        "surface-container-highest": "#e3e2e7",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1a1b1f",
+                        "inverse-surface": "#2f3034",
+                        "background": "#faf9fe",
+                        "surface-dim": "#dad9de",
+                        "on-primary-container": "#7693cd",
+                        "surface-container-low": "#f4f3f8",
+                        "outline": "#747780",
+                        "on-surface-variant": "#43474f",
+                        "tertiary-container": "#0e2e48",
+                        "secondary-container": "#e22238",
+                        "surface-bright": "#faf9fe",
+                        "on-tertiary-container": "#7a96b5",
+                        "stadium-gray": "#F8F9FA",
+                        "on-background": "#1a1b1f",
+                        "tertiary": "#00192d",
+                        "inverse-primary": "#adc7ff",
+                        "field-green": "#E1F5C4",
+                        "on-secondary-container": "#fffbff",
+                        "on-tertiary-fixed-variant": "#2c4964",
+                        "secondary": "#bb0026",
+                        "tertiary-fixed-dim": "#acc9ea",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#27467b",
+                        "surface-tint": "#415e94"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section-padding": "80px",
+                        "margin-mobile": "16px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px",
+                        "margin-desktop": "48px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["IBM Plex Sans"],
+                        "label-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "display-lg": ["IBM Plex Sans"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "headline-md": ["IBM Plex Sans"],
+                        "headline-lg": ["IBM Plex Sans"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to right, rgba(0, 22, 56, 0.9) 0%, rgba(0, 22, 56, 0.4) 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 22, 56, 0.15);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+    <!-- TopNavBar -->
+    <nav
+        class="sticky top-0 z-50 bg-primary dark:bg-primary-container border-b border-outline-variant shadow-sm transition-all duration-300 px-5">
+
+        <div class="flex  justify-between items-center   py-4  mx-auto ">
+            <div class="flex items-center justify-between gap-4   ">
+                <div class="flex items-center max-w-96">
+                    <img alt="ABFI Logo" class="h-20 w-auto" src="/images/logo.png" />
+                    <span
+                        class="font-headline-md text-headline-md font-bold text-on-primary dark:text-primary-fixed hidden md:block">Amateur
+                        Baseball Federation of India</span>
+                </div>
+                <div>
+                    <img alt="ABFI Logo" class="h-20 w-auto" src="/images/second_logo.png" />
+                </div>
+            </div>
+            <div class="hidden lg:flex items-center gap-6 me-6">
+                <a class="font-label-lg text-label-lg text-on-primary border-b-2 border-secondary font-bold transition-opacity"
+                    href="#">Home</a>
+                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                    href="#">About</a>
+                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                    href="#">Rules</a>
+                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                    href="#">Events</a>
+                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                    href="#">Schedule</a>
+                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                    href="#">Information</a>
+                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                    href="#">Downloads</a>
+            </div>
+            <a hre="#"
+                class="bg-secondary text-on-secondary px-6 py-2 rounded-lg font-label-lg text-label-lg hover:scale-105 active:scale-95 transition-transform uppercase tracking-wider font-bold">
+                Contact Us
+            </a>
+        </div>
+    </nav>
+
+    {{ $slot }}
+
+    <footer class="bg-tertiary dark:bg-tertiary-container text-on-tertiary pt-section-padding pb-8">
+        <div class="max-w-container-max mx-auto px-margin-desktop">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-16">
+                <!-- Brand Info -->
+                <div class="md:col-span-1">
+                    <div class="font-headline-sm text-headline-sm font-black text-on-tertiary mb-6">ABFI</div>
+                    <p class="font-body-md text-body-md opacity-70 mb-8">Dedicated to promoting, regulating and
+                        developing baseball in India since 1983.</p>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full border border-on-tertiary/20 flex items-center justify-center hover:bg-secondary transition-colors"
+                            href="#"><span class="material-symbols-outlined text-sm">qr_code_2</span></a>
+                        <a class="w-10 h-10 rounded-full border border-on-tertiary/20 flex items-center justify-center hover:bg-secondary transition-colors"
+                            href="#"><span class="material-symbols-outlined text-sm">alternate_email</span></a>
+                        <a class="w-10 h-10 rounded-full border border-on-tertiary/20 flex items-center justify-center hover:bg-secondary transition-colors"
+                            href="#"><span class="material-symbols-outlined text-sm">share</span></a>
+                    </div>
+                </div>
+                <!-- Navigation Links -->
+                <div>
+                    <h5 class="font-label-lg text-label-lg text-on-tertiary mb-6 font-bold uppercase">Federation</h5>
+                    <ul class="space-y-3 font-body-md text-body-md opacity-70">
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">History</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Constitution</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Affiliated Units</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">RTI Information</a></li>
+                    </ul>
+                </div>
+                <!-- Legal Links -->
+                <div>
+                    <h5 class="font-label-lg text-label-lg text-on-tertiary mb-6 font-bold uppercase">Quick Links</h5>
+                    <ul class="space-y-3 font-body-md text-body-md opacity-70">
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Anti-Doping Rules</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Selection Process</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <!-- Contact -->
+                <div>
+                    <h5 class="font-label-lg text-label-lg text-on-tertiary mb-6 font-bold uppercase">Contact Us</h5>
+                    <div class="space-y-4 opacity-70 font-body-md text-body-md">
+                        <p class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-secondary">location_on</span>
+                            B4/317B, Keshav Puram,<br />Delhi - 110035
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-secondary">call</span>
+                            +91 88900 29024
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-secondary">mail</span>
+                            abfi.secretary@gmail.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Copyright Area -->
+            <div
+                class="pt-8 border-t border-on-tertiary/10 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <p class="font-label-sm text-label-sm opacity-60">© 1983 - {{ now()->year }} Amateur Baseball Federation
+                    of India. All
+                    Rights Reserved.</p>
+                <div class="font-label-sm text-label-sm opacity-60">
+                    For best results use Mozilla or Chrome browsers
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- FAB for quick contact -->
+    <button
+        class="fixed bottom-8 right-8 w-16 h-16 bg-secondary text-on-secondary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform z-40 group">
+        <span class="material-symbols-outlined text-3xl">mail</span>
+        <span
+            class="absolute right-full mr-4 bg-primary text-on-primary px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-label-lg">Contact
+            Us</span>
+    </button>
+    <script>
+        // Simple scroll interaction for navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2', 'bg-opacity-95', 'backdrop-blur-md');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2', 'bg-opacity-95', 'backdrop-blur-md');
+            }
+        });
+    </script>
+</body>
+
+</html>

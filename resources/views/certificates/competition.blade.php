@@ -160,10 +160,7 @@
 
     <div class="certificate">
 
-        <img src="/images/certificate-bg.jpg" <!-- src="{{ $background }}" -->
-        class="background"
-        alt=""
-        >
+        <img src="{{ $background }}" class="background"/>
 
         <div class="content">
 

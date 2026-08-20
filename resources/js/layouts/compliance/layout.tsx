@@ -9,13 +9,15 @@ import { cn } from "@/lib/utils";
  
  
 import { Link } from "@inertiajs/react";
-import { Group, KeyRound, Logs, MapPinned, Users } from "lucide-react";
+import { Award, Group, KeyRound, Logs, MapPinned, Users } from "lucide-react";
 import { PropsWithChildren } from "react";
 import { index as logIndex } from "@/routes/compliance/logs";
 import { index  as userIndex} from "@/routes/compliance/users";
  
 import organizations from "@/routes/compliance/organizations";
 import roles from "@/routes/compliance/roles";
+import { categories } from "@/routes/compliance";
+ 
 
 
 const menuItems = [
@@ -37,6 +39,14 @@ const menuItems = [
         href : roles.index().url,
         icon : KeyRound
     },
+
+     {
+            title: 'Tournament Categories',
+            href: categories(),
+            module: "Tournament",
+            icon: Award
+        },
+
     // {
     //     title: 'Audit Logs',
     //     href:  logIndex().url,

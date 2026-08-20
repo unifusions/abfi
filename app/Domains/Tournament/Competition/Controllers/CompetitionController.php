@@ -254,7 +254,8 @@ class CompetitionController extends Controller
             ->get()
             ->sum('players_count');
 
-        $participatingRosters = Roster::query()->whereIn('id', $participantRosterIds)->get();
+        $participatingRosters = Roster::query()->with(['organization.state', 'certificates'])
+        ->withCount(['players', 'officials'])->whereIn('id', $participantRosterIds)->get();
 
         return inertia(
             'tournament/competition/certificates/certificate-index',
@@ -273,6 +274,8 @@ class CompetitionController extends Controller
     {
 
         return inertia('tournament/competition/certificates/certificate-roster', [
+            'tournament' => $tournament,
+            'competition' => $competition,
             'roster' => $roster,
             'certificates' => $roster->certificates
         ]);
