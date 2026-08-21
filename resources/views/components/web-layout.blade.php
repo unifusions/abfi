@@ -153,19 +153,42 @@
                 </div>
             </div>
             <div class="hidden lg:flex items-center gap-6 me-6">
-                <a class="font-label-lg text-label-lg text-on-primary border-b-2 border-secondary font-bold transition-opacity"
-                    href="#">Home</a>
-                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
-                    href="#">About</a>
-                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                <a class="font-label-lg text-label-lg uppercase text-on-primary border-b-2 border-secondary font-bold transition-opacity"
+                    href={{ route('home') }}>Home</a>
+
+
+               <div class="relative group">
+                    <button
+                        class="font-label-lg uppercase text-label-lg text-on-primary/80 hover:text-on-primary transition-colors flex items-center gap-1 py-2">
+                        About
+                        
+                        <span
+                            class="material-symbols-outlined text-sm transition-transform group-hover:rotate-180">keyboard_arrow_down</span>
+                    </button>
+                    <div
+                        class="absolute top-full left-0 w-64 bg-surface-container-low rounded-lg shadow-2xl border border-outline-variant/20 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <a href={{ route('history') }}
+                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">History</a>
+                        <a href="#"
+                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">International
+                            Recognition</a>
+                        <a href="#"
+                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Affiliated
+                            Units</a>
+                        <a href="#"
+                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Executive
+                            Committee</a>
+                    </div>
+                </div>
+                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
                     href="#">Rules</a>
-                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
                     href="#">Events</a>
-                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
                     href="#">Schedule</a>
-                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
                     href="#">Information</a>
-                <a class="font-label-lg text-label-lg text-on-primary/80 hover:text-on-primary transition-colors"
+                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
                     href="#">Downloads</a>
             </div>
             <a hre="#"
@@ -175,6 +198,7 @@
         </div>
     </nav>
 
+    {{ $pageHeader ?? '' }}
     {{ $slot }}
 
     <footer class="bg-tertiary dark:bg-tertiary-container text-on-tertiary pt-section-padding pb-8">

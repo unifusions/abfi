@@ -93,7 +93,7 @@
         <section class="py-section-padding bg-stadium-gray border-y border-outline-variant/20">
             <div class="max-w-container-max mx-auto px-margin-desktop">
                 <div class="text-center mb-16">
-                    <h2 class="font-headline-lg text-headline-lg text-primary uppercase tracking-tight">The Diamond
+                    <h2 class="font-headline-lg text-headline-lg text-primary uppercase tracking-tight">The 
                         Knowledge Base</h2>
                     <div class="w-24 h-1.5 bg-secondary mx-auto mt-4"></div>
                 </div>

@@ -16,13 +16,17 @@ use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Venue\Controllers\VenueSearchController;
 use App\Domains\Venue\Controllers\VenueController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Static\AboutController;
 use App\Http\Controllers\static\HomeController;
 use Illuminate\Support\Facades\Route;
 
 // Route::inertia('/', 'welcome')->name('home');
 
 Route::get('/', HomeController::class)->name('home');
+Route::controller(AboutController::class)->group(function () {
+    Route::get('/history', 'history')->name('history');
 
+});
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
@@ -31,17 +35,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/venue-search', VenueSearchController::class)->name('venue.search');
     Route::post('/venue', [VenueController::class, 'store'])->name('venue.store');
 
-   
+
 
 
     Route::resource('players', \App\Domains\Player\Controllers\PlayerController::class);
     Route::resource('tournaments', \App\Domains\Tournament\Controllers\TournamentController::class);
-    Route::patch('tournaments/{tournament}/archive', TournamentArchiveController::class )->name('archive');
+    Route::patch('tournaments/{tournament}/archive', TournamentArchiveController::class)->name('archive');
     Route::post('tournaments/create-and-publish', [TournamentPublishController::class, 'store'])->name('tournaments.createpublish');
     // Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
 
 
-    
+
 });
 
 
