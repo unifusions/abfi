@@ -144,7 +144,7 @@
         <div class="flex  justify-between items-center   py-4  mx-auto ">
             <div class="flex items-center justify-between gap-4   ">
                 <div class="flex items-center max-w-96">
-                    <img alt="ABFI Logo" class="h-20 w-auto" src="/images/logo.png" />
+                    <img alt="ABFI Logo" class="h-20 w-auto" src={{asset("/images/logo.png")}} />
                     <span
                         class="font-headline-md text-headline-md font-bold text-on-primary dark:text-primary-fixed hidden md:block">Amateur
                         Baseball Federation of India</span>
