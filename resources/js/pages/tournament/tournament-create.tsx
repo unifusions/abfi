@@ -4,7 +4,7 @@ import FormInputWithIcon from "@/components/ext/form-input-with-icon";
 import PageHeader from "@/components/ext/page-header";
 import { Button } from "@/components/ui/button";
 import { dashboard } from "@/routes";
-import tournaments from "@/routes/tournaments";
+import tournaments, { create, index } from "@/routes/tournaments";
 import venue from "@/routes/venue";
 import { useForm } from "@inertiajs/react";
 import { Calendar, ClipboardPen, Component, FileUser, FolderTree, Layers2, ListTree, MapPin, Network, Rocket } from "lucide-react";
@@ -15,6 +15,7 @@ import SearchableSelect from "@/components/ext/searcable-select";
 import FormSelect from "@/components/ext/form-select";
 import { FormCheckbox } from "@/components/ext/form-checkbox";
 import FormCard from "@/components/ext/form-card";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
 
 type Props = {
     states?: [],
@@ -37,6 +38,12 @@ export default function TournamentCreate({ states, organizations, categories }: 
         'competition_type': []
 
     });
+
+    useSetBreadcrumbs([
+        {title : 'Dashboard', href: dashboard().url},
+        {title : 'Tournaments', href:index().url },
+        {title : 'New Tournament', href:create().url}
+    ])
 
     const [venueQuery, setVenueQuery] = useState('');
     const [venueDialogOpen, setVenueDialogOpen] = useState(false);
@@ -82,6 +89,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
 
     return (
         < >
+        {JSON.stringify(errors)}
             <PageHeader title="New Tournament" subText="Initialize a new event. Ensure all data conforms to guidelines." />
             <div className="flex flex-col lg:flex-row gap-10 max-w-5xl">
                 {/* <!-- Left Column: Form Sections --> */}

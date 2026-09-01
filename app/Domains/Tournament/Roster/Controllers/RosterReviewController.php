@@ -3,6 +3,8 @@
 namespace App\Domains\Tournament\Roster\Controllers;
 
 use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
+use App\Domains\Tournament\Competition\Models\TournamentCompetition;
+use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Models\RosterPlayer;
@@ -15,6 +17,12 @@ class RosterReviewController extends Controller
 
     public function __construct(protected RosterPlayerService $service)
     {
+    }
+    
+    public function competitionRosters(Tournament $tournament, TournamentCompetition $competition){
+        return inertia('tournament/competition/rosters/roster-list', 
+     [   'rosters' => $competition->rosters]
+    );
     }
     public function review(Roster $roster)
     {

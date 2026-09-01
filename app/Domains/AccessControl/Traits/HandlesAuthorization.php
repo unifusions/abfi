@@ -33,7 +33,7 @@ trait HandlesAuthorization
      */
     protected function owns(User $user, Model $model): bool
     {
-        if ($user->hasRole('federation.admin')) {
+        if ($this->isFederationAdmin($user)) {
             return true;
         }
 
@@ -64,6 +64,6 @@ trait HandlesAuthorization
 
     protected function isFederationAdmin(User $user): bool
     {
-        return $user->hasRole('federation.admin');
+        return $user->hasRole('Federation Admin');
     }
 }

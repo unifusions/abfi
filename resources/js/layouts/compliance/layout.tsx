@@ -17,6 +17,8 @@ import { index  as userIndex} from "@/routes/compliance/users";
 import organizations from "@/routes/compliance/organizations";
 import roles from "@/routes/compliance/roles";
 import { categories } from "@/routes/compliance";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
+import { dashboard, compliance } from "@/routes";
  
 
 
@@ -58,6 +60,10 @@ const menuItems = [
 export default function ComplianceLayout({ children }: PropsWithChildren) {
     const { isCurrentUrl } = useCurrentUrl();
 
+    useSetBreadcrumbs([
+        { title: 'Dashboard', href: dashboard() },
+        { title: 'Compliance', href: compliance().url },
+    ])
     return (
         <>
             {/* <div className="mt-3 h-12 border-t flex  items-center bg-primary/10 px-2  py-0 ">

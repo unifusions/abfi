@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Domains\Tournament\Competition\Accreditation\Controllers\AccreditationController;
@@ -7,6 +8,7 @@ use App\Domains\Tournament\Competition\Engine\Fixture\Controllers\FixtureControl
 use App\Domains\Tournament\Competition\Engine\Fixture\Controllers\FixtureResultController;
 use App\Domains\Tournament\Competition\Engine\Pool\Controllers\PoolController;
 use App\Domains\Tournament\Controllers\TournamentCategoryController;
+use App\Domains\Tournament\Roster\Controllers\RosterReviewController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -25,6 +27,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             });
     });
 
+    Route::prefix('tournaments/{tournament}/competition/{competition}/rosters')->name('tournaments.competition.rosters.')->group(function() {
+        Route::controller(RosterReviewController::class)->group(function(){
+            Route::get('/', 'competitionRosters')->name('competitionRosters');
+        });
+    });
     Route::prefix('tournaments/{tournament}/competition/{competition}/accreditation')->name('tournaments.competition.accreditation.')->group(function () {
         Route::controller(AccreditationController::class)->group(function () {
             Route::get('/', 'index')->name('index');
@@ -34,6 +41,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     });
+
+
 
     Route::prefix('tournaments/{tournament}/competition/{competition}/pools')->name('tournaments.competition.pools.')->group(function () {
         Route::controller(PoolController::class)->group(function () {

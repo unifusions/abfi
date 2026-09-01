@@ -2,11 +2,19 @@
 import TableContainer from "@/components/ext/table-container"
 import { Button } from "@/components/ui/button"
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext"
 import { dashboard, compliance } from "@/routes"
  
 import { Plus } from "lucide-react"
-
+import { complianceBreadcrumbs } from "../compliance-index"
+import { categories as cats } from "@/routes/compliance"
 export default function CategoryIndex({ categories }) {
+    useSetBreadcrumbs([
+        ...complianceBreadcrumbs, {
+            title: 'Tournament Categories',
+            href: cats().url
+        }
+    ]);
     return (
         <div className="px-3">
             <PageHeader title="Tournament Categories" >

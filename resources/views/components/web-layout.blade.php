@@ -92,6 +92,7 @@
                     "fontFamily": {
                         "headline-lg-mobile": ["IBM Plex Sans"],
                         "label-lg": ["Hanken Grotesk"],
+                        "label": ["Hanken Grotesk"],
                         "body-md": ["Hanken Grotesk"],
                         "display-lg": ["IBM Plex Sans"],
                         "label-sm": ["Hanken Grotesk"],
@@ -169,12 +170,20 @@
                         class="absolute top-full left-0 w-64 bg-surface-container-low rounded-lg shadow-2xl border border-outline-variant/20 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                         <a href={{ route('history') }}
                             class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">History</a>
-                        <a href="#"
+                        <a href=""
                             class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">International
                             Recognition</a>
                         <a href="#"
                             class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Affiliated
                             Units</a>
+
+                            <a href= {{ route('affiliate') }}
+                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Executive
+                            Affiliates</a>
+
+
+                           
+
                         <a href="#"
                             class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Executive
                             Committee</a>
@@ -198,7 +207,27 @@
         </div>
     </nav>
 
-    {{ $pageHeader ?? '' }}
+    @if(isset($pageHeader))  
+
+    <header
+            class="bg-tertiary text-on-tertiary relative overflow-hidden py-section-padding px-margin-mobile md:px-margin-desktop">
+            <div class="absolute inset-0 opacity-10 pointer-events-none"
+                style="background-image: radial-gradient(circle at 20px 20px, #ffffff 2px, transparent 0); background-size: 40px 40px;">
+            </div>
+            <div class="max-w-container-max mx-auto relative z-10">
+                <div
+                    class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-stack-md">
+                     
+                    {{$preTitle ?? ''}}
+                </div>
+                <h1 class="font-display-lg text-display-lg mb-stack-sm text-on-tertiary">{{ $title ?? ''}}</h1>
+                <p class="font-body-lg text-body-lg text-on-tertiary/80 max-w-2xl">
+                  {{ $heroDescription ?? '' }}
+                </p>
+            </div>
+        </header>
+    
+    @endif
     {{ $slot }}
 
     <footer class="bg-tertiary dark:bg-tertiary-container text-on-tertiary pt-section-padding pb-8">

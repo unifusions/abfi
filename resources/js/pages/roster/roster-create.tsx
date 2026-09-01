@@ -5,7 +5,9 @@ import FormRadio from "@/components/ext/form-radio";
 import FormSelect from "@/components/ext/form-select";
 import PageHeader from "@/components/ext/page-header";
 import { Button } from "@/components/ui/button";
-import rosters from "@/routes/rosters";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
+import { dashboard } from "@/routes";
+import rosters, { create, index } from "@/routes/rosters";
 import competition from "@/routes/tournaments/competition";
 import { useForm } from "@inertiajs/react";
 import { ArrowRight, BookLock, Fingerprint, MessageCircleWarning, MoveRight, ShieldAlert } from "lucide-react";
@@ -17,6 +19,11 @@ export default function RosterCreate({
     default_organization, competition
 }) {
 
+    useSetBreadcrumbs([
+        {title : 'Dashboard', href: dashboard().url},
+        {title : 'Rosters' , href : index().url},
+        {title : 'New Roster' , href : create().url}
+    ])
     const { data, setData, processing, errors, post } = useForm({
         'organization_id': default_organization || '',
         'name': '',

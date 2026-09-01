@@ -1,9 +1,12 @@
+import LinkButton from "@/components/ext/link-button";
 import Documents from "@/components/ext/player/documents";
 import EligibilityCard from "@/components/ext/player/eligibility-card";
 import ParticipationHistory from "@/components/ext/player/participation-history";
 import PerformanceMetrics from "@/components/ext/player/performance-metrics";
 import PersonalInformation from "@/components/ext/player/personal-information";
 import { BadgeCheck, EllipsisVertical, Fingerprint, Mars, Pencil, Venus } from "lucide-react";
+import PlayerBan from "./player-ban";
+import { edit } from "@/routes/players";
 
 export default function PlayerView({ player }) {
 
@@ -12,7 +15,7 @@ export default function PlayerView({ player }) {
         <>
 
 
-        
+
             {/* <!-- Athlete Header Canvas --> */}
             <div className="px-8 py-4 space-y-8   w-full">
                 {/* <!-- High-Fidelity Athlete Header --> */}
@@ -31,7 +34,7 @@ export default function PlayerView({ player }) {
 
                                 src={data.profile_photo} />
                         </div>
-                       
+
                         <div className="flex-1 space-y-2">
                             <div className="inline-flex items-center space-x-2 bg-secondary px-3 py-1 rounded-full mb-2">
                                 <BadgeCheck />
@@ -65,35 +68,36 @@ export default function PlayerView({ player }) {
 
                         </div>
                         <div className="shrink-0 flex space-x-3 pb-2">
-                            <button className=" bg-white text-primary px-6 py-2.5 gap-2 rounded font-bold font-headline text-sm uppercase tracking-wider flex items-center transition-all hover:bg-secondary hover:text-white">
-                                <Pencil className="h-5" /> Edit Profile
-                            </button>
-                            <button className="bg-transparent border border-white text-on-primary px-4 py-2.5 rounded transition-all hover:bg-on-primary/10">
-                                <EllipsisVertical />
-                            </button>
+                            <LinkButton icon={Pencil} variant="secondary" 
+                            href={edit({player:data?.id}).url} > 
+                            Edit Profile
+                            </LinkButton>
+
+                            <PlayerBan player={data?.id} />
+                           
                         </div>
                     </div>
                 </section>
 
-            
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                {/* <!-- Performance Metrics (Primary Column) --> */}
- 
-                <div className="md:col-span-4 space-y-8">
-                    <EligibilityCard
-                        details={data.details}
 
-                    />
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                    {/* <!-- Performance Metrics (Primary Column) --> */}
+
+                    <div className="md:col-span-4 space-y-8">
+                        <EligibilityCard
+                            details={data.details}
+
+                        />
+                    </div>
 
 
-                <div className="col-span-8 space-y-8">
-                    <PersonalInformation
-                        contact={data.contact}
-                    />
-                </div>
+                    <div className="col-span-8 space-y-8">
+                        <PersonalInformation
+                            contact={data.contact}
+                        />
+                    </div>
 
-            </div></div>
+                </div></div>
         </>
     )
 }

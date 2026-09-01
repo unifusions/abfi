@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
  
-#[Fillable(['name', 'email', 'password', 'organization_id', 'is_super_admin', 'designation'])]
+#[Fillable(['name', 'email', 'password', 'organization_id', 'is_super_admin', 'designation',  ])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {

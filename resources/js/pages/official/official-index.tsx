@@ -3,17 +3,21 @@ import OfficialList from "@/components/ext/official/official-list";
 import PageHeader from "@/components/ext/page-header";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { dashboard } from "@/routes";
-import officials, { create } from "@/routes/officials";
+import { create, index } from "@/routes/officials";
 import { UserRoundPlus, Users } from "lucide-react";
 import { useState } from "react";
 import OfficialSearchFilter from "./official-search";
 import organizations from "@/routes/compliance/organizations";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
 
 export default function OfficialIndex(
     { states, officials, organizations, total_officials }
 ) {
 
-
+    useSetBreadcrumbs([
+        { title: 'Dashboard', href: dashboard().url },
+        { title: 'Officials', href: index().url },
+    ])
 
     return (
 
@@ -27,10 +31,10 @@ export default function OfficialIndex(
 
             >
 
-                <LinkButton 
-href={create().url}
+                <LinkButton
+                    href={create().url}
                     icon={UserRoundPlus}
-                    >
+                >
 
 
                     Register New Official
@@ -41,7 +45,7 @@ href={create().url}
             {/* <!-- Robust Filter Bar --> */}
 
             <OfficialSearchFilter associations={organizations} />
-         
+
 
 
             <OfficialList officials={officials?.data} />
@@ -49,18 +53,3 @@ href={create().url}
         </>
     )
 }
-
-OfficialIndex.layout = {
-    breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard()
-        }
-        ,
-        {
-            title: "Official's Directory",
-            href: officials.index.url()
-        },
-
-    ],
-};

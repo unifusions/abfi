@@ -7,12 +7,14 @@ use App\Domains\Compliance\Models\State;
 use App\Domains\Media\Enums\MediaCollectionEnum;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Organization\Resources\OrganizationDropdownResource;
+use App\Domains\Player\Actions\IndexPlayer;
 use App\Domains\Player\Models\Player;
 use App\Domains\Player\Requests\StorePlayerRequest;
 use App\Domains\Player\Resources\PlayerListResource;
 use App\Domains\Player\Resources\PlayerResource;
 use App\Domains\Player\Services\PlayerService;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PlayerController extends Controller
@@ -22,9 +24,9 @@ class PlayerController extends Controller
      */
 
     public function __construct(
-        protected PlayerService $service
-    ) {
-    }
+        protected PlayerService $service,
+        protected IndexPlayer $indexPlayer
+    ) {}
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -33,10 +35,15 @@ class PlayerController extends Controller
             ->when($selectedAssociation, function ($query, $selectedAssociation) {
                 return $query->where('organization_id', $selectedAssociation);
             })
-            ->orderByDesc('created_at')->paginate(15)->withQueryString();
+            ->orderByDesc('created_at')->orderByDesc('is_active')->paginate(15)->withQueryString();
         $associations = Organization::orderBy('name')->get();
+       
+
         return inertia('player/player-index', [
+            'playerData' => $this->indexPlayer->handle(),
             'registered_players' => Player::count(),
+          
+
             'm_players' => Player::where('gender', 'male')->count(),
             'f_players' => Player::where('gender', 'female')->count(),
             'players' => PlayerListResource::collection($players),
@@ -53,9 +60,12 @@ class PlayerController extends Controller
     public function create()
     {
         $this->authorize('create', Player::class);
+        $user = auth()->user();
+        $canSelect =$user->hasRole('admin') || $user->hasRole('staff') || $user->isSuperAdmin();
+      
         return inertia('player/player-create', [
             'organizations' => OrganizationDropdownResource::collection(Organization::orderBy('name')->get()),
-            'can_select_organization' => auth()->user()->hasRole('federation.admin'),
+            'can_select_organization' => $canSelect,
             'default_organization' => auth()->user()->organization_id,
 
             'states' => State::all()->map(function ($state) {
@@ -85,7 +95,6 @@ class PlayerController extends Controller
         $player = $this->service->create($request->validated());
 
         return redirect()->route('players.show', $player)->with(['success' => 'New player has been added to the registry']);
-
     }
 
     /**

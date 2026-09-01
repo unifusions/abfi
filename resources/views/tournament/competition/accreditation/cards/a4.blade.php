@@ -24,12 +24,16 @@
         }
 
         .page {
-            width: 190mm;
+            width: 200mm;
             min-height: 277mm;
             page-break-after: always;
             position: relative;
 
-            text-align: center
+            text-align:center ;
+            font-size: 0;
+            margin: 0 auto;
+            padding-top: 10mm; 
+    box-sizing: border-box;
         }
 
         .page:last-child {
@@ -56,7 +60,7 @@
             overflow: hidden;
 
             margin-right: 0mm;
-            margin-bottom: 1mm;
+            margin-bottom: 0mm;
 
             background: #ffffff;
 
@@ -278,8 +282,7 @@
             width: 11mm;
             height: 11mm;
             padding: 1.2mm;
-            border: 0.4mm solid #c5cbd4;
-            border-radius: 2.5mm;
+           
             background: #ffffff;
         }
 
@@ -363,8 +366,8 @@
 
                   
 
-                    $issuedDate = $accreditation->issued_at
-                        ? $accreditation->issued_at->format('m / Y')
+                    $issuedDate = $accreditation->generated_at
+                        ? $accreditation->generated_at->format('m / Y')
                         : '';
 
                     $photoPath = $photo
@@ -374,12 +377,15 @@
                     $qrPath = !empty($accreditation->qr_path)
                         ? storage_path('app/public/' . $accreditation->qr_path)
                         : null;
+
+                        $qrPng = app(App\Domains\QrCode\Services\QrcodeService::class)->png($accreditation->qrCode);
+                        $qrBase64 = base64_encode($qrPng);
                 @endphp
 
 
                 <div class="card">
 
-                    {{-- HEADER --}}
+                
 
                     <div class="header">
 
@@ -474,11 +480,11 @@
                             <div class="bottom-field issue">
 
                                 <div class="label">
-                                    ISSUANCE
+                                    ISSUANCE 
                                 </div>
 
                                 <div class="bottom-value">
-                                    {{ $issuedDate }}
+                               {{ $issuedDate }}
                                 </div>
 
                             </div>
@@ -490,16 +496,20 @@
 
                     {{-- QR CODE --}}
 
-                    @if ($qrPath && file_exists($qrPath))
+                  
 
                         <div class="qr-wrapper">
-
-                            <img class="qr" src="{{ $qrPath }}">
+ 
+                        <img
+    src="data:image/png;base64,{{ $qrBase64 }}"
+   
+    alt="QR Code"
+    class="qr"
+/>
 
                         </div>
 
-                    @endif
-
+                
 
                     {{-- SIGNATURE --}}
 

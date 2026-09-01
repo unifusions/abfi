@@ -35,10 +35,11 @@ export function UserMenuContent({ user }: Props) {
             <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                     <Link
-                        className="block w-full cursor-pointer"
+                        className="block w-full cursor-pointer  "
                         href={edit()}
                         prefetch
                         onClick={cleanup}
+                        
                     >
                         <Settings className="mr-2" />
                         Settings

@@ -15,10 +15,18 @@ import { router, useForm } from "@inertiajs/react"
 import { Save, User, XCircle } from "lucide-react"
 import React, { useState } from "react"
 import PlayerForm from "./player-form"
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext"
+import { dashboard } from "@/routes"
 
 
 export default function PlayerCreate({ baseball_positions, organizations, states, default_organization, can_select_organization }) {
 
+
+    useSetBreadcrumbs([
+        {title : 'Dashboard', href:dashboard().url},
+        {title : 'Players' , href: index().url},
+        {title : 'New Player' , href: create().url}
+    ]);
     const { data, setData, processing, post, errors } = useForm({
         'first_name': '',
         'middle_name': '',

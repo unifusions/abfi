@@ -93,9 +93,10 @@ const footerNavItems: NavItem[] = [
 
 export function AppSidebar() {
 
-    const { canModule } = useAuthorization();
+    const { canModule, permissions } = useAuthorization();
+ 
     const visibleItems = mainNavItems.filter(item => canModule(item.module));
-
+ 
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

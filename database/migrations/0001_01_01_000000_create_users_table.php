@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Organization\Models\Organization;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            
+            $table->foreignUuidFor(Organization::class)->nullable();
+            $table->string('designation')->nullable();
+            $table->boolean('is_super_admin')->default(false);
+
             $table->timestamps();
         });
 

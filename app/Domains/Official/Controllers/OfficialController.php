@@ -3,12 +3,15 @@
 namespace App\Domains\Official\Controllers;
 
 use App\Domains\Compliance\Models\State;
+use App\Domains\Media\Enums\MediaCollectionEnum;
 use App\Domains\Official\Models\Official;
 use App\Domains\Official\Requests\StoreOfficialRequest;
+use App\Domains\Official\Requests\UpdateOfficialRequest;
 use App\Domains\Official\Resources\OfficialListResource;
 use App\Domains\Official\Services\OfficialService;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Organization\Resources\OrganizationDropdownResource;
+use App\Domains\Shared\Resources\SelectStateResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -47,20 +50,16 @@ class OfficialController extends Controller
      */
     public function create()
     {
+        $user = auth()->user();
+        $canSelect =$user->hasRole('admin') || $user->hasRole('staff') || $user->isSuperAdmin();
         //   $this->authorize('create', Official::class);
         return inertia('official/official-create',
         [
             'organizations' => OrganizationDropdownResource::collection(Organization::orderBy('name')->get()),
-            'can_select_organization' => auth()->user()->hasRole('federation.admin'),
+            'can_select_organization' => $canSelect,
                     'default_organization' => auth()->user()->organization_id,
 
-            'states' => State::all()->map(function ($state) {
-                return [
-                    'label' => $state->name,
-                    'value' => $state->id,
-
-                ];
-            }),
+            'states' => SelectStateResource::collection(State::all()),
           
         ]
         );
@@ -80,7 +79,7 @@ class OfficialController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Official $official)
     {
      return inertia('official/official-view');
     }
@@ -88,17 +87,33 @@ class OfficialController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Official $official)
     {
-        //
+        $user = auth()->user();
+        $canSelect =$user->hasRole('admin') || $user->hasRole('staff') || $user->isSuperAdmin();
+ 
+        return inertia('official/official-edit', [
+            'organizations' => OrganizationDropdownResource::collection(Organization::orderBy('name')->get()),
+            'can_select_organization' => $canSelect,
+            'official' => $official,
+            'states' => SelectStateResource::collection(State::all()),
+
+            'profile_photo' => [
+                'id' => $official->profile_media?->id,
+                'url' => $official->getMediaUrl(MediaCollectionEnum::PROFILE),
+            ],
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOfficialRequest $request, Official $official)
     {
-        //
+        $official->update($request->validated());
+        return redirect()->route('officials.index')->with([
+            'success' => "Official {$official->official_code} has been updated successfully"
+        ]);
     }
 
     /**

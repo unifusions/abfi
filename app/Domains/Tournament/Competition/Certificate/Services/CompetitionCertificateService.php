@@ -4,6 +4,7 @@ namespace App\Domains\Tournament\Competition\Certificate\Services;
 
 
 use App\Domains\Player\Models\Player;
+use App\Domains\QrCode\Enums\QrcodeTypeEnum;
 use App\Domains\Tournament\Competition\Certificate\Enums\CertificateTypeEnum;
 use App\Domains\Tournament\Competition\Certificate\Models\CompetitionCertificate;
 
@@ -276,6 +277,11 @@ class CompetitionCertificateService
                 'pdf_disk' => 'public',
             ]
         );
+
+        $certificate->qrCode()->create([
+            'type' => QrcodeTypeEnum::CERTIFICATE->value,
+            'is_active' => true,
+        ]);
 
         $pdfService = app(CertificatePdfService::class);
         if (

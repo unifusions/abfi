@@ -14,6 +14,8 @@ import FormSelect from "@/components/ext/form-select";
 import PlayerSearch from "./player-search";
 import PlayerList from "./player-list";
 import { useEffect, useRef, useState } from "react";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
+import { dashboard } from "@/routes";
 
 type Props = {
     registered_players: number,
@@ -21,30 +23,40 @@ type Props = {
         data: [],
 
     },
-     filters: {
+    filters: {
         search?: string;
         association?: string;
     };
 }
 
-export default function PlayerIndex({ registered_players, m_players, f_players, players, associations, filters }: Props) {
+export default function PlayerIndex({ registered_players, m_players, playerData,
 
-   const [search, setSearch] = useState(filters.search ?? "");
-const [association, setAssociation] = useState(filters.association ?? "");
+    f_players, players, associations, filters,
+
+    player_change, player_change_direction
+}: Props) {
+
+    const { allStats, maleStats, femaleStats } = playerData;
+    const [search, setSearch] = useState(filters.search ?? "");
+    const [association, setAssociation] = useState(filters.association ?? "");
     const [processing, setProcessing] = useState(false);
-const firstLoad = useRef(true);
+    const firstLoad = useRef(true);
 
+    useSetBreadcrumbs([
+        {title : 'Dashboard', href:dashboard().url},
+        {title : 'Players' , href: index().url}
+    ])
     useEffect(() => {
-if (firstLoad.current) {
-        firstLoad.current = false;
-        return;
-    }
+        if (firstLoad.current) {
+            firstLoad.current = false;
+            return;
+        }
 
         const delayDebounce = setTimeout(() => {
             setProcessing(true);
-           
+
             router.get(index.url(),
-                { search: search, association : association },
+                { search: search, association: association },
                 {
 
                     preserveState: true,
@@ -77,24 +89,25 @@ if (firstLoad.current) {
                 <PlayerIndexStats
                     title="Registered Players"
                     value={registered_players}
-                    changeType="increase"
-                    changeValue="+5.2% from last year"
-                    variant ="secondary"
+                    changeType={allStats?.direction}
+                    changeValue={allStats?.formatted}
+                    variant="secondary"
                 />
 
 
                 <PlayerIndexStats
                     title="Boys/Men"
                     value={m_players}
-                    changeType="increase"
-                    changeValue="+5.2% from last year"
+                    changeType={maleStats?.direction}
+                    changeValue={maleStats?.formatted}
                 />
 
                 <PlayerIndexStats
                     title="Girls/Women"
                     value={f_players}
-                    changeType="increase"
-                    changeValue="+5.2% from last year"
+                    changeType={femaleStats?.direction}
+                    changeValue={femaleStats?.formatted}
+
                 />
 
 
@@ -106,8 +119,8 @@ if (firstLoad.current) {
                 searchValue={search}
                 onSearch={setSearch}
 
-                selectedAssociation = {association}
-                onSelectAssociation = {setAssociation}
+                selectedAssociation={association}
+                onSelectAssociation={setAssociation}
             />
 
             <PlayerList players={players} disabled={processing} />

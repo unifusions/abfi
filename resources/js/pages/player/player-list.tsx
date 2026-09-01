@@ -1,5 +1,6 @@
 import AppPagination from "@/components/ext/app-pagination";
 import TableContainer from "@/components/ext/table-container";
+import TableRowAction from "@/components/ext/table-row-actions";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +22,7 @@ export default function PlayerList({ players, disabled }) {
                         <TableHead>Team/Association</TableHead>
                         <TableHead>Gender</TableHead>
                         <TableHead>Registered On</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead className="text-end">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
 
@@ -53,14 +54,15 @@ export default function PlayerList({ players, disabled }) {
                         <TableCell>{player.age} Years |  {player.gender}</TableCell>
                         <TableCell>{player.created_at}</TableCell>
                         <TableCell>
-                            <div className="inline-flex gap-3">
-                                <Link href={show({ player: player?.id }).url}
-                                ><Eye className="h-4 w-4" />
-                                </Link>
 
-                                <Link href={edit({ player: player?.id }).url}>
-                                    <Pencil className="h-4 w-4" /></Link>
-                            </div>
+                            <TableRowAction 
+                            
+                            viewUrl={show({ player: player?.id }).url}
+                            editUrl={edit({ player: player?.id }).url}
+                            canDelete={false}
+                            
+                            />
+                        
 
                         </TableCell>
                     </TableRow>)}

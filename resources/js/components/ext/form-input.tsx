@@ -16,10 +16,11 @@ type Props = {
     layout?: string;
     labelRequired?: boolean;
     placeholder?: string;
+    disabled ?:boolean;
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
 
 }
-export default function FormInput({ id, name, type = "text", layout = "col", label, className, placeholder, labelRequired = false, hasError, value, disabled=false,  ...props }: Props) {
+export default function FormInput({ id, name, type = "text", layout = "col", label, className, placeholder, labelRequired = false, hasError, value, disabled = false,  ...props }: Props) {
     return (
         <div className="flex flex-col gap-1.5  w-full">
             {label &&
@@ -43,6 +44,7 @@ export default function FormInput({ id, name, type = "text", layout = "col", lab
                 }
 
                 placeholder={placeholder}
+               {...(disabled && {"disabled" : true}) }
                 {...props}
             />
 

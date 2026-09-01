@@ -1,12 +1,13 @@
 import LinkButton from "@/components/ext/link-button";
 import PageHeader from "@/components/ext/page-header";
 import ActiveTournament from "@/components/ext/tournament/active-tournament";
- 
+
 import TournamentList from "@/components/ext/tournament/tournament-list";
 import TournamentStatCard from "@/components/ext/tournament/tournament-stats-card";
- 
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
+
 import { useAuthorization } from "@/hooks/use-authorization";
- 
+
 
 import { dashboard } from "@/routes";
 import { create, index } from "@/routes/tournaments";
@@ -15,6 +16,10 @@ import { Search, Plus } from "lucide-react";
 export default function TournamentIndex({ tournaments, activeNow, completedMTD, activeTournament, totalTeams }) {
     const { can } = useAuthorization();
 
+    useSetBreadcrumbs([
+        {title : 'Dashboard', href: dashboard().url},
+        {title : 'Tournaments', href:index().url }
+    ])
 
     return (
         <>
@@ -50,13 +55,13 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
 
             </PageHeader>
 
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-1 md:grid-cols-4 gap-6">
                 {activeTournament?.data && <div className=" ">
                     <ActiveTournament tournament={activeTournament?.data} />    </div>}
 
-                <div className="col-span-3">
+                <div className="md:col-span-3">
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div className="grid  sm:grid-cols-1   md:grid-cols-3 gap-6 mb-6">
 
 
 
@@ -79,16 +84,16 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
                         <TournamentStatCard
                             label="Completed "
                             value={completedMTD}
-                            
+
 
                         />
 
 
-<div className="col-span-3">
- <TournamentList tournaments={tournaments} />
-</div>
+                        <div className="md:col-span-3">
+                            <TournamentList tournaments={tournaments} />
+                        </div>
 
-    
+
 
 
 
@@ -109,7 +114,7 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
                 {/* <TournamentDraft /> */}
             </div>
 
-       
+
 
 
 

@@ -2,7 +2,7 @@
 
 use App\Domains\Compliance\Models\Category;
 use App\Domains\Organization\Models\Organization;
-use App\Domains\Tournament\Enums\CompetitionFormat;
+use App\Domains\Tournament\Enums\TournamentFormatEnum;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Venue\Models\Venue;
 use Illuminate\Database\Migrations\Migration;
@@ -27,10 +27,9 @@ return new class extends Migration {
             $table->string('season')->nullable();
 
             
-            $table->string('competition_format')->default(CompetitionFormat::POOL_PLAY->value);
+            $table->string('competition_format')->default(TournamentFormatEnum::POOL_PLAY->value);
 
-            $table->string('status')
-                ->default(TournamentStatus::DRAFT->value);
+            $table->string('status')->default(TournamentStatus::DRAFT->value);
 
             $table->timestamp('registration_open_at')->nullable();
 

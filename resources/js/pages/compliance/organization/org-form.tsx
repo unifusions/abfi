@@ -39,6 +39,26 @@ export default function OrganizationForm({ data, setData, errors, states }) {
                         onChange={(e) => setData('phone', e.target.value)}
                     />
 
+<FormInput
+
+id="address_line_1"
+label="address_line_1"
+labelRequired={true}
+placeholder="Address Line 1"
+value={data.address_line_1}
+onChange={(e) => setData('address_line_1', e.target.value)}
+/>
+
+<FormInput
+
+id="address_line_2"
+label="address_line_2"
+labelRequired={true}
+placeholder="Address Line 2"
+value={data.address_line_2}
+onChange={(e) => setData('address_line_2', e.target.value)}
+/>
+
                     <FormInput
                         id="email"
                         label="Email"
@@ -59,8 +79,29 @@ export default function OrganizationForm({ data, setData, errors, states }) {
                     >
 
                     </FormSelect>
+
+                    <FormInput
+                        id="president"
+                        label="Association President"
+                        labelRequired={true}
+
+                        placeholder="e.g., Amit Sharma"
+                        value={data.president}
+                        onChange={(e) => setData('president', e.target.value)}
+                    />
+
+<FormInput
+                        id="secretary"
+                        label="Association Secretary"
+                        labelRequired={true}
+
+                        placeholder="e.g., Amit Sharma"
+                        value={data.president}
+                        onChange={(e) => setData('secretary', e.target.value)}
+                    />
                 </div>
             </FormCard>
+            
         </>
     )
 }

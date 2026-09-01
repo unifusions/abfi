@@ -3,9 +3,10 @@
 namespace App\Domains\Tournament\Competition\Accreditation\Services;
 
 use App\Domains\Media\Enums\MediaCollectionEnum;
+use App\Domains\QrCode\Enums\QrcodeTypeEnum;
 use App\Domains\Tournament\Competition\Accreditation\Models\TournamentAccreditation;
 use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
- 
+
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use DB;
 use Str;
@@ -58,7 +59,9 @@ class AccreditationService
         $roster,
         $rosterPlayer
     ): TournamentAccreditation {
-        return TournamentAccreditation::create([
+
+      
+        $accreditation = TournamentAccreditation::create([
             'holder_type' => 'player',
 
             'tournament_id' => $competition->tournament_id,
@@ -69,7 +72,7 @@ class AccreditationService
             'player_id' => $rosterPlayer->player_id,
 
             'card_number' => $this->generateCardNumber(),
-            'qr_token' => Str::random(64),
+            'qr_token' =>  Str::uuid(),
 
             'snapshot' => $this->buildPlayerSnapshot(
                 $competition,
@@ -80,6 +83,13 @@ class AccreditationService
             'generated_at' => now(),
             'is_active' => true,
         ]);
+
+        $accreditation->qrCode()->create([
+            'type' => QrcodeTypeEnum::ACCREDITATION->value,
+            'is_active' => true,
+        ]);
+
+        return $accreditation;
     }
 
     protected function issueOfficial(
@@ -87,7 +97,8 @@ class AccreditationService
         $roster,
         $rosterOfficial
     ): TournamentAccreditation {
-        return TournamentAccreditation::create([
+       
+        $accreditation = TournamentAccreditation::create([
             'holder_type' => 'official',
 
             'tournament_id' => $competition->tournament_id,
@@ -96,7 +107,6 @@ class AccreditationService
             'roster_official_id' => $rosterOfficial->id,
             'official_id' => $rosterOfficial->official->id,
             'card_number' => $this->generateCardNumber(),
-            'qr_token' => Str::random(64),
 
             'snapshot' => $this->buildOfficialSnapshot(
                 $competition,
@@ -107,6 +117,13 @@ class AccreditationService
             'generated_at' => now(),
             'is_active' => true,
         ]);
+
+        $accreditation->qrCode()->create([
+            'type' => QrcodeTypeEnum::ACCREDITATION->value,
+            'is_active' => true,
+        ]);
+
+        return $accreditation;
     }
     protected function buildPlayerSnapshot(
         TournamentCompetition $competition,

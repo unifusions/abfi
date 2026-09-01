@@ -3,6 +3,8 @@ import LinkButton from "../link-button"
 import TableContainer from "../table-container"
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Link } from "@inertiajs/react"
+import TableRowAction from "../table-row-actions"
+import { edit } from "@/routes/officials"
 
 const officials = [
     {
@@ -88,7 +90,7 @@ export default function OfficialList({ officials }) {
 
                 <TableHead>Age </TableHead>
                 <TableHead>Gender </TableHead>
-                <TableHead>Actions </TableHead>
+                <TableHead className="  text-right">Actions </TableHead>
 
             </TableRow>
             <TableBody>
@@ -130,10 +132,12 @@ export default function OfficialList({ officials }) {
                                 <TableCell>{official.gender}</TableCell>
 
 
-                                <TableCell className="px-6 py-5 text-right">
-                                    <Link href={official.url} >
-                                        <EllipsisVertical />
-                                    </Link >
+                                <TableCell className="  text-right">
+                                    <TableRowAction 
+                                        editUrl={edit({official:official?.id}).url}
+                                    
+                                    />
+                                    
                                 </TableCell>
                             </TableRow>
 

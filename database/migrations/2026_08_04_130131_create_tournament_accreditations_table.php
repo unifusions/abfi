@@ -45,7 +45,7 @@ return new class extends Migration {
             $table->softDeletes();
 
             $table->index('tournament_id');
-            $table->index('competition_id');
+            $table->index('tournament_competition_id');
             $table->index('roster_id');
             $table->index('roster_player_id');
             $table->index('player_id');

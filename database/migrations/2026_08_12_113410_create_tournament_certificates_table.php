@@ -40,7 +40,7 @@ return new class extends Migration {
                 'tournament_competition_id',
                 'recipient_id',
                 'type',
-            ]);
+            ], 'cert_comp_recipient_type_unique');
 
         });
     }

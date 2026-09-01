@@ -15,7 +15,7 @@ class RoleSeeder extends Seeder
 
             Role::updateOrCreate(
                 [
-                    'code' => $role->value,
+                    'code' => Str::lower($role->value),
                 ],
                 [
                     'name' => Str::headline(
@@ -24,8 +24,8 @@ class RoleSeeder extends Seeder
 
                     'description' => null,
 
-                    'is_system' =>false,
-                    //  $role->value === 'Federation Admin' ? true : false,
+                    // 'is_system' =>false,
+                'is_system' =>  $role->value === 'Admin' ? true : false,
                 ]
             );
 

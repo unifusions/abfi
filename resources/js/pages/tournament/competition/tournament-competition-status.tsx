@@ -1,11 +1,14 @@
 import tournaments from "@/routes/tournaments";
 import { builder, certificates, closeRegistration, fixtures, standings } from "@/routes/tournaments/competition";
 import { index } from "@/routes/tournaments/competition/accreditation";
+import { competitionRosters } from "@/routes/tournaments/competition/rosters";
 import { Link, router, usePage } from "@inertiajs/react";
 
 
 
 function getActionButtonConfig(competition, tournament) {
+   
+    
     if (!competition) return null;
 
     const {
@@ -18,9 +21,10 @@ function getActionButtonConfig(competition, tournament) {
     } = competition;
 
     const baseUrl = `/competitions/${id}`;
-
+   
     switch (phase) {
         case 'registration_open':
+            
             return {
                 label: 'Close Registration',
                 type: 'action',
@@ -30,7 +34,7 @@ function getActionButtonConfig(competition, tournament) {
         case 'registration_closed':
             return {
                 label: 'Verify Rosters',
-                href: `${baseUrl}/rosters`,
+                href: competitionRosters({ tournament: tournament, competition: competition?.id }).url,
             };
 
         case 'verification':
@@ -91,18 +95,20 @@ const DivisionContainer = ({ division, label }) => {
         </div></>)
 
 }
-export default function TournamentCompetitionStatus({ competitions, approvedRosters }) {
+export default function TournamentCompetitionStatus({ tournament, competitions, approvedRosters }) {
 
-    const { tournament } = usePage().props;
+    
     return (
         <>
             {competitions.map((competition: any) => {
-                const config = getActionButtonConfig(competition, tournament?.id);
+             
+                const config = getActionButtonConfig(competition, tournament);
+           
                 const containerStyle = "group bg-zinc-50 border border-outline-variant/20 p-4 flex flex-col gap-3 w-48 hover:bg-accent-secondary hover:text-white transition-all";
                 const { can } = competition;
 
                 if (!can.progress) {
-                    return null;
+                    return null; 
                 }
 
                 if (config?.type === 'action') {
@@ -126,7 +132,7 @@ export default function TournamentCompetitionStatus({ competitions, approvedRost
                     <Link
                         href={config?.href}
                         className={containerStyle}>
-
+ 
                         <DivisionContainer
                             division={competition?.name}
                             label={config?.label} />

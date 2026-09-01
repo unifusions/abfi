@@ -3,28 +3,40 @@ import PlayerIndexStats from "@/components/ext/player/player-index-stats";
 import RosterList from "./roster-list";
 import { useAuthorization } from "@/hooks/use-authorization";
 import LinkButton from "@/components/ext/link-button";
-import { create } from "@/routes/rosters";
+import { create, index } from "@/routes/rosters";
 import { Plus } from "lucide-react";
 import { usePage } from "@inertiajs/react";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
+import { dashboard } from "@/routes";
 
 export default function RosterIndex({
-    rosters, drafts, total_rosters, approved_rosters
+    rosters, drafts, total_rosters, approved_rosters, stats
 }) {
-    const { can, permissions } = useAuthorization();
 
-    const stats = [
+    useSetBreadcrumbs([
+        {title : 'Dashboard', href: dashboard().url},
+        {title : 'Rosters' , href : index().url}
+    ])
+    const { can, permissions } = useAuthorization();
+const { totalRosters, submittedRosters, approvedRosters } = stats;
+    const cardStats = [
         {
             label: 'Total Rosters',
-            value: total_rosters,
-
+            value: totalRosters?.count,
+            changeType : totalRosters?.changeType,
+            changeValue :totalRosters?.changeValue,
         },
         {
             label: 'Drafts',
-            value: drafts
+            value: submittedRosters?.count,
+            // changeType : submittedRosters?.changeType,
+            // changeValue : submittedRosters?.changeValue,
         },
         {
             label: 'Approved Rosters',
-            value: approved_rosters
+            value: approvedRosters?.count,
+            changeType : approvedRosters?.changeType,
+            changeValue : approvedRosters?.changeValue
         }
     ]
     return (
@@ -34,12 +46,12 @@ export default function RosterIndex({
                 {can('roster.create') && <LinkButton href={create()} icon={Plus}> New Roster </LinkButton>}
             </PageHeader>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                {stats.map((stat, index) => <PlayerIndexStats
+                {cardStats.map((stat, index) => <PlayerIndexStats
                     key={`roster_stat_${index}`}
                     title={stat.label}
                     value={stat.value}
-                    changeType="increase"
-                    changeValue="+5.2% from last year"
+                    changeType={stat?.changeType}
+                    changeValue={stat?.changeValue}
                     variant='secondary'
                 />
                 )}

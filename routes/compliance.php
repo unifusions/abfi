@@ -8,7 +8,7 @@ use App\Domains\Organization\Controllers\OrganizationController;
 use App\Domains\Tournament\Controllers\TournamentCategoryController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::middleware('rbac:role, Federation Admin')->group(function () {
+    Route::middleware('rbac:role,admin')->group(function () {
         Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
         Route::get('compliance', [ComplianceController::class, 'index'])->name('compliance');
 
@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                         Route::get('/', 'index')->name('index');
                         Route::post('/', 'store')->name('store');
                         Route::get('/create', 'create')->name('create');
+                        Route::get('/{user}/edit', 'edit')->name('edit');
                     }
                 );
 

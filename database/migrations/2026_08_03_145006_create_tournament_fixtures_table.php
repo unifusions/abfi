@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureTypeEnum;
 use App\Domains\Tournament\Competition\Engine\Pool\Models\TournamentPool;
  
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
@@ -26,6 +27,10 @@ return new class extends Migration
             $table->foreignUuid('winner_roster_id')->nullable()->constrained('rosters');
             $table->unsignedSmallInteger('home_score')->nullable();
             $table->unsignedSmallInteger('away_score')->nullable();
+            $table->string('stage')->nullable();
+            $table->string('fixture_type')->nullable()->default(FixtureTypeEnum::POOL);
+            $table->foreignUuid('source_home_fixture_id')->nullable();
+            $table->foreignUuid('source_away_fixture_id')->nullable();
             $table->string('remarks')->nullable();
             $table->timestamps();
         });

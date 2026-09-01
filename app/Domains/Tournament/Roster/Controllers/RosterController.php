@@ -8,6 +8,7 @@ use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
 use App\Domains\Tournament\Enums\TournamentStatus;
 use App\Domains\Tournament\Models\Tournament;
  
+use App\Domains\Tournament\Roster\Actions\IndexRosterAction;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Requests\StoreRosterRequest;
@@ -21,7 +22,8 @@ use Illuminate\Http\Request;
 class RosterController extends Controller
 {
     public function __construct(protected RosterService $service, 
-    protected RosterPrintService $printService
+    protected RosterPrintService $printService,
+    protected IndexRosterAction $indexRosterAction
     )
     {
     }
@@ -30,6 +32,7 @@ class RosterController extends Controller
     {
 
         return inertia('roster/roster-index', [
+            'stats' => $this->indexRosterAction->handle(),
             'rosters' => RosterListResource::collection(Roster::orderBy('created_at', 'desc')->paginate(15)),
             'drafts' => Roster::where('status', RosterStatusEnum::DRAFT->value)->count(),
             'total_rosters' => Roster::count(),
@@ -88,7 +91,7 @@ class RosterController extends Controller
             'competition' => $tournaments,
             'tournaments' => Tournament::where('status', TournamentStatus::PUBLISHED->value)->get(),
             'organizations' => OrganizationDropdownResource::collection(Organization::orderBy('name')->get()),
-            'can_select_organization' => auth()->user()->hasRole('federation.admin'),
+            'can_select_organization' => auth()->user()->hasRole('admin'),
             'default_organization' => auth()->user()->organization_id,
         ]);
     }

@@ -18,6 +18,6 @@ class TournamentCompetitionPolicy
     public function progress(User $user, TournamentCompetition $competition): bool
     {
    
-        return ($user->hasRole('federation.admin') || $user->isSuperAdmin());
+        return ($user->hasRole('Federation Admin') || $user->isSuperAdmin());
     }
 }

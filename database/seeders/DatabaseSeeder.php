@@ -23,13 +23,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'siyam@unifusions.com',
             'is_super_admin' => true,
         'password' =>'password'
-        ]);
+        ], 
+    );
         $this->call([
             AccessControlSeeder::class,
             BaseballPositionSeeder::class,
             CategorySeeder::class,
             StateSeeder::class,
-            OrganizationSeeder::class,
+         OrganizationSeeder::class,
             CodeSequenceSeeder::class,
         ]);
 

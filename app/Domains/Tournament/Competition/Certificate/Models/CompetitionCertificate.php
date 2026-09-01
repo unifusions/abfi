@@ -3,6 +3,7 @@
 namespace App\Domains\Tournament\Competition\Certificate\Models;
 
 use App\Domains\Player\Models\Player;
+use App\Domains\QrCode\Models\QrCode;
 use App\Domains\Tournament\Competition\Certificate\Enums\CertificateTypeEnum;
 
 
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
@@ -50,8 +52,8 @@ class CompetitionCertificate extends Model
     }
 
     protected $appends = [
-    'pdf_url',
-];
+        'pdf_url',
+    ];
 
     public function competition(): BelongsTo
     {
@@ -71,12 +73,16 @@ class CompetitionCertificate extends Model
     }
 
     protected function pdfUrl(): Attribute
-{
-    return Attribute::make(
-        get: fn () => $this->pdf_path
-            ? Storage::disk($this->pdf_disk)->url($this->pdf_path)
-            : null,
-    );
-}
+    {
+        return Attribute::make(
+            get: fn() => $this->pdf_path
+                ? Storage::disk($this->pdf_disk)->url($this->pdf_path)
+                : null,
+        );
+    }
 
+    public function qrCode(): MorphOne
+    {
+        return $this->morphOne(QrCode::class, 'qrable');
+    }
 }

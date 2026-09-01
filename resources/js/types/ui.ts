@@ -3,7 +3,8 @@ import type { BreadcrumbItem } from '@/types/navigation';
 
 export type AppLayoutProps = {
     children: ReactNode;
-    breadcrumbs?: BreadcrumbItem[];
+    // breadcrumbs?: BreadcrumbItem[];
+    breadcrumbs?:  BreadcrumbItem[] | ((props: any) => BreadcrumbItem[])
 };
 
 export type AppVariant = 'header' | 'sidebar';

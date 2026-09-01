@@ -4,7 +4,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { index } from "@/routes/officials";
 import { router } from "@inertiajs/react";
-import { Search, XCircle } from "lucide-react";
+import { Loader, Search, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function OfficialSearchFilter({ associations }) {
@@ -40,14 +40,15 @@ export default function OfficialSearchFilter({ associations }) {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                         <InputGroupAddon>
-                            <Search />
-                        </InputGroupAddon>
+                        
+                    {processing && <Loader />}   <Search />
+                     </InputGroupAddon>
                         {/* <InputGroupAddon align="inline-end">12 results</InputGroupAddon> */}
                     </InputGroup>
 
-
-
+                     
                 </div>
+ 
                 <div className="flex items-center  ">
                     <div className="relative  ">
                         <Select items={associations}

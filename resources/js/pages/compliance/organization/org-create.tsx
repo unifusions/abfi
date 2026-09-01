@@ -16,7 +16,12 @@ export default function OrganizationCreate({ states }) {
         'phone': '',
         'email': '',
         'organization_id': null,
-        'state_id': ''
+        'state_id': '',
+        'address_line_1' : '',
+        'address_line_2' : '',
+        'president' : '',
+        'secretary' : ''
+
     });
 
     const handleSubmit = (e) => {
@@ -27,7 +32,7 @@ export default function OrganizationCreate({ states }) {
         <div className="flex  flex-col p-4">
             <PageHeader title="Create Association">
             </PageHeader>
-            {JSON.stringify(data)}
+            
             <form className="flex flex-col space-y-9" onSubmit={handleSubmit}>
                 <OrganizationForm
                     data={data}

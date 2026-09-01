@@ -1,7 +1,7 @@
 import PageHeader from "@/components/ext/page-header";
 import SearchInput from "@/components/ext/search-input";
 import { Button } from "@/components/ui/button";
-import rosters from "@/routes/rosters";
+import rosters, { index } from "@/routes/rosters";
 import { router, useHttp } from "@inertiajs/react";
 import { Minus, Plus, SendHorizonal, UserPlus, X } from "lucide-react";
 import { useState } from "react";
@@ -11,6 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OfficialBuilder from "./builder/official-builder";
 import RosterSSubmission from "./builder/roster-submission";
 import AddPlayerDialog from "./builder/add-player-dialog";
+import { dashboard } from "@/routes";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
 
 
 
@@ -18,6 +20,13 @@ import AddPlayerDialog from "./builder/add-player-dialog";
 export default function RosterBuilder({ roster,
     players, officials, roster_officials,
     category, last_date, roster_players }) {
+
+
+        useSetBreadcrumbs([
+            {title : 'Dashboard', href: dashboard().url},
+            {title : 'Rosters' , href : index().url},
+            {title : ` ${roster?.name} Roster Builder` , href : ""}
+        ])
 
     const [playerSearch, setPlayerSearch] = useState('');
     const [open, setOpen] = useState(false);

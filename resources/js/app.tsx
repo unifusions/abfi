@@ -6,6 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import ComplianceLayout from './layouts/compliance/layout';
+import { BreadcrumbProvider } from './context/BreadcrumbContext';
  
 
 const appName = import.meta.env.VITE_APP_NAME || 'ABFI Admin';
@@ -31,9 +32,9 @@ createInertiaApp({
     withApp(app) {
         return (
             <TooltipProvider delayDuration={0}>
-            
-                {app}
-                <Toaster  position="top-center" 
+            <BreadcrumbProvider >
+            {app}
+            <Toaster  position="top-center" 
                 
                 toastOptions={{
                     classNames : {
@@ -42,6 +43,9 @@ createInertiaApp({
                 }}
                
                 />
+            </BreadcrumbProvider>
+               
+            
                  
             </TooltipProvider>
         );

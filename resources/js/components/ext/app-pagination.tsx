@@ -30,7 +30,7 @@ export default function AppPagination({ paginationData }: Props) {
         : <p className="font-body text-xs text-on-surface-variant">Showing  {total} entries
         </p>}
 
-
+    
 
       <div>
         {meta.links &&

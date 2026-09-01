@@ -1,19 +1,21 @@
 import TournamentStatCard from "@/components/ext/tournament/tournament-stats-card";
 import { dashboard } from "@/routes";
-import { index } from "@/routes/tournaments";
+import { index, show } from "@/routes/tournaments";
 
 import { Head, Link } from "@inertiajs/react";
-import { Calendar, CheckCircle, Info, MapPin } from "lucide-react";
+import { Calendar, CheckCircle, IdCard, Info, MapPin } from "lucide-react";
 import TournamentCompetitionStatus from "./competition/tournament-competition-status";
 import { certificates, fixtures } from "@/routes/tournaments/competition";
 import { useAuthorization } from "@/hooks/use-authorization";
 import CompetitionStandings from "./competition-standings/competition-standings";
 import FinalistsDisplay from "./competition-standings/finalists-display";
 import ArchiveTournament from "./archive-tournament";
-
+import { index as accreditationIndex } from "@/routes/tournaments/competition/accreditation";
+import LinkButton from "@/components/ext/link-button";
+import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
 const RegisteredRosters = ({ rosters }) => <div>
 
-    <div className="grid   md:grid-cols-4 divide-x divide-y divide-outline-variant/10">
+    <div className="grid sm:grid-cols-1 md:grid-cols-4 divide-x divide-y divide-outline-variant/10">
 
         {rosters?.map((r) =>
             <Link href={r?.action?.route} className="p-4 hover:bg-zinc-100 transition-colors">
@@ -41,6 +43,12 @@ export default function TournamentShow({ tournament,
 }: { tournament: any, rosters: any, competitions: any }) {
 
     const { can } = useAuthorization();
+
+    useSetBreadcrumbs([
+        {title:'Dashboard' , href:dashboard().url},
+        {title : 'Tournaments', href:index().url},
+        {title : `Event : ${tournament?.name}`, href:show({tournament:tournament?.id}).url}
+    ])
     return (
         <>
             <Head title={tournament?.name} />
@@ -72,14 +80,15 @@ export default function TournamentShow({ tournament,
                     </div>
                 </div>
                 <div className="flex flex-col items-end  space-y-3">
-                    {tournament?.status === 'completed' && <ArchiveTournament tournament={tournament.id} /> }
-                    
+                    {tournament?.status === 'completed' && <ArchiveTournament tournament={tournament.id} />}
+
                     <div className="flex items-end space-x-3">
-    <TournamentCompetitionStatus competitions={competitions}
-                        approvedRosters={approvedRosters}
-                    />
+                        
+                        <TournamentCompetitionStatus competitions={competitions} tournament={tournament?.id}
+                            approvedRosters={approvedRosters}
+                        />
                     </div>
-                
+
 
 
 
@@ -122,15 +131,21 @@ export default function TournamentShow({ tournament,
                             <div className="flex justify-between  border-b pb-3">
                                 <h3 className="font-headline font-bold text-primary capitalize tracking-tighter text-xl">{competition.name} Division</h3>
 
- 
+
                                 <div className="">
-                                    {competition.phase === 'scheduled' &&  <Link
+                                    {competition.phase === 'scheduled' ?
                                     
-                                    className="bg-accent-secondary text-white text-sm p-2 font-bold"
-                                    href={fixtures({
-                                                        tournament: tournament?.id,
-                                                        competition: competition?.id
-                                                    })}> Update Results </Link>}
+                                        <LinkButton
+                                        className="text-xs h-9   "
+                                        href={accreditationIndex({ tournament: tournament?.id, competition: competition?.id }).url} icon={IdCard}>View ID Cards</LinkButton> : 
+                                        competition.pools_generated_at &&
+                                    <Link
+
+                                        className="bg-accent-secondary text-white text-sm p-2 font-bold"
+                                        href={fixtures({
+                                            tournament: tournament?.id,
+                                            competition: competition?.id
+                                        })}> Update Results </Link>}
                                 </div>
 
                             </div>
@@ -142,15 +157,15 @@ export default function TournamentShow({ tournament,
                                 competition.pools_locked_at ?
                                     competition.fixture_generated_at ?
                                         competition.fixture_locked_at ?
-                                           
 
-                                                competition?.phase === 'process_certificate' ?
-                                                    <FinalistsDisplay winner={competition?.winner}
-                                                        runner={competition?.runner} thirdPlace={competition?.third_place}
-                                                        thirdPlace2={competition?.third_place2} />
-                                                    :
-                                                      <CompetitionStandings standings={competition?.results} />
-                                                    
+
+                                            competition?.phase === 'process_certificate' ?
+                                                <FinalistsDisplay winner={competition?.winner}
+                                                    runner={competition?.runner} thirdPlace={competition?.third_place}
+                                                    thirdPlace2={competition?.third_place2} />
+                                                :
+                                                <CompetitionStandings standings={competition?.results} />
+
                                             : 'Lock Fixture'
                                         : 'Generate Fixtures'
                                     : 'Lock Pools'

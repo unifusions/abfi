@@ -3,6 +3,10 @@ import ProcessAccreditation from "./process-accreditation";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import TableContainer from "@/components/ext/table-container";
 import { TableBody, TableCell, TableHead, TableRow } from "@/components/ui/table";
+import { printAll } from "@/routes/rosters/accreditations";
+import { Link } from "@inertiajs/react";
+import LinkButton from "@/components/ext/link-button";
+import { Download, IdCard } from "lucide-react";
 
 export default function AccreditationIndex({ tournament, competition, accreditations, hasAccreditations, rosters }) {
     return (
@@ -17,22 +21,55 @@ export default function AccreditationIndex({ tournament, competition, accreditat
             <div>
 
 
-              
+
 
 
                 {hasAccreditations &&
 
-                    <Accordion multiple defaultValue={["shipping"]}  >
+                    <TableContainer>
+                        <TableRow>
+                            <TableHead>#</TableHead>
+                            <TableHead>Roster Name</TableHead>
+                            <TableHead>Players</TableHead>
+                            <TableHead>Officials</TableHead>
+                            <TableHead>Registered On</TableHead>
+                            <TableHead className="text-end">Actions</TableHead>
+                        </TableRow>
 
-                        {rosters.map((roster) =>
+                        {rosters.map((roster, index) =>
 
-                            <AccordionItem value={roster.id}>
-                                <AccordionTrigger>
-                                    <div>
-                                        {roster?.name} {roster?.organization?.name}
+                            <TableRow key={roster.id}>
+                                <TableCell>
+{index+1}
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex flex-col">
+                                        <p>{roster?.name}</p>
+                                        <p>{roster?.organization?.name}, , {roster?.organization?.state?.short_code}</p>
+                                         
                                     </div>
-                                </AccordionTrigger>
-                                <AccordionContent>
+                                </TableCell>
+                                <TableCell>{roster?.players?.length}</TableCell>
+                                <TableCell>{roster?.officials?.length}</TableCell>
+                                <TableCell>{roster?.created_at}</TableCell>
+                                <TableCell className="text-right">
+                                    <div className="flex items-center justify-end gap-3">
+                                    <LinkButton 
+                                    className=" h-10 text-xs"
+                                    icon = {IdCard}
+                                    href={printAll({ roster: roster?.id }).url} target="_blank">
+                                         Download ID Card Sheet.
+                                    </LinkButton>
+
+                                    <LinkButton className="bg-accent-secondary h-10 text-xs"
+                                    
+                                    icon={Download}>
+                                       Download Roster Sheet
+                                    </LinkButton>
+                                    </div>
+                                  
+                                </TableCell>
+                                {/* <AccordionContent>
                                   <div className="grid grid-cols-6">
                                     <div className="col-span-5">
                                         <TableContainer>
@@ -51,16 +88,20 @@ export default function AccreditationIndex({ tournament, competition, accreditat
                                         </TableContainer>
                                     </div>
                                     <div>
+                                        <Link href={printAll({roster:roster?.id}).url} target="_blank">
                                         Download ID Card Sheet. 
+                                        </Link>
+                                      
                                         Download Roster Sheet
                                     </div>
                                   </div>
                                 </AccordionContent>
-                            </AccordionItem>
+                            </AccordionItem> */}
+                            </TableRow>
 
                         )}
 
-                    </Accordion>
+                    </TableContainer>
                 }
             </div>
         </>

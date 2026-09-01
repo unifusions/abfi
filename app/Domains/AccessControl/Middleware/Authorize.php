@@ -16,7 +16,9 @@ class Authorize
     ): Response {
         
        
-        if (auth()->user()->is_super_admin) {
+        $user = auth()->user();
+
+        if ($user->is_super_admin) {
 
 
             return $next($request);
@@ -26,13 +28,14 @@ class Authorize
             abort(401);
         }
 
-        $user = auth()->user();
+      
 
         switch ($type) {
 
             case 'role':
 
                 $roles = explode('|', $value);
+                
 
                 if (!$user->hasAnyRole($roles)) {
                     abort(403, 'Unauthorized.');
@@ -43,7 +46,7 @@ class Authorize
             case 'permission':
 
                 $permissions = explode('|', $value);
-
+ 
                 if (!$user->hasPermission($permissions)) {
                     abort(403, 'Unauthorized.');
                 }

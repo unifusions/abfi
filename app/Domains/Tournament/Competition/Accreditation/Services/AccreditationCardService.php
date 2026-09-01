@@ -45,7 +45,7 @@ class AccreditationCardService
 
     public function printAll(
         Roster $roster
-    ): Response {
+    )  {
         $accreditations = TournamentAccreditation::query()
             ->where('roster_id', $roster->id)
             ->where('is_active', true)
@@ -63,9 +63,9 @@ class AccreditationCardService
         );
 
         $pdf->setPaper('a4', 'portrait');
-
+ 
         return $pdf->stream(
-            "roster-{$roster->id}-id-cards.pdf"
+            "roster-{$roster->name}-id-cards.pdf"
         );
     }
 }

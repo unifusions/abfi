@@ -50,10 +50,16 @@ const OFFICIALOPTIONS = [{
 
 export default function OfficialForm(
     { data, setData, errors, handleSubmit,
-        organizations, can_select_organization, states
+        organizations, can_select_organization, states, profilePhoto= null, editMode = false
     }
 ) {
-     const [photo, setPhoto] = useState<UploadedMedia | null>(null);
+     const [photo, setPhoto] = useState<UploadedMedia | null>(
+        profilePhoto
+        ? {
+            id: profilePhoto.id,
+            url: profilePhoto.url,
+        }
+        : null);
     return (
         <form onSubmit={handleSubmit}>
             <div className="lg:col-span-9 md:col-span-6 space-y-6">
@@ -127,6 +133,8 @@ export default function OfficialForm(
                                 value={data.dob}
                                 onChange={(e) => setData('dob', e.target.value)}
                                 hasError={errors.dob}
+                                disabled={editMode}
+
                             />
 
                             <FormRadio
@@ -136,6 +144,7 @@ export default function OfficialForm(
                                 value={data.gender} onValueChange={(val) => setData('gender', val)}
                                 options={GENDEROPTIONS}
                                 hasError={errors.gender}
+                                disabled={editMode}
                             />
 
                             <FormRadio
@@ -170,14 +179,14 @@ export default function OfficialForm(
                         <div className="grid grid-cols-2 w-full gap-3 space-y-6">
 
                             <FormSelect
-                                id="state_id"
+                                id="official_type"
                                 label="Official Type"
                                 items={OFFICIALOPTIONS} value={data.type}
                                 labelRequired={true}
                                 onValueChange={(val) => setData('type', val)}
                                 hasError={errors.type}
                                 placeHolder="e.g., Tournament Official"
-                                
+                                disabled={editMode}
 
                             />
 
@@ -196,8 +205,9 @@ export default function OfficialForm(
                                                             options={organizations}
                                                             onValueChange={(val) => setData('organization_id', val)}
                                                             hasError={errors.organization_id}
-                                                            disabled={!can_select_organization}
-                                                        />
+                                                            disabled={!can_select_organization ||editMode}
+                                                      
+                                                      />
 
 
                             <FormSelect items={bloodgroups}
@@ -209,6 +219,7 @@ export default function OfficialForm(
                                 value={data.blood_group}
                                 onValueChange={(val) => setData('blood_group', val)}
                                 hasError={errors.blood_group}
+                                disabled={editMode}
                             />
 
 
@@ -224,6 +235,7 @@ export default function OfficialForm(
                                 labelRequired={true}
                                 onChange={(e) => setData('aadhar_no', e.target.value)}
                                 hasError={errors.aadhar_no}
+                                disabled={editMode}
 
                             />
 
@@ -239,6 +251,7 @@ export default function OfficialForm(
                                 value={data.passport}
                                 onChange={(e) => setData('passport', e.target.value)}
                                 hasError={errors.passport}
+                                disabled={editMode}
                             />
 
                         </div>
@@ -318,8 +331,7 @@ export default function OfficialForm(
                                 labelRequired={true}
                                 onValueChange={(val) => setData('state_id', val)}
                                 hasError={errors.state_id}
-
-                            />
+                                                        />
 
 
                             <FormInput
@@ -398,7 +410,7 @@ export default function OfficialForm(
                             <Button
                                 size="xl"
                                 className="" type="submit">
-                                <Save className="h-8 w-8 mr-2" /> <span>Submit Official</span>
+                                <Save className="h-8 w-8 mr-2" /> <span>{editMode ? 'Update' : 'Submit'} Official</span>
                             </Button>
                         </div>
 

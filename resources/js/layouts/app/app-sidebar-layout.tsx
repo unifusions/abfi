@@ -8,7 +8,7 @@ import type { AppLayoutProps } from '@/types';
 
 export default function AppSidebarLayout({
     children,
-    breadcrumbs = [],
+    breadcrumbs ,
 }: AppLayoutProps) {
     return (
         <AppShell variant="sidebar">
@@ -28,11 +28,11 @@ export default function AppSidebarLayout({
                 
                 <footer className="sticky bottom-0  h-16 flex justify-between items-center px-8 w-full bg-surface border-t border-zinc-100">
                     <p className="font-label text-xs text-on-surface-variant opacity-80">© 2026 Amaetur Baseball Federation of India. All Rights Reserved.</p>
-                    <div className="flex space-x-6">
+                    {/* <div className="flex space-x-6">
                         <a className="font-label text-xs text-on-surface-variant hover:text-secondary transition-opacity" href="#">Privacy Policy</a>
                         <a className="font-label text-xs text-on-surface-variant hover:text-secondary transition-opacity" href="#">Terms of Service</a>
                         <a className="font-label text-xs text-on-surface-variant hover:text-secondary transition-opacity" href="#">API Documentation</a>
-                    </div>
+                    </div> */}
                 </footer>
             </AppContent>
              

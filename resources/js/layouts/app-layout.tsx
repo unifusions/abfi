@@ -1,3 +1,4 @@
+import { useBreadcrumbs } from '@/context/BreadcrumbContext';
 import { PermissionProvider } from '@/context/PermissionContext';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import type { BreadcrumbItem } from '@/types';
@@ -7,12 +8,15 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 export default function AppLayout({
-    breadcrumbs = [],
+    
     children,
 }: {
     breadcrumbs?: BreadcrumbItem[];
     children: React.ReactNode;
 }) {
+
+   
+    const breadcrumbs = useBreadcrumbs();
     const { flash, auth } = usePage().props;
     useEffect(() => {
         if (flash.success) {
@@ -52,3 +56,4 @@ export default function AppLayout({
 
     );
 }
+    

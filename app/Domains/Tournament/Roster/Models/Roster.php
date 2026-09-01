@@ -90,8 +90,9 @@ class Roster extends Model
     }
     public function actionFor(User $user): RosterActionEnum
     {
+        
         $ownsRoster = $this->organization_id === $user->organization_id ? true : false;
-        $canReview = $user->can('roster.review') || $user->isSuperAdmin();
+        $canReview = $user->can('roster.review') || $user->isSuperAdmin() ||  $user->hasRole('admin');
         // Builder mode
         if (
             $ownsRoster &&
