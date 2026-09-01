@@ -29,7 +29,7 @@ createInertiaApp({
         }
     },
     strictMode: true,
-    withApp(app) {
+    withApp(app) { 
         return (
             <TooltipProvider delayDuration={0}>
             <BreadcrumbProvider >
