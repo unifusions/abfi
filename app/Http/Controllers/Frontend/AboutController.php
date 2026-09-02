@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Http\Controllers\Static;
+namespace App\Http\Controllers\Frontend;
 
 use App\Domains\Organization\Models\Organization;
 use App\Http\Controllers\Controller;

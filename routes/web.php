@@ -17,8 +17,10 @@ use App\Domains\Tournament\Roster\Controllers\RosterController;
 use App\Domains\Venue\Controllers\VenueSearchController;
 use App\Domains\Venue\Controllers\VenueController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Static\AboutController;
-use App\Http\Controllers\static\HomeController;
+ 
+ 
+use App\Http\Controllers\Frontend\AboutController;
+use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 
 // Route::inertia('/', 'welcome')->name('home');
