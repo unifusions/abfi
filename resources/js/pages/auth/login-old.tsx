@@ -1,4 +1,4 @@
-import { Form, Head, useForm } from '@inertiajs/react';
+import { Form, Head } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -24,28 +24,18 @@ export default function Login({ status, canResetPassword }: Props) {
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const {data, setData, post, processing, errors} = useForm({
-        email: '',
-        password: '',
-        remember: false,
-    });
-    const loginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        
-
-        post(store().url);
-    }
 
     return (
         <>
             <Head title="Log in" />
 
-            <form
-                onSubmit={loginSubmit}
-                // resetOnSuccess={['password']}
+            <Form
+                {...store.form()}
+                resetOnSuccess={['password']}
                 className="flex flex-col gap-6 bg-white p-8 rounded-xl"
             >
-                 
+                {({ processing, errors }) => (
+                    <>
 
                         <div class="space-y-2">
                             <FormInputWithIcon
@@ -58,10 +48,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                 className=" pl-10      "
                                 placeholder="admin@abfi.com" required
                                 icon={IdCard}
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
                             />
-                             
                             <InputError message={errors.email} />
 
 
@@ -82,10 +69,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                 <input type={showPassword ? 'text' : 'password'}
                                     class="block w-full pl-10 pr-12 py-3 bg-zinc-50 border-0 rounded-md focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline/60 transition-all"
                                     tabIndex={2}
-                                    id="password" name="password" placeholder="••••••••" required=""
-                                    value={data.password}
-                                    onChange={(e) => setData('password', e.target.value)}
-                                />
+                                    id="password" name="password" placeholder="••••••••" required="" />
                                 <button
                                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-primary transition-colors"
                                     type="button" onClick={() => setShowPassword((prev) => !prev)}>
@@ -140,15 +124,15 @@ export default function Login({ status, canResetPassword }: Props) {
                                 Sign up
                             </TextLink>
                         </div> */}
-                   
-         
+                    </>
+                )}
+            </Form>
 
             {status && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
                     {status}
                 </div>
             )}
-            </form>
         </>
     );
 }
