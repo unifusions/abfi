@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['name',
         'code',
         'minimum_age',
-        'maximum_age',
+        'maximum_age','minimum_players','maximum_players','maximum_officials',
         'is_active',])]
 class Category extends Model{
  use HasUuids;

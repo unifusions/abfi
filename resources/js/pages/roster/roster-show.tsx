@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import officials from "@/routes/officials";
 import { printAll } from "@/routes/rosters/accreditations";
 import { downloadForRoster } from "@/routes/rosters/certificates";
+import { index } from "@/routes/rosters/replace";
 import rosters, { printRosters } from "@/routes/rosters/rosters";
-import { Download, Medal, Printer } from "lucide-react";
+import { Download, Medal, Printer, Shuffle } from "lucide-react";
 
 
 const PlayerCard = ({ player }) => {
@@ -36,7 +37,7 @@ const PlayerCard = ({ player }) => {
     )
 }
 
-export default function RosterShow({ roster, players, tournament,
+export default function RosterShow({ roster, players, tournament, canReplaceMember,
     officials, hasAccreditations,
     competition, category }) {
 
@@ -52,6 +53,11 @@ export default function RosterShow({ roster, players, tournament,
                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
                     {roster.status}
                 </div>
+
+                {canReplaceMember && <LinkButton icon={Shuffle} href={index({roster : roster?.id}).url}  >
+                    Replace Player/Official
+                </LinkButton>}
+
 
             </PageHeader>
 

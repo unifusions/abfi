@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Save, XCircle } from "lucide-react";
 import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
 import { complianceBreadcrumbs } from "../compliance-index";
+import LinkButton from "@/components/ext/link-button";
 
 export default function OrganizationEdit({ organization, states }) {
 
@@ -56,10 +57,10 @@ export default function OrganizationEdit({ organization, states }) {
 
 
                     <div className="flex gap-3">
-                        <Link size="xl" variant="destructive"
+                        <LinkButton size="xl" variant="destructive"
                             href={index().url}
                             className="     hover:bg-red-200 transition-colors  " >
-                            <XCircle className="text-destructive" />   Cancel</Link>
+                            <XCircle className="text-destructive" />   Cancel</LinkButton>
                         <Button
                             size="xl"
                             className="" type="submit">

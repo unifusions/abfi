@@ -106,6 +106,7 @@ class RosterController extends Controller
     {
         $roster->load('certificates');
         return inertia('roster/roster-show', [
+            'canReplaceMember' => auth()->user()->hasRole('admin') || auth()->user()->isSuperAdmin(),
             'roster' => $roster,
             'players' => RosterDetailPlayerResource::collection($roster->players),
             'competition' => $roster->competition,

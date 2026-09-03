@@ -1,5 +1,6 @@
 import AppPagination from "@/components/ext/app-pagination";
 import TableContainer from "@/components/ext/table-container";
+import RowFirstColumn from "@/components/ext/table/row-first-column";
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { show } from "@/routes/rosters";
 import { Link, router } from "@inertiajs/react";
@@ -27,9 +28,12 @@ export default function RosterList({ rosters }) {
                         // const playerProgress = '5%';
                         return (<TableRow key={r.id}>
                             <TableCell>
+                                <RowFirstColumn 
+                                    title={r?.name}
+                                    subTitle={r?.association}
+                                />
 
-                                {r?.name}
-                                <span className="text-xs">{r?.association}</span>
+                               
                             </TableCell>
                             <TableCell>
                                 {r.division} {r.competition}

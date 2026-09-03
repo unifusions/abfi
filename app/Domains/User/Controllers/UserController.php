@@ -73,17 +73,19 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $user->load('roles', 'organization');
     return inertia('compliance/access-control/user-edit', [
-        'user' => $user
+        'user' => $user,
+        'organization' => $user->organization->name,
     ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+       dd('updated');
     }
 
     /**

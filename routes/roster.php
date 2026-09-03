@@ -5,6 +5,7 @@ use App\Domains\Tournament\Competition\Certificate\Controllers\RosterCertificate
 use App\Domains\Tournament\Roster\Controllers\RosterAccreditationController;
 use App\Domains\Tournament\Roster\Controllers\RosterBuilderController;
 use App\Domains\Tournament\Roster\Controllers\RosterController;
+use App\Domains\Tournament\Roster\Controllers\RosterMemberReplaceController;
 use App\Domains\Tournament\Roster\Controllers\RosterOfficialController;
 use App\Domains\Tournament\Roster\Controllers\RosterPlayerController;
 use App\Domains\Tournament\Roster\Controllers\RosterPlayerCreationController;
@@ -23,6 +24,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::get('/review', 'review')->name('index');
                     Route::post('/approve', 'approve')->name('approve');
                     Route::post('/approve-player/{rosterPlayer}', 'approvePlayer')->name('approvePlayer');
+                }
+            );
+
+            Route::controller(RosterMemberReplaceController::class)->name('replace.')->group(
+                function(){
+                    Route::get('/manage-roster-members', 'index')->name('index');
                 }
             );
 

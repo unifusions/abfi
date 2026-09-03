@@ -17,30 +17,40 @@ class CategorySeeder extends Seeder
         $categories = [
 
             [
-                'name' => 'Little League',
-                'code' => 'LL',
-                'minimum_age' => 5,
-                'maximum_age' => 12,
-            ],
-
-            [
-                'name' => 'Sub Juniors',
-                'code' => 'U16',
-                'minimum_age' => 14,
-                'maximum_age' => 16,
-            ],
-            [
-                'name' => 'Juniors',
-                'code' => 'U18',
-                'minimum_age' => 16,
-                'maximum_age' => 18,
-            ],
-            [
                 'name' => 'Senior',
                 'code' => 'SR',
                 'minimum_age' => 18,
                 'maximum_age' => 99,
             ],
+             [
+                'name' => 'Juniors',
+                'code' => 'U17',
+                'minimum_age' => 15,
+                'maximum_age' => 17,
+            ],
+            [
+                'name' => 'Sub Juniors',
+                'code' => 'U15',
+                'minimum_age' => 13,
+                'maximum_age' => 15,
+            ],
+
+            [
+                'name' => 'Kids',
+                'code' => 'U13',
+                'minimum_age' => 11,
+                'maximum_age' => 13,
+            ],
+            [
+            'name' => 'Federation Cup',
+            'code' => 'FC',
+            'minimum_age' => 0,
+            'maximum_age' => 99,        
+            ],
+
+            
+           
+
         ];
 
         foreach ($categories as $category) {

@@ -8,7 +8,7 @@ import { useCurrentUrl } from "@/hooks/use-current-url";
 import { cn } from "@/lib/utils";
  
  
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { Award, Group, KeyRound, Logs, MapPinned, Users } from "lucide-react";
 import { PropsWithChildren } from "react";
 import { index as logIndex } from "@/routes/compliance/logs";
@@ -16,9 +16,10 @@ import { index  as userIndex} from "@/routes/compliance/users";
  
 import organizations from "@/routes/compliance/organizations";
 import roles from "@/routes/compliance/roles";
-import { categories } from "@/routes/compliance";
+ 
 import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
 import { dashboard, compliance } from "@/routes";
+import { index as categoryIndex } from "@/routes/compliance/categories";
  
 
 
@@ -44,7 +45,7 @@ const menuItems = [
 
      {
             title: 'Tournament Categories',
-            href: categories(),
+            href: categoryIndex().url,
             module: "Tournament",
             icon: Award
         },
@@ -59,37 +60,14 @@ const menuItems = [
 
 export default function ComplianceLayout({ children }: PropsWithChildren) {
     const { isCurrentUrl } = useCurrentUrl();
-
+ const { url } = usePage();
     useSetBreadcrumbs([
         { title: 'Dashboard', href: dashboard() },
         { title: 'Compliance', href: compliance().url },
     ])
     return (
         <>
-            {/* <div className="mt-3 h-12 border-t flex  items-center bg-primary/10 px-2  py-0 ">
-                <nav className="flex items-center py-0  ">
-
-                    {menuItems.map((item, index) => (
-                        <Button
-                            key={index}
-                            size="sm"
-                            variant="ghost"
-                            asChild
-
-                            className={cn(' justify-start     h-12 hover:bg-secondary text-md rounded-none hover:text-white transition-all', {
-                                'bg-secondary   font-display  text-white font-semibold': isCurrentUrl(item.href),
-                            })}
-                        >
-                            <Link href={item.href} className=" " >
-                                {item.icon && (
-                                        <item.icon className="h-4 w-4" />
-                                    )}
-                                {item.title}
-                            </Link>
-                        </Button>
-                    ))}
-                </nav>
-            </div> */}
+          
 
 
             <div className=" py-3 ">
@@ -104,7 +82,9 @@ export default function ComplianceLayout({ children }: PropsWithChildren) {
                             className="flex flex-col  space-x-0"
                             aria-label="Settings"
                         >
-                            {menuItems.map((item, index) => (
+                            {menuItems.map((item, index) => {
+                                const isActive = url === item.href || url.startsWith(`${item.href}`);
+                                return (
                                 <Link href={item.href}
                                     key={index}
 
@@ -112,7 +92,7 @@ export default function ComplianceLayout({ children }: PropsWithChildren) {
 
                                     className={cn('h-12 w-full transition-all' ,
                                         'flex items-center gap-2 pl-2 flex-row justify-start rounded-none font-display font-normal  hover:text-secondary', {
-                                        'text-secondary font-bold': isCurrentUrl(item.href),
+                                        'text-secondary font-bold': isCurrentUrl(item.href) || isActive,
                                     })}
                                 >
                                    
@@ -125,7 +105,7 @@ export default function ComplianceLayout({ children }: PropsWithChildren) {
                                    
 
                                 </Link>
-                            ))}
+                            )})}
                         </nav>
                     </aside>
 

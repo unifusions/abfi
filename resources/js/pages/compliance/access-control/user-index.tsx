@@ -10,7 +10,7 @@ import RowAvatar from "@/components/ext/table/row-first-column-with-avatar"
 import { useBreadcrumbs, useSetBreadcrumbs } from "@/context/BreadcrumbContext"
 import { compliance, dashboard } from "@/routes"
 import { create, edit, index } from "@/routes/compliance/users"
-import { Bolt, Group, Pencil, Search, Trash, User, UserPlus, Users } from "lucide-react"
+import { Bolt, Group, Key, Pencil, Search, Trash, User, UserPlus, Users } from "lucide-react"
 import { complianceBreadcrumbs } from "../compliance-index"
 import TableContainer from "@/components/ext/table-container"
 import { TableBody, TableCell, TableFooter, TableHead, TableRow } from "@/components/ui/table"
@@ -104,8 +104,8 @@ export default function UserIndex(
                     <TableHead>E-Mail</TableHead>
 
                     <TableHead>Organization</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
+                    {/* <TableHead>Status</TableHead> */}
+                    <TableHead className="text-end">Actions</TableHead>
                 </TableRow>
                 <TableBody>
                     {data?.map((user) =>
@@ -116,29 +116,31 @@ export default function UserIndex(
                             </TableCell>
                             <TableCell>{user?.email}</TableCell>
                             <TableCell>{user?.organization}</TableCell>
-                           
-                            <TableCell>  <span
-                                        class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase">Active</span></TableCell>
+
+                            {/* <TableCell>  <span
+                                        class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase">Active</span></TableCell> */}
                             <TableCell>
+
+
                                 <TableRowAction canView={false}
                                     editUrl={edit({ user: user.id }).url}
-                                    deleteUrl={"#"} />
+                                />
 
 
                             </TableCell>
                         </TableRow>
                     )}
                     <TableRow>
-                        
+
                     </TableRow>
                 </TableBody>
                 <TableFooter className="bg-zinc-50">
                     <TableCell colSpan={5}>
-                    <AppPagination paginationData={paginationData} />
+                        <AppPagination paginationData={paginationData} />
                     </TableCell>
                 </TableFooter>
             </TableContainer>
-          
+
 
         </div></>
     )
