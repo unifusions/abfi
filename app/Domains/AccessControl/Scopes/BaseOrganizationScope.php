@@ -18,12 +18,12 @@ class BaseOrganizationScope implements Scope
         if (!$user || $user->is_super_admin || $user->hasRole('admin')) {
             return;
         }
+       
+        if ($user->hasPermission($user->permissions()->get()))
 
-        if($user->hasPermission())
-
-        $builder->where(
-            $model->getTable() . '.organization_id',
-            $user->organization_id
-        );
+            $builder->where(
+                $model->getTable() . '.organization_id',
+                $user->organization_id
+            );
     }
 }

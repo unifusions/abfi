@@ -62,6 +62,9 @@ class Roster extends Model
         return $this->hasMany(RosterPlayer::class);
     }
 
+    public function playerReplacements(){
+        return $this->hasMany(RosterPlayerReplacement::class, 'roster_id');
+    }
     public function officials()
     {
         return $this->hasMany(RosterOfficial::class);

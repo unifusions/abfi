@@ -28,6 +28,12 @@ trait HasRoles
         return $this->is_super_admin;
     }
 
+    public function isAdmin(): bool
+    {
+
+        return $this->hasRole('admin');
+    }
+
 
     public function hasRole(string|array $roles): bool
     {
@@ -56,7 +62,7 @@ trait HasRoles
 
     public function hasPermission(string|array $permissions): bool
     {
-        if ($this->isSuperAdmin()) {
+        if ($this->isSuperAdmin() || $this->isAdmin()) {
             return true;
         }
  

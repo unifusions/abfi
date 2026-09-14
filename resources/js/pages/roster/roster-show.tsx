@@ -6,40 +6,15 @@ import { printAll } from "@/routes/rosters/accreditations";
 import { downloadForRoster } from "@/routes/rosters/certificates";
 import { index } from "@/routes/rosters/replace";
 import rosters, { printRosters } from "@/routes/rosters/rosters";
-import { Download, Medal, Printer, Shuffle } from "lucide-react";
+import { Download, Medal, PartyPopper, Printer, Shuffle } from "lucide-react";
+import RosterPlayerCard from "./players/roster-player-card";
+import RosterReplacementHistory from "./players/roster-replacement-history";
 
 
-const PlayerCard = ({ player }) => {
-    return (
-        <div
-            className="bg-zinc-50 p-4 flex items-center gap-4 transition-transform hover:-translate-y-1 duration-300">
-            <div
-                className="w-16 h-16 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500">
-                <img className="w-full h-full object-cover"
-                    src={player?.profile_photo} />
-            </div>
-            <div className="flex-1">
-                <div className="flex items-center justify-between">
-                    <h4 className="font-headline font-bold text-on-surface">{player?.name}</h4>
-                    {/* <span className="material-symbols-outlined text-primary text-lg"
-                    >verified</span> */}
-                </div>
-                <div className="text-xs font-medium text-on-surface-variant mt-0.5">{player?.positions.join(', ')}
-                </div>
-                <div className="mt-2 flex items-center gap-3">
-                    <span className="text-[10px] text-on-surface-variant/60 font-black uppercase">Age:
-                        {player.age}</span>
-                    <span className="text-[10px] text-on-surface-variant/60 font-black uppercase">DOB:
-                        {player.dob}</span>
-                </div>
-            </div>
-        </div>
-    )
-}
 
 export default function RosterShow({ roster, players, tournament, canReplaceMember,
     officials, hasAccreditations,
-    competition, category }) {
+    competition, category, replacements }) {
 
     const isComplete = roster.status === 'completed';
     return (
@@ -54,7 +29,7 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
                     {roster.status}
                 </div>
 
-                {canReplaceMember && <LinkButton icon={Shuffle} href={index({roster : roster?.id}).url}  >
+                {canReplaceMember && <LinkButton icon={Shuffle} href={index({ roster: roster?.id }).url}  >
                     Replace Player/Official
                 </LinkButton>}
 
@@ -94,12 +69,17 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
                 <div className="col-span-8 space-y-6">
 
+                    {replacements && <RosterReplacementHistory replacements={replacements.data} />}
 
+                     <div className="flex items-center justify-between mb-4">
+              <h2 className="font-headline text-lg font-bold text-primary">Current Roster Players </h2>
+              <span class="text-xs text-on-surface-variant font-medium">All Certified &amp; Registered</span>
+            </div>
                     <div class="grid grid-cols-2 gap-4">
 
 
 
-                        {players.data.map((player) => <PlayerCard key={player.id} player={player} />
+                        {players.data.map((player) => <RosterPlayerCard key={player.id} player={player} />
                         )}
 
 
@@ -107,6 +87,7 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
 
                     </div>
+
                 </div>
 
                 <div class="col-span-4 space-y-6">
@@ -139,6 +120,39 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
                         </div>
                     </div>
 
+                    <div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
+                        <h3 class="font-headline font-bold text-sm text-primary mb-3 flex items-center gap-2">
+                            <PartyPopper className="text-secondary" />
+
+                            Tournament Details
+                        </h3>
+                        <div class="space-y-2.5 text-xs">
+                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span class="text-on-surface-variant">Event:</span>
+                                <span class="font-semibold text-right text-on-surface">{tournament.name}</span>
+                            </div>
+                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span class="text-on-surface-variant">Division:</span>
+                                <span class="font-semibold text-right text-on-surface">{competition?.name} {category?.name} ({category?.code})</span>
+                            </div>
+                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span class="text-on-surface-variant">Competition Dates:</span>
+                                <span class="font-semibold text-right text-on-surface">{tournament.starts_at} - {tournament.ends_at}</span>
+                            </div>
+                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span class="text-on-surface-variant">Venue:</span>
+                                <span class="font-semibold text-right text-on-surface">Puducherry Sports Complex</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-on-surface-variant">Roster Status:</span>
+                                <span class="text-secondary font-bold flex items-center gap-1 uppercase">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary "></span>
+                                    {roster?.status}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="bg-primary text-white p-6 rounded-lg relative overflow-hidden">
 
                         <h3 class="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-primary/60 mb-4">
@@ -146,40 +160,58 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
                         <div class="space-y-3 relative z-10">
                             <div>
                                 <p class="text-on-primary/70 text-[10px] font-label uppercase">Competition</p>
-                                <p class="font-headline font-bold text-base leading-tight">{tournament.name}</p>
+                                <p class="font-headline font-bold text-base leading-tight"></p>
                             </div>
                             <div class="flex justify-between items-end">
                                 <div>
                                     <p class="text-on-primary/70 text-[10px] font-label uppercase">Division</p>
-                                    <p class="font-headline font-bold text-sm">{category?.name} | {competition?.name}</p>
+                                    <p class="font-headline font-bold text-sm"></p>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-on-primary/70 text-[10px] font-label uppercase">Dates</p>
-                                    <p class="font-headline font-bold text-sm">{tournament.starts_at} - {tournament.ends_at}</p>
+                                    <p class="font-headline font-bold text-sm"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3">
 
-                        {hasAccreditations &&
-                            <>
-                                <LinkButton href={printRosters({ roster: roster }).url} target="_blank">
-                                    <Printer /> Print Roster Sheet
+
+                    {
+                        (hasAccreditations || competition.phase === 'completed') &&
+
+
+                        <div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
+                            <h3 class="font-headline font-bold text-sm text-primary mb-3">Quick Administrative Actions</h3>
+                            <div class="space-y-2">
+
+                                {hasAccreditations &&
+                                    <>
+                                        <LinkButton href={printRosters({ roster: roster }).url} target="_blank">
+                                            <Printer /> Print Roster Sheet
+                                        </LinkButton>
+
+                                        <LinkButton href={printAll({ roster: roster }).url} target="_blank">
+                                            <Download /> Download ID Cards
+                                        </LinkButton>
+                                    </>}
+
+                                {competition.phase === 'completed' && <LinkButton href={downloadForRoster({ roster: roster }).url} className="bg-secondary" target="_blank">
+                                    <Medal /> Download  Certificates
                                 </LinkButton>
+                                }
 
-                                <LinkButton href={printAll({ roster: roster }).url} target="_blank">
-                                    <Download /> Download ID Cards
-                                </LinkButton>
-                            </>}
 
-                        {competition.phase === 'completed' && <LinkButton href={downloadForRoster({ roster: roster }).url} className="bg-secondary" target="_blank">
-                            <Medal /> Download  Certificates
-                        </LinkButton>
-                        }
+                            </div>
+                        </div>
+                    }
 
-                    </div>
+
+
+
+
+
+
                     {/* <div class="bg-surface-container-low p-6 rounded-lg">
                         <h3
                             class="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-4">

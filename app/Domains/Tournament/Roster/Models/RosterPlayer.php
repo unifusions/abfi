@@ -39,6 +39,7 @@ class RosterPlayer extends Model
     {
         return $this->belongsTo(Player::class);
     }
+ 
 
     public function qrCodes(): MorphMany
     {

@@ -18,8 +18,9 @@ class RosterDetailPlayerResource extends JsonResource
             'positions' => $this->player->positions->pluck('name'),
             'age' => Carbon::parse($this->player->dob)->age,
             'code' => $this->player->player_code,
-            'dob' => $this->player?->dob->format('d/m/Y')
-
+            'dob' => $this->player?->dob->format('d/m/Y'),
+            'blood_group' => $this->player->blood_group,
+            
         ];
     }
 }

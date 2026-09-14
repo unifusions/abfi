@@ -14,6 +14,7 @@ use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Requests\StoreRosterRequest;
 use App\Domains\Tournament\Roster\Resources\RosterDetailPlayerResource;
 use App\Domains\Tournament\Roster\Resources\RosterListResource;
+use App\Domains\Tournament\Roster\Resources\RosterReplacementHistoryResource;
 use App\Domains\Tournament\Roster\Services\RosterPrintService;
 use App\Domains\Tournament\Roster\Services\RosterService;
 use App\Http\Controllers\Controller;
@@ -104,12 +105,19 @@ class RosterController extends Controller
     
     public function show(Roster $roster)
     {
+        $isVerified = $roster->competition->phase === CompetitionPhaseEnum::VERIFICATION;
+        $issuedIdCards = $roster->competition->phase === CompetitionPhaseEnum::ISSUE_IDCARDS;
+     
+        $isAdmin =auth()->user()->hasRole('admin') || auth()->user()->isSuperAdmin();
         $roster->load('certificates');
         return inertia('roster/roster-show', [
-            'canReplaceMember' => auth()->user()->hasRole('admin') || auth()->user()->isSuperAdmin(),
+            'canReplaceMember' => $roster->status === RosterStatusEnum::APPROVED && $isAdmin && ($isVerified || $issuedIdCards), 
             'roster' => $roster,
             'players' => RosterDetailPlayerResource::collection($roster->players),
             'competition' => $roster->competition,
+            'replacements' => RosterReplacementHistoryResource::collection($roster->playerReplacements),
+
+            // $roster->playerReplacements()->with('replacingPlayer', 'replacementPlayer')->get(),
             'tournament' => $roster->competition->tournament,
             'officials' => $roster->officials,
             'category' => $roster->competition->tournament->category,

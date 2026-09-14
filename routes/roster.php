@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::controller(RosterMemberReplaceController::class)->name('replace.')->group(
                 function(){
                     Route::get('/manage-roster-members', 'index')->name('index');
+                    Route::post('/replace-roster-member','replaceMember')->name('replace');
                 }
             );
 
