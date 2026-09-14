@@ -71,10 +71,10 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
                     {replacements && <RosterReplacementHistory replacements={replacements.data} />}
 
-                     <div className="flex items-center justify-between mb-4">
-              <h2 className="font-headline text-lg font-bold text-primary">Current Roster Players </h2>
-              <span class="text-xs text-on-surface-variant font-medium">All Certified &amp; Registered</span>
-            </div>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="font-headline text-lg font-bold text-primary">Current Roster Players </h2>
+                        <span class="text-xs text-on-surface-variant font-medium">All Certified &amp; Registered</span>
+                    </div>
                     <div class="grid grid-cols-2 gap-4">
 
 
