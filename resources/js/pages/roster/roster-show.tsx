@@ -16,7 +16,8 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
     officials, hasAccreditations,
     competition, category, replacements }) {
 
-    const isComplete = roster.status === 'completed';
+    const isComplete = roster.status === 'completed'; 
+    const isAdminActions = hasAccreditations || competition.phase === 'completed' || competition?.phase === 'process_certificate';
     return (
         <>
             <PageHeader
@@ -120,7 +121,7 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
                         </div>
                     </div>
 
-                    <div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
+                    <div class="bg-zinc-50 p-5   shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
                         <h3 class="font-headline font-bold text-sm text-primary mb-3 flex items-center gap-2">
                             <PartyPopper className="text-secondary" />
 
@@ -153,32 +154,11 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
                         </div>
                     </div>
 
-                    <div className="bg-primary text-white p-6 rounded-lg relative overflow-hidden">
-
-                        <h3 class="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-primary/60 mb-4">
-                            Tournament Event</h3>
-                        <div class="space-y-3 relative z-10">
-                            <div>
-                                <p class="text-on-primary/70 text-[10px] font-label uppercase">Competition</p>
-                                <p class="font-headline font-bold text-base leading-tight"></p>
-                            </div>
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <p class="text-on-primary/70 text-[10px] font-label uppercase">Division</p>
-                                    <p class="font-headline font-bold text-sm"></p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-on-primary/70 text-[10px] font-label uppercase">Dates</p>
-                                    <p class="font-headline font-bold text-sm"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
+                   
+ 
 
                     {
-                        (hasAccreditations || competition.phase === 'completed') &&
+                       isAdminActions &&
 
 
                         <div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
@@ -187,17 +167,25 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
                                 {hasAccreditations &&
                                     <>
-                                        <LinkButton href={printRosters({ roster: roster }).url} target="_blank">
-                                            <Printer /> Print Roster Sheet
+                                        <LinkButton href={printRosters({ roster: roster }).url} target="_blank" size="xs" variant="ghost" 
+                                        className="text-primary bg-zinc-100 hover:bg-zinc-300 items-center justify-center py-5"
+                                        icon={Printer}
+                                        >
+                                         Print Roster Sheet
                                         </LinkButton>
 
-                                        <LinkButton href={printAll({ roster: roster }).url} target="_blank">
-                                            <Download /> Download ID Cards
+                                        <LinkButton href={printAll({ roster: roster }).url} target="_blank"
+                                        icon={Download} size="xs" variant="ghost" 
+                                        className="text-primary bg-zinc-100 hover:bg-zinc-300 items-center justify-center py-5">
+                                              Download ID Cards
                                         </LinkButton>
                                     </>}
-
-                                {competition.phase === 'completed' && <LinkButton href={downloadForRoster({ roster: roster }).url} className="bg-secondary" target="_blank">
-                                    <Medal /> Download  Certificates
+ 
+                                {(competition.phase === 'completed' || competition.phase==='process_certificate') && 
+                                <LinkButton href={downloadForRoster({ roster: roster }).url}  
+                                icon={Medal}
+                                target="_blank" size="xs" variant="ghost" className="text-primary bg-zinc-100 hover:bg-zinc-300 items-center justify-center py-5">
+                                   Download  Certificates
                                 </LinkButton>
                                 }
 
