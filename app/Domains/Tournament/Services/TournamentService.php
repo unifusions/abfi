@@ -47,8 +47,7 @@ class TournamentService
     public function createAndPublish(array $data): Tournament
     {
         $data['created_by'] = auth()->id();
-
-        $tournament = $this->createAndPublishTournament->handle($data);
+$tournament = $this->createAndPublishTournament->handle($data);
 
 
         foreach ($data['competition_type'] as $competition) {

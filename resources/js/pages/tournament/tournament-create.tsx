@@ -276,7 +276,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                     </div>
                                 </label>
                                 <label className="relative group cursor-pointer">
-                                    <input className="peer sr-only" name="bracket" type="radio" />
+                                    <input className="peer sr-only" name="bracket" type="radio" value="round_robin"   onChange={(e) => setData('competition_format', e.target.value)}/>
                                     <div className="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
                                         <Component className="h-10 w-10 text-primary" />
                                         <p className="font-bold text-primary">Round Robin</p>
