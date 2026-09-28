@@ -8,7 +8,7 @@ class SelectCategoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'label' => $this->name,
+            'label' => $this->name . " - $this->code",
             'value' => $this->id,
             'competition_type' => $this->maximum_age > 18 ? [
                 ['value' => 'men', 'label' => 'Men'],

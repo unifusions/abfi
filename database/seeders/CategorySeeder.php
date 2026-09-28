@@ -15,19 +15,14 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-
+            
             [
-                'name' => 'Senior',
-                'code' => 'SR',
-                'minimum_age' => 18,
-                'maximum_age' => 99,
+                'name' => 'Kids',
+                'code' => 'U13',
+                'minimum_age' => 11,
+                'maximum_age' => 13,
             ],
-             [
-                'name' => 'Juniors',
-                'code' => 'U17',
-                'minimum_age' => 15,
-                'maximum_age' => 17,
-            ],
+            
             [
                 'name' => 'Sub Juniors',
                 'code' => 'U15',
@@ -35,12 +30,22 @@ class CategorySeeder extends Seeder
                 'maximum_age' => 15,
             ],
 
+            
             [
-                'name' => 'Kids',
-                'code' => 'U13',
-                'minimum_age' => 11,
-                'maximum_age' => 13,
+                'name' => 'Juniors',
+                'code' => 'U17',
+                'minimum_age' => 15,
+                'maximum_age' => 17,
             ],
+           
+            [
+                'name' => 'Senior',
+                'code' => 'SR',
+                'minimum_age' => 18,
+                'maximum_age' => 99,
+            ],
+             
+            
             [
             'name' => 'Federation Cup',
             'code' => 'FC',
@@ -48,6 +53,13 @@ class CategorySeeder extends Seeder
             'maximum_age' => 99,        
             ],
 
+            [
+                'name' => 'Zonal Championship',
+                'code' => 'ZC',
+                'minimum_age' => 0,
+                'maximum_age' => 99,        
+                ],
+    
             
            
 

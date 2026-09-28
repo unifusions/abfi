@@ -67,8 +67,10 @@ class TournamentController extends Controller
      */
     public function create()
     {
+
+      
         return inertia('tournament/tournament-create', [
-            'categories' => SelectCategoryResource::collection(Category::all()),
+            'categories' => SelectCategoryResource::collection(Category::orderBy('created_at', 'asc')->get()),
             'states' => SelectStateResource::collection(State::all()),
             'venues' => Venue::all(),
             'organizations' => Organization::with('state')->get()

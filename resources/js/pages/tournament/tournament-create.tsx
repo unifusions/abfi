@@ -40,9 +40,9 @@ export default function TournamentCreate({ states, organizations, categories }: 
     });
 
     useSetBreadcrumbs([
-        {title : 'Dashboard', href: dashboard().url},
-        {title : 'Tournaments', href:index().url },
-        {title : 'New Tournament', href:create().url}
+        { title: 'Dashboard', href: dashboard().url },
+        { title: 'Tournaments', href: index().url },
+        { title: 'New Tournament', href: create().url }
     ])
 
     const [venueQuery, setVenueQuery] = useState('');
@@ -89,7 +89,6 @@ export default function TournamentCreate({ states, organizations, categories }: 
 
     return (
         < >
-        {JSON.stringify(errors)}
             <PageHeader title="New Tournament" subText="Initialize a new event. Ensure all data conforms to guidelines." />
             <div className="flex flex-col lg:flex-row gap-10 max-w-5xl">
                 {/* <!-- Left Column: Form Sections --> */}
@@ -104,23 +103,23 @@ export default function TournamentCreate({ states, organizations, categories }: 
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-<div className="col-span-3">
-<FormInput
-                                    id="tournament_name"
-                                    label="Tournament Name"
-                                    hasError={errors.name}
-                                    value={data.name}
-                                    onChange={e => setData('name', e.target.value)}
+                                <div className="col-span-3">
+                                    <FormInput
+                                        id="tournament_name"
+                                        label="Tournament Name"
+                                        hasError={errors.name}
+                                        value={data.name}
+                                        onChange={e => setData('name', e.target.value)}
+
+labelRequired={true}
+                                        placeholder="e.g., Sub Junior National Baseball Championship"
+                                    />
+
+                                </div>
 
 
-                                    placeholder="e.g., Sub Junior National Baseball Championship"
-                                />
 
-</div>
-
-                        
-
-<CreatableSelect value={v}
+                                <CreatableSelect value={v}
                                     searchUrl={venue.search().url}
                                     onChange={(v) => {
                                         setV(v);
@@ -140,9 +139,10 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                     label="Event Venue"
                                     labelRequired={true}
                                     onCreate={(query) => { setVenueQuery(query); setVenueDialogOpen(true) }}
+                                    labelRequired={true}
 
                                 />
-                             
+
                                 <AddVenueDialog
                                     open={venueDialogOpen}
                                     onOpenChange={setVenueDialogOpen}
@@ -154,6 +154,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                         setData("venue_id", v.id);
                                     }}
 
+                                    labelRequired={true}
 
 
                                 />
@@ -166,7 +167,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                 <SearchableSelect
                                     options={organizations}
                                     onChange={(org) => setData("organization_id", org.id)}
-                                    
+
                                     getOptionLabel={(org) => org.name}
                                     getOptionValue={(org) => org.id}
                                     renderOption={(org) => (
@@ -222,7 +223,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                         />} */}
                                 {/* /> */}
 
-                                
+
 
 
 
@@ -276,7 +277,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                     </div>
                                 </label>
                                 <label className="relative group cursor-pointer">
-                                    <input className="peer sr-only" name="bracket" type="radio" value="round_robin"   onChange={(e) => setData('competition_format', e.target.value)}/>
+                                    <input className="peer sr-only" name="bracket" type="radio" value="round_robin" onChange={(e) => setData('competition_format', e.target.value)} />
                                     <div className="h-full p-6 rounded-xl bg-surface-container-low border-2 border-transparent peer-checked:border-primary peer-checked:bg-surface-container-lowest transition-all group-hover:bg-surface-container-high flex flex-col gap-3">
                                         <Component className="h-10 w-10 text-primary" />
                                         <p className="font-bold text-primary">Round Robin</p>

@@ -17,7 +17,7 @@ class PlayerFactorySeeder extends Seeder
     public function run(): void
     {
         Player::withoutSyncingToSearch(function () {
-$runningNumber = 2601;
+            $runningNumber = 2601;
             $positionIds = BaseballPosition::pluck('id');
             $organizations = Organization::with('state')->get();
             $ageGroups = [
@@ -38,29 +38,27 @@ $runningNumber = 2601;
 
                         // Generate date of birth based on age group
                         $dob = Carbon::now()->subYears(fake()->numberBetween($group['min'], $group['max']))
-                            ->subDays(fake()->numberBetween(0, 365))
+                            ->subDays(\fake()->numberBetween(0, 365))
                             ->format('Y-m-d');
 
                         // Format player code: TNPLY00001M
                         $codeNumber = str_pad($runningNumber, 5, '0', STR_PAD_LEFT);
                         $playerCode = "{$statePrefix}PLY{$codeNumber}{$genderSuffix}";
 
-                       $player = Player::factory()->create([
+                        $player = Player::factory()->create([
                             'player_code' => $playerCode,
                             'organization_id' => $organization->id,
                             'state_id' => $organization->state_id,
                             'gender' => $gender,
                             'dob' => $dob,
                         ]);
-$randomCount = rand(1, min(3, count($positionIds)));
+                        $randomCount = rand(1, min(3, count($positionIds)));
                         $selectedPositionUuids = fake()->randomElements($positionIds, $randomCount);
-                      $player->positions()->attach($selectedPositionUuids);
+                        $player->positions()->attach($selectedPositionUuids);
                         $runningNumber++;
                     }
                 }
-
             }
-
         });
     }
 }
