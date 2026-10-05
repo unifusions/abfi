@@ -82,14 +82,14 @@ const DivisionContainer = ({ division, label }) => {
     return (<>
 
         <div>
-            <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">{division} Division
+            <p className="text-xs font-bold   uppercase tracking-widest">{division} Division
 
 
             </p>
 
         </div>
         <div
-            className="w-full py-2 bg-primary text-white text-center uppercase text-xs font-bold hover:opacity-90 transition-opacity">
+            className="w-full py-2 bg-primary text-on-primary text-center uppercase text-xs font-bold hover:opacity-90 transition-opacity">
             {label}
 
         </div></>)
@@ -104,7 +104,7 @@ export default function TournamentCompetitionStatus({ tournament, competitions, 
              
                 const config = getActionButtonConfig(competition, tournament);
            
-                const containerStyle = "group bg-zinc-50 border border-outline-variant/20 p-4 flex flex-col gap-3 w-48 hover:bg-accent-secondary hover:text-white transition-all";
+                const containerStyle = "group bg-surface-container-low border text-on-surface-container border-outline-variant p-4 flex flex-col gap-3 w-48 hover:bg-secondary hover:text-on-secondary transition-all";
                 const { can } = competition;
 
                 if (!can.progress) {

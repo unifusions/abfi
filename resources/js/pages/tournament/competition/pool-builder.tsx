@@ -22,7 +22,7 @@ export default function PoolBuilder(
             <div className="grid grid-cols-12 gap-8 items-start">
                 {/* <!-- Left Sidebar: Team Selection Pool --> */}
                 <section
-                    className="col-span-12 lg:col-span-3 bg-zinc-50  h-[calc(100vh-320px)] flex flex-col border-l-4 border-secondary overflow-hidden">
+                    className="col-span-12 lg:col-span-3 bg-surface-container-low  h-[calc(100vh-320px)] flex flex-col border-l-4 border-secondary overflow-hidden">
                     <div className="p-4 border-b border-surface-container">
                         <h3 className="font-headline font-bold text-primary flex items-center gap-2">
                             <ClockArrowUp className="text-secondary" />
@@ -76,7 +76,7 @@ export default function PoolBuilder(
 
 
 
-                    <section className="mt-12 bg-primary  relative  xl:col-span-4">
+                    <section className="mt-12 bg-primary dark:bg-surface-container relative  xl:col-span-4">
                         <div className="absolute inset-0 opacity-10 pointer-events-none">
                             <div className="absolute top-0 left-0 w-full h-full"
                             // style="background-image: radial-gradient(circle at 2px 2px, #fff 1px, transparent 0); background-size: 40px 40px;"

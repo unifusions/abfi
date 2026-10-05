@@ -17,7 +17,7 @@ class TournamentListResource extends JsonResource
             'organizer' => $this->organization?->name,
             'venue' => $this->venue?->name,
             'status' => $this->status,
-            'rosters' => $this->rosters()->where('status', RosterStatusEnum::APPROVED->value)
+            'rosters' => $this->rosters()->where('status','!=' ,RosterStatusEnum::DRAFT->value)
                 ->count()
         ];
     }

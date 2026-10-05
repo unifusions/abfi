@@ -14,6 +14,7 @@ import { Badge, Eye, EyeClosed, IdCard, Lock, LogIn } from 'lucide-react';
 import { useState } from 'react';
 import FormInput from '@/components/ext/form-input';
 import FormInputWithIcon from '@/components/ext/form-input-with-icon';
+import FormLabel from '@/components/ext/form-label';
 
 type Props = {
     status?: string;
@@ -32,12 +33,12 @@ export default function Login({ status, canResetPassword }: Props) {
             <Form
                 {...store.form()}
                 resetOnSuccess={['password']}
-                className="flex flex-col gap-6 bg-white p-8 rounded-xl"
+                className="flex flex-col gap-6  p-8 bg-surface-container-lowest rounded-xl"
             >
                 {({ processing, errors }) => (
                     <>
 
-                        <div class="space-y-2">
+                        <div className="space-y-2">
                             <FormInputWithIcon
                                 id="email"
                                 name='email'
@@ -45,9 +46,10 @@ export default function Login({ status, canResetPassword }: Props) {
                                 tabIndex={1}
                                 autoFocus
                                 label='Official Registry ID'
-                                className=" pl-10      "
+                                className=" pl-10 "
                                 placeholder="admin@abfi.com" required
                                 icon={IdCard}
+                                labelRequired={true}
                             />
                             <InputError message={errors.email} />
 
@@ -58,16 +60,21 @@ export default function Login({ status, canResetPassword }: Props) {
 
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
-                                <label
-                                    class="block font-label text-xs font-semibold uppercase tracking-wider text-on-surface-variant"
-                                    for="password">Password</label>
+                                  <FormLabel
+                                                    id="password"
+                                                    label="Password"
+                                                    labelRequired={true}
+                                                 
+                                                />
+
+                      
                             </div>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Lock />
                                 </div>
-                                <input type={showPassword ? 'text' : 'password'}
-                                    class="block w-full pl-10 pr-12 py-3 bg-zinc-50 border-0 rounded-md focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline/60 transition-all"
+                                <Input type={showPassword ? 'text' : 'password'}
+                                    className=" w-full pl-10 pr-12 py-3  h-12 bg-surface-container-low border-0  focus:ring-1 focus:ring-primary text-on-surface placeholder:text-outline/60 transition-all"
                                     tabIndex={2}
                                     id="password" name="password" placeholder="••••••••" required="" />
                                 <button
@@ -86,7 +93,7 @@ export default function Login({ status, canResetPassword }: Props) {
 
                         <Button
                             size="xl"
-                            className="w-full bg-primary text-white font-headline font-bold py-4 rounded-md shadow-lg shadow-primary/20 hover:bg-primary-container active:scale-[0.98] transition-all flex items-center justify-center space-x-2"
+                            className="  font-headline font-bold  "
                             type="submit">
 
 

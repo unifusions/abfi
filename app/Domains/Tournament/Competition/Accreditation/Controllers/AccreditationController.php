@@ -20,7 +20,7 @@ public function __construct(protected AccreditationService $service){}
                 'competition' => $competition,
                 'hasAccreditations' => $competition->accreditations()->count() > 0,
                 'accreditations' => $competition->accreditations()->get()->groupBy('roster_id'),
-                'rosters' => $competition->approvedRosters()->with(['accreditations', 'organization.state'])->get()
+                'rosters' => $competition->approvedRosters()->with(['accreditations', 'organization.state'])->withCount(['players', 'officials'])->get()
             ]
         );
     }

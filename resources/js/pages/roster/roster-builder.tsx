@@ -203,7 +203,7 @@ export default function RosterBuilder({ roster,
                 <div className="lg:col-span-5  ">
                     {/* <!-- Roster Summary Card --> */}
                     <div
-                        className="bg-primary text-white    rounded-top-2xl p-6 stadium-shadow relative overflow-hidden">
+                        className="bg-primary text-on-primary    rounded-top-2xl p-6 stadium-shadow relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-10 rounded-full -mr-16 -mt-16">
                         </div>
                         <div className="relative z-10">
@@ -251,7 +251,7 @@ export default function RosterBuilder({ roster,
                         </div>
                     </div>
                     {/* <!-- Roster List (Mini) --> */}
-                    <div class="bg-zinc-100   p-6">
+                    <div class="bg-surface-container-low   p-6">
 
 
                         <div class="space-y-3  overflow-y-auto no-scrollbar pr-1">
@@ -297,8 +297,11 @@ export default function RosterBuilder({ roster,
                                         <div class="flex items-center gap-3">
 
                                             <div>
-
-                                                <p className="font-bold text-sm text-primary">{player?.name} </p>
+ <div className="flex items-center gap-4">
+    <p className="font-bold text-sm text-primary">{player?.name} </p> 
+    <span className="bg-primary text-on-primary text-[9px] font-bold tracking-wider uppercase px-2 py-1">{player?.type}</span>
+ </div>
+                                            
                                                 <p className="text-[10px] font-medium text-on-surface-variant">{player.code} </p>
                                             </div>
                                         </div>

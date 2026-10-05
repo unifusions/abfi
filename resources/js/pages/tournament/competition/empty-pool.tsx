@@ -11,7 +11,7 @@ import { stateColors } from "@/lib/stateColors";
 export default function EmptyPool({ tournament, competition, category, rosters }) {
     
     const {data, processing,   post} = useForm({
-        pool_count :'4',
+        pool_count : tournament?.tournament_type !== null ? 6 : 4,
         generation_method : 'random',
     });
     
@@ -35,14 +35,14 @@ export default function EmptyPool({ tournament, competition, category, rosters }
             </PageHeader>
 
  
+ 
+            <section className="grid grid-cols-1 xl:grid-cols-12 gap-8 flex-1">
 
-            <section class="grid grid-cols-1 xl:grid-cols-12 gap-8 flex-1">
-
-                <div class="xl:col-span-4 flex flex-col gap-4">
-                    <div class="flex justify-between items-end">
-                        <h3 class="font-headline font-bold text-primary text-xl">Participating Teams (16 Total)</h3>
+                <div className="xl:col-span-4 flex flex-col gap-4">
+                    <div className="flex justify-between items-end">
+                        <h3 className="font-headline font-bold text-primary text-xl">Participating Teams ({rosters?.length} Total)</h3>
                         <span
-                            class="bg-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant">Unassigned</span>
+                            className="bg-surface-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant">Unassigned</span>
                     </div>
                     <TableContainer>
                         <TableRow>

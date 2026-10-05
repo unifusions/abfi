@@ -37,7 +37,7 @@ class Roster extends Model
     protected $casts = [
         
         'status' => RosterStatusEnum::class,
-        'submitted_at' => 'datetime',
+        'submitted_at' => 'datetime:d/m/Y',
     ];
 
     public function competition()

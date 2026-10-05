@@ -1,37 +1,69 @@
-<?php 
+<?php
 
-namespace   App\Domains\Tournament\Competition\Engine\Knockout\Services;
+namespace App\Domains\Tournament\Competition\Engine\Knockout\Services;
 
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStageEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureTypeEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Models\TournamentFixture;
- 
- 
+
+
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
-class KnockoutGeneratorService {
-     public function generate(
+class KnockoutGeneratorService
+{
+    public function generate(
         TournamentCompetition $competition,
         Collection $qualified
     ): void {
-         $qualified = $qualified->sortBy([
+
+
+        $count = $qualified->count();
+        $qualified = $qualified->sortBy([
             ['tournament_pool_id', 'asc'],
             ['position', 'asc'],
         ])->values();
 
-        if ($qualified->count() !== 8) {
-            throw new InvalidArgumentException('Only 8-team knockout is currently supported.');
-        }
+       
+        match ($count) {
+            8 => $this->generateEightTeamKnockout($competition, $qualified),
+            16 => $this->generateSixteenTeamKnockout($competition, $qualified),
+            default => throw new InvalidArgumentException(
+                "Unsupported knockout size: {$count} teams."
+            ),
+        };
 
+
+
+
+
+
+    }
+
+
+    protected function generateEightTeamKnockout(
+        TournamentCompetition $competition,
+        Collection $qualified
+    ): void {
         $groups = $qualified
             ->groupBy('tournament_pool_id')
+            ->sortKeys()
             ->values();
 
         if ($groups->count() !== 4) {
-            throw new InvalidArgumentException('Exactly 4 pools are required.');
+            throw new InvalidArgumentException(
+                'Exactly 4 pools are required for an 8-team knockout.'
+            );
+        }
+
+        foreach ($groups as $group) {
+            if ($group->count() !== 2) {
+                throw new InvalidArgumentException(
+                    'Each pool must have exactly 2 qualifiers.'
+                );
+            }
         }
 
         [
@@ -48,15 +80,64 @@ class KnockoutGeneratorService {
             [$poolD[0], $poolC[1]], // D1 vs C2
         ];
 
-        foreach ($fixtures as $index => [$home, $away]) {
+        $this->createFixtures(
+            $competition,
+            $fixtures,
+            FixtureStageEnum::QUARTER_FINAL
+        );
+    }
 
+    protected function generateSixteenTeamKnockout(TournamentCompetition $competition, Collection $qualified)
+    {
+        
+
+        if ($qualified->count() !== 16) {
+            throw new InvalidArgumentException(
+                'A 16-team knockout requires exactly 16 qualified teams.'
+            );
+        }
+
+        $qualified = $qualified
+            ->groupBy('tournament_pool_id')
+            ->sortKeys()
+            ->values();
+
+
+        $fixtures = [
+            [$qualified[0], $qualified[15]],
+            [$qualified[7], $qualified[8]],
+
+            [$qualified[3], $qualified[12]],
+            [$qualified[4], $qualified[11]],
+
+            [$qualified[1], $qualified[14]],
+            [$qualified[6], $qualified[9]],
+
+            [$qualified[2], $qualified[13]],
+            [$qualified[5], $qualified[10]],
+        ];
+
+
+        $this->createFixtures(
+            $competition,
+            $fixtures,
+            FixtureStageEnum::ROUND_OF_16
+        );
+    }
+    protected function createFixtures(
+        TournamentCompetition $competition,
+        array $fixtures,
+        FixtureStageEnum $stage
+    ): void {
+        foreach ($fixtures as $index => [$home, $away]) {
             TournamentFixture::create([
                 'tournament_competition_id' => $competition->id,
                 'tournament_pool_id' => null,
 
-                'stage' => FixtureStageEnum::QUARTER_FINAL,
+                'stage' => $stage,
                 'status' => FixtureStatusEnum::SCHEDULED,
-'fixture_type' => FixtureTypeEnum::KNOCKOUT,
+                'fixture_type' => FixtureTypeEnum::KNOCKOUT,
+
                 'round' => 1,
                 'match_number' => $index + 1,
 
@@ -65,5 +146,4 @@ class KnockoutGeneratorService {
             ]);
         }
     }
-    
 }

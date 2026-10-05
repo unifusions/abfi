@@ -31,74 +31,56 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
                     const isActive = url === item.href.url || url.startsWith(`${item.href.url}`);
 
-                    const menuClassName = cn(" flex items-center gap-3 px-3 py-5 transition-all duration-200 ease-in-out text-indigo-900",
-                        "hover:bg-white rounded-none ",
-                        { "bg-white ": isActive }
-                    )
 
+                    const menuClassName = cn(" flex items-center gap-3 px-3 py-5 ",
+
+
+                    )
 
                     return (
 
                         <>
 
-                            <Collapsible
+                            {/* <Collapsible
                                 key={item.title}
                                 asChild
                                 defaultOpen={isActive}
                                 className="group/collapsible "
-                            >
-                                <SidebarMenuItem className={cn(" flex flex-col flex-1 items-center transition-all duration-100 ease-linear fade-in",
-                                    " border-transparent hover:border-l-4 hover:border-red-600 hover:bg-white",
-                                    { "bg-white  border-l-4 border-red-600 hover:bg-white": isActive })}>
-                                    <CollapsibleTrigger asChild>
-                                        <SidebarMenuButton tooltip={item.title} className={menuClassName} asChild>
-                                        
-                                            {item?.subMenus ?
+                            > */}
+                            <SidebarMenuItem className={cn(" flex flex-col flex-1 items-center transition-all duration-100 ease-linear fade-in font-bold",
+                                " border-transparent  text-primary",
 
-                                                <div className={menuClassName}>
+                                {
+                                    "bg-primary text-on-primary dark:bg-primary-container dark:text-on-primary-container ": isActive,
+                                    " hover:bg-primary hover:text-on-primary dark:hover:bg-primary-container dark:hover:text-on-primary-container ": !isActive
+                                })}>
 
-                                                    {item.icon && <item.icon className='h-6 w-6'/>}
-                                                    <span className="text-xs font-label uppercase tracking-widest font-bold">{item.title}</span>
-                                                    {item?.subMenus && <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />}
-
-                                                </div>
-
-                                                :
+                                <SidebarMenuButton tooltip={item.title} className={menuClassName} asChild>
 
 
-                                                <Link href={item.href} prefetch
-                                                    className={menuClassName}>
 
-                                                    {item.icon && <item.icon />}
+
+                                    <Link href={item.href} prefetch
+                                    >
+
+                                        {item.icon && <item.icon />}
 
 
 
 
 
 
-                                                    <span className="text-xs font-label uppercase tracking-widest font-bold">{item.title}</span>
-                                                    {item?.subMenus && <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />}
-                                                </Link>
-                                            }
+                                        <span className="text-xs   uppercase tracking-widest font-bold">{item.title}</span>
+
+                                    </Link>
 
 
-                                        </SidebarMenuButton>
-                                    </CollapsibleTrigger>
-                                    <CollapsibleContent className='bg-white hover:bg-white' >
-                                        <SidebarMenuSub>
-                                            {item?.subMenus?.map((subItem) => (
-                                                <SidebarMenuSubItem key={subItem.title}>
-                                                    <SidebarMenuSubButton asChild>
-                                                        <Link href={subItem.href}>
-                                                            <span>{subItem.title}</span>
-                                                        </Link>
-                                                    </SidebarMenuSubButton>
-                                                </SidebarMenuSubItem>
-                                            ))}
-                                        </SidebarMenuSub>
-                                    </CollapsibleContent>
-                                </SidebarMenuItem>
-                            </Collapsible>
+
+                                </SidebarMenuButton>
+
+
+                            </SidebarMenuItem>
+                            {/* </Collapsible> */}
 
                         </>
 

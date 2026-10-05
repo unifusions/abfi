@@ -9,7 +9,7 @@ export default function PlayerIndexStats({ title, value, changeType, changeValue
         <div className={cn("border-s-4",
             {" border-accent" : variant==="accent"} ,
             {" border-secondary" : variant==="secondary"} ,
-             "bg-zinc-50 p-6 rounded-s-0 rounded-r-lg shadow-sm")}>
+             "bg-surface-container-low p-6 rounded-s-0 rounded-r-lg shadow-sm")}>
             <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant mb-2 font-bold">
                 {title}</p>
             <p className="font-display text-3xl font-black text-primary">{value}</p>

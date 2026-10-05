@@ -29,6 +29,8 @@ class StoreTournamentRequest extends FormRequest
             'competition_format' => ['required'],
             'starts_at' => ['required', 'date'],
             'ends_at' => ['required', 'date', 'after_or_equal:starts_at'],
+            'tournament_year' => ['year'],
+            'tournament_type' => ['nullable'],
             'registration_open_at' => ['nullable', 'date'],
             'registration_close_at' => [
                 'nullable',

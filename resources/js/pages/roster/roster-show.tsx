@@ -39,26 +39,26 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
             <div className="grid grid-cols-3 gap-6 mb-10">
                 <div
-                    className="bg-zinc-50 p-6 flex items-center justify-between relative overflow-hidden group ">
+                    className="bg-surface-container-lowest p-6 flex items-center justify-between relative overflow-hidden group ">
                     <div className="absolute left-0 top-0 h-full w-1 bg-primary"></div>
                     <div>
                         <p
-                            class="text-[10px] font-label font-black text-on-surface-variant/60 uppercase tracking-[0.2em] mb-1">
+                            className="text-[10px] font-label font-black text-on-surface-variant/60 uppercase tracking-[0.2em] mb-1">
                             Total Players</p>
-                        <h3 class="text-3xl  font-display font-extrabold  ">{players.data?.length}<span
-                            class="text-zinc-500 text-xl">/{category.maximum_players}</span></h3>
+                        <h3 className="text-3xl  font-display font-extrabold  ">{players.data?.length}<span
+                            className="text-zinc-500 text-xl">/{category.maximum_players}</span></h3>
                     </div>
 
                 </div>
                 <div
-                    class="bg-surface-container-lowest p-6 flex items-center justify-between relative overflow-hidden group">
-                    <div class="absolute left-0 top-0 h-full w-1 bg-secondary"></div>
+                    className="bg-surface-container-lowest p-6 flex items-center justify-between relative overflow-hidden group">
+                    <div className="absolute left-0 top-0 h-full w-1 bg-secondary"></div>
                     <div>
                         <p
-                            class="text-[10px] font-label font-black text-on-surface-variant/60 uppercase tracking-[0.2em] mb-1">
+                            className="text-[10px] font-label font-black text-on-surface-variant/60 uppercase tracking-[0.2em] mb-1">
                             Staff Count</p>
-                        <h3 class="text-3xl font-headline font-extrabold text-on-surface">{officials?.length > 0 ? officials?.length : 0} <span
-                            class="text-on-surface-variant/30 text-xl">/{category.maximum_officials}</span></h3>
+                        <h3 className="text-3xl font-headline font-extrabold text-on-surface">{officials?.data.length > 0 ? officials?.data?.length : 0} <span
+                            className="text-on-surface-variant/30 text-xl">/{category.maximum_officials}</span></h3>
                     </div>
 
                 </div>
@@ -74,9 +74,9 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="font-headline text-lg font-bold text-primary">Current Roster Players </h2>
-                        <span class="text-xs text-on-surface-variant font-medium">All Certified &amp; Registered</span>
+                        <span className="text-xs text-on-surface-variant font-medium">All Certified &amp; Registered</span>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
 
 
 
@@ -91,63 +91,58 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
                 </div>
 
-                <div class="col-span-4 space-y-6">
+                <div className="col-span-4 space-y-6">
 
-                    <div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm border-l-4 border-secondary">
+                    <div className="bg-surface-container-lowest p-6  shadow-sm border-l-4 border-secondary">
+                        
                         <h3
-                            class="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-4">
+                            className="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-4">
                             Official Staff</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center gap-3">
-                                <img src="https://placehold.co/60x60.jpg" />
-
-                                <div>
-                                    <p class="font-headline font-bold text-sm text-on-surface leading-tight">Vikram
-                                        Singh</p>
-                                    <p class="text-[10px] font-label font-bold text-on-surface-variant/60 uppercase">
-                                        Head Coach</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
+                        <div className="space-y-4">
+                           
+                            {officials?.data?.map((official) => 
+                            
+                              <div key={official?.id} className="flex items-center gap-3">
                                 <img src="https://placehold.co/60x60.jpg" />
                                 <div>
-                                    <p class="font-headline font-bold text-sm text-on-surface leading-tight">Anjali
-                                        Gupta</p>
-                                    <p class="text-[10px] font-label font-bold text-on-surface-variant/60 uppercase">
-                                        General Manager</p>
+                                   
+                                    <p className="font-headline font-bold text-sm text-on-surface leading-tight">{official?.name}</p>
+                                    <p className="text-[10px] font-label font-bold text-on-surface-variant/60 uppercase">{official?.role}</p>
                                 </div>
                             </div>
+                            )}
+                          
 
                         </div>
                     </div>
 
-                    <div class="bg-zinc-50 p-5   shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
-                        <h3 class="font-headline font-bold text-sm text-primary mb-3 flex items-center gap-2">
+                    <div className="bg-surface-container-lowest p-5  ">
+                        <h3 className="font-headline font-bold text-sm text-primary mb-3 flex items-center gap-2">
                             <PartyPopper className="text-secondary" />
 
                             Tournament Details
                         </h3>
-                        <div class="space-y-2.5 text-xs">
-                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
-                                <span class="text-on-surface-variant">Event:</span>
-                                <span class="font-semibold text-right text-on-surface">{tournament.name}</span>
+                        <div className="space-y-2.5 text-xs">
+                            <div className="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span className="text-on-surface-variant">Event:</span>
+                                <span className="font-semibold text-right text-on-surface">{tournament.name}</span>
                             </div>
-                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
-                                <span class="text-on-surface-variant">Division:</span>
-                                <span class="font-semibold text-right text-on-surface">{competition?.name} {category?.name} ({category?.code})</span>
+                            <div className="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span className="text-on-surface-variant">Division:</span>
+                                <span className="font-semibold text-right text-on-surface">{competition?.name} {category?.name} ({category?.code})</span>
                             </div>
-                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
-                                <span class="text-on-surface-variant">Competition Dates:</span>
-                                <span class="font-semibold text-right text-on-surface">{tournament.starts_at} - {tournament.ends_at}</span>
+                            <div className="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span className="text-on-surface-variant">Competition Dates:</span>
+                                <span className="font-semibold text-right text-on-surface">{tournament.starts_at} - {tournament.ends_at}</span>
                             </div>
-                            <div class="flex justify-between pb-1.5 border-b border-surface-container">
-                                <span class="text-on-surface-variant">Venue:</span>
-                                <span class="font-semibold text-right text-on-surface">Puducherry Sports Complex</span>
+                            <div className="flex justify-between pb-1.5 border-b border-surface-container">
+                                <span className="text-on-surface-variant">Venue:</span>
+                                <span className="font-semibold text-right text-on-surface">Puducherry Sports Complex</span>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-on-surface-variant">Roster Status:</span>
-                                <span class="text-secondary font-bold flex items-center gap-1 uppercase">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary "></span>
+                            <div className="flex justify-between">
+                                <span className="text-on-surface-variant">Roster Status:</span>
+                                <span className="text-secondary font-bold flex items-center gap-1 uppercase">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-secondary "></span>
                                     {roster?.status}
                                 </span>
                             </div>
@@ -161,9 +156,9 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
                        isAdminActions &&
 
 
-                        <div class="bg-surface-container-lowest p-5 rounded-xl shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
-                            <h3 class="font-headline font-bold text-sm text-primary mb-3">Quick Administrative Actions</h3>
-                            <div class="space-y-2">
+                        <div className="bg-surface-container-lowest p-5 rounded-xl shadow-[0_16px_32px_rgba(25,28,29,0.04)]">
+                            <h3 className="font-headline font-bold text-sm text-primary mb-3">Quick Administrative Actions</h3>
+                            <div className="space-y-2">
 
                                 {hasAccreditations &&
                                     <>
@@ -200,31 +195,31 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
 
 
 
-                    {/* <div class="bg-surface-container-low p-6 rounded-lg">
+                    {/* <div className="bg-surface-container-low p-6 rounded-lg">
                         <h3
-                            class="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-4">
+                            className="font-headline font-black text-xs uppercase tracking-[0.2em] text-on-surface-variant mb-4">
                             Activity Log</h3>
-                        <div class="space-y-4">
-                            <div class="flex gap-3">
-                                <div class="w-[1px] bg-outline-variant relative">
-                                    <div class="absolute top-0 left-[-3px] w-1.5 h-1.5 rounded-full bg-primary"></div>
+                        <div className="space-y-4">
+                            <div className="flex gap-3">
+                                <div className="w-[1px] bg-outline-variant relative">
+                                    <div className="absolute top-0 left-[-3px] w-1.5 h-1.5 rounded-full bg-primary"></div>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-bold text-on-surface">Roster Finalized</p>
-                                    <p class="text-[10px] text-on-surface-variant/60 font-medium">Jun 12, 2024 • 09:42
+                                    <p className="text-xs font-bold text-on-surface">Roster Finalized</p>
+                                    <p className="text-[10px] text-on-surface-variant/60 font-medium">Jun 12, 2024 • 09:42
                                         AM</p>
-                                    <p class="text-[10px] text-primary font-bold mt-1 uppercase">Authored by A. Deshmukh
+                                    <p className="text-[10px] text-primary font-bold mt-1 uppercase">Authored by A. Deshmukh
                                     </p>
                                 </div>
                             </div>
-                            <div class="flex gap-3">
-                                <div class="w-[1px] bg-outline-variant relative">
-                                    <div class="absolute top-0 left-[-3px] w-1.5 h-1.5 rounded-full bg-outline"></div>
+                            <div className="flex gap-3">
+                                <div className="w-[1px] bg-outline-variant relative">
+                                    <div className="absolute top-0 left-[-3px] w-1.5 h-1.5 rounded-full bg-outline"></div>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-medium text-on-surface-variant">Player Eligibility Verified
+                                    <p className="text-xs font-medium text-on-surface-variant">Player Eligibility Verified
                                     </p>
-                                    <p class="text-[10px] text-on-surface-variant/60 font-medium">Jun 10, 2024 • 14:15
+                                    <p className="text-[10px] text-on-surface-variant/60 font-medium">Jun 10, 2024 • 14:15
                                         PM</p>
                                 </div>
                             </div>

@@ -24,52 +24,57 @@ export default function AccreditationIndex({ tournament, competition, accreditat
 
 
 
-                {hasAccreditations &&
 
-                    <TableContainer>
-                        <TableRow>
-                            <TableHead>#</TableHead>
-                            <TableHead>Roster Name</TableHead>
-                            <TableHead>Players</TableHead>
-                            <TableHead>Officials</TableHead>
-                            <TableHead>Registered On</TableHead>
-                            <TableHead className="text-end">Actions</TableHead>
-                        </TableRow>
+                <TableContainer>
+                    <TableRow>
+                        <TableHead>#</TableHead>
+                        <TableHead>Roster Name</TableHead>
+                        <TableHead>Players</TableHead>
+                        <TableHead>Officials</TableHead>
+                        <TableHead>Registered On</TableHead>
+                        <TableHead className="text-end">Actions</TableHead>
+                    </TableRow>
 
-                        {rosters.map((roster, index) =>
+                    {rosters.map((roster, index) =>
 
-                            <TableRow key={roster.id}>
-                                <TableCell>
-{index+1}
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex flex-col">
-                                        <p>{roster?.name}</p>
-                                        <p>{roster?.organization?.name}, , {roster?.organization?.state?.short_code}</p>
-                                         
-                                    </div>
-                                </TableCell>
-                                <TableCell>{roster?.players?.length}</TableCell>
-                                <TableCell>{roster?.officials?.length}</TableCell>
-                                <TableCell>{roster?.created_at}</TableCell>
-                                <TableCell className="text-right">
+                        <TableRow key={roster.id}>
+                            <TableCell>
+                                {index + 1}
+                            </TableCell>
+                            <TableCell>
+                                <div className="flex flex-col">
+                                    <p>{roster?.name}</p>
+                                    <p>{roster?.organization?.name}, , {roster?.organization?.state?.short_code}</p>
+
+                                </div>
+                            </TableCell>
+                            <TableCell>
+
+
+                                {roster?.players_count}</TableCell>
+                            <TableCell>{roster?.officials_count}</TableCell>
+                            <TableCell>{roster?.submitted_at}</TableCell>
+                            <TableCell className="text-right">
+                                {hasAccreditations &&
                                     <div className="flex items-center justify-end gap-3">
-                                    <LinkButton 
-                                    className=" h-10 text-xs"
-                                    icon = {IdCard}
-                                    href={printAll({ roster: roster?.id }).url} target="_blank">
-                                         Download ID Card Sheet.
-                                    </LinkButton>
+                                        <LinkButton
+                                            className=" h-10 text-xs"
+                                            icon={IdCard}
+                                            href={printAll({ roster: roster?.id }).url} target="_blank">
+                                            Download ID Card Sheet
+                                        </LinkButton>
 
-                                    <LinkButton className="bg-accent-secondary h-10 text-xs"
-                                    
-                                    icon={Download}>
-                                       Download Roster Sheet
-                                    </LinkButton>
+                                        {/* <LinkButton className="bg-accent-secondary h-10 text-xs"
+
+                                            icon={Download}>
+                                            Download Roster Sheet
+                                        </LinkButton> */}
                                     </div>
-                                  
-                                </TableCell>
-                                {/* <AccordionContent>
+
+                                }
+
+                            </TableCell>
+                            {/* <AccordionContent>
                                   <div className="grid grid-cols-6">
                                     <div className="col-span-5">
                                         <TableContainer>
@@ -97,12 +102,12 @@ export default function AccreditationIndex({ tournament, competition, accreditat
                                   </div>
                                 </AccordionContent>
                             </AccordionItem> */}
-                            </TableRow>
+                        </TableRow>
 
-                        )}
+                    )}
 
-                    </TableContainer>
-                }
+                </TableContainer>
+
             </div>
         </>
     )

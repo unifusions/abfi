@@ -7,24 +7,26 @@ import { dashboard } from "@/routes";
 import tournaments, { create, index } from "@/routes/tournaments";
 import venue from "@/routes/venue";
 import { useForm } from "@inertiajs/react";
-import { Calendar, ClipboardPen, Component, FileUser, FolderTree, Layers2, ListTree, MapPin, Network, Rocket } from "lucide-react";
+import { Calendar, CirclePlus, ClipboardPen, Component, FileUser, FolderTree, Layers2, ListTree, Lock, MapPin, Network, PersonStanding, Rocket } from "lucide-react";
 import AddVenueDialog from "./add-venue-dialog";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import InputError from "@/components/input-error";
 import SearchableSelect from "@/components/ext/searcable-select";
 import FormSelect from "@/components/ext/form-select";
 import { FormCheckbox } from "@/components/ext/form-checkbox";
 import FormCard from "@/components/ext/form-card";
 import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
+import AnnualTournament from "./annual-tournament";
 
 type Props = {
     states?: [],
     organizations?: []
 }
-export default function TournamentCreate({ states, organizations, categories }: Props) {
+export default function TournamentCreate({ types, states, organizations, categories }: Props) {
 
     const [v, setV] = useState();
     const [competitionType, setCompetitionType] = useState({});
+      const targetSectionRef = useRef(null);
     const { data, setData, processing, errors, post, transform } = useForm({
         'name': '',
         'category_id': '',
@@ -35,7 +37,8 @@ export default function TournamentCreate({ states, organizations, categories }: 
         'registration_open_at': '',
         'registration_close_at': '',
         'competition_format': '',
-        'competition_type': []
+        'competition_type': [],
+        'tournament_type' : 'others'
 
     });
 
@@ -87,16 +90,77 @@ export default function TournamentCreate({ states, organizations, categories }: 
         ) ?? null;
 
 
+    const handleAnnualTournament = (tournamentType) => {
+        const { competitions, available, label } = tournamentType;
+    const fallBackCat = "Senior - SR"
+            const genderString = competitions.map(item => item.gender.charAt(0).toUpperCase() + item.gender.slice(1)).join(' & ');
+            const competitionType = competitions.map(item=>item.gender.toLowerCase());
+    // alert(JSON.stringify(categories?.data));
+            const categoryId = categories?.data?.filter(c => c.label.toLowerCase().includes(label.toLowerCase()) )
+           const fallbackId = categories?.data?.filter(c => c.label.toLowerCase().includes(fallBackCat.toLowerCase()) )
+            let finalCatId = categoryId.length > 0 ? categoryId: fallbackId;
+          
+        setData('name' ,   (tournamentType?.name + ' ' + genderString )) ;
+        setData('category_id', finalCatId[0]?.value);
+        setData('competition_type', [...competitionType]);
+        setData('tournament_type' ,tournamentType?.type )
+ targetSectionRef.current?.scrollIntoView({ 
+      behavior: 'smooth', // Animates the scroll smoothly
+      block: 'start'      // Aligns the top of the section to the top of the viewport
+    });
+    }
     return (
         < >
-            <PageHeader title="New Tournament" subText="Initialize a new event. Ensure all data conforms to guidelines." />
-            <div className="flex flex-col lg:flex-row gap-10 max-w-5xl">
+            <PageHeader title="Create Tournament" subText="Select an annual tournament or create a custom
+            tournament..." >
+                
+                {/* <div
+                    className="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-lg border border-outline-variant/20 self-start md:self-auto shadow-sm">
+                    <div className="flex items-center gap-2">
+                        <Calendar className="text-primary" />
+
+                        <span className="text-xs font-label uppercase tracking-wider text-on-surface-variant font-semibold">Active
+                            Competition:</span>
+                    </div>
+                    <span
+                        className="font-headline font-bold text-sm text-primary px-2.5 py-0.5 rounded bg-primary-container border border-primary/20">Current
+                        Season: 2026</span>
+                </div> */}
+            </PageHeader>
+            <div className="flex flex-col lg:flex-row gap-10 ">
                 {/* <!-- Left Column: Form Sections --> */}
                 <div className="flex-1 space-y-10">
+                    <section className="space-y-6">
+                        {/* <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
+                            <div>
+                                <div className="flex items-center gap-3">
+                                    <h2 className="font-headline font-bold text-xl md:text-2xl text-on-surface tracking-tight">Annual Federation
+                                        Tournaments</h2>
+                                    <span
+                                        className="px-2.5 py-0.5 rounded-full text-xs font-label font-bold uppercase tracking-wider bg-surface-container-high text-primary border border-outline-variant/30">
+                                        Calendar Year 2026
+                                    </span>
+                                </div>
+                                <p className="text-xs text-on-surface-variant mt-1 max-w-3xl leading-relaxed">
+                                    Tournament names and edition numbers are strictly governed by federation bylaws and calculated
+                                    automatically from historical records. Sanctions apply universally to accredited state units.
+                                </p>
+                            </div>
+                            <div className="text-xs text-on-surface-variant/80 font-label flex items-center gap-1.5">
+                                <span className="material-symbols-outlined text-sm text-primary" data-icon="verified">verified</span>
+                                Auto-calculated Historical Registry
+                            </div>
+                        </div> */}
+                        <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6">
+                            {Object.values(types).map((tournamentType) => (<AnnualTournament tournamentType={tournamentType} onSelect={()=> handleAnnualTournament(tournamentType)} />))}
+
+                        </div>
+
+                    </section>
 
                     <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
                         {/* <!-- Section 1: Core Identity --> */}
-                        <div className="space-y-6">
+                        <div className="space-y-6"  ref={targetSectionRef}>
                             <div className="flex items-center gap-4">
                                 <div className="w-1 h-6 bg-secondary"></div>
                                 <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Tournament Identity</h2>
@@ -111,7 +175,7 @@ export default function TournamentCreate({ states, organizations, categories }: 
                                         value={data.name}
                                         onChange={e => setData('name', e.target.value)}
 
-labelRequired={true}
+                                        labelRequired={true}
                                         placeholder="e.g., Sub Junior National Baseball Championship"
                                     />
 
@@ -308,56 +372,56 @@ labelRequired={true}
                         </FormCard>
 
 
-                        {/* <div class="space-y-6">
-                            <div class="flex items-center gap-4">
-                                <div class="w-1 h-6 bg-secondary"></div>
-                                <h2 class="font-headline font-bold text-xl uppercase tracking-wider">Prize Purse &amp; Rewards</h2>
+                        {/* <div className="space-y-6">
+                            <div className="flex items-center gap-4">
+                                <div className="w-1 h-6 bg-secondary"></div>
+                                <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Prize Purse &amp; Rewards</h2>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                <div class="space-y-4">
-                                    <div class="space-y-2">
-                                        <label class="font-label text-sm font-bold uppercase text-on-surface-variant">Grand Prize (1st Place)</label>
-                                        <div class="relative">
-                                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-primary">$</span>
-                                            <input class="w-full bg-surface-container-lowest border-none rounded-lg p-4 pl-10 font-mono shadow-sm form-input-focus" placeholder="5000" type="number" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="font-label text-sm font-bold uppercase text-on-surface-variant">Grand Prize (1st Place)</label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-primary">$</span>
+                                            <input className="w-full bg-surface-container-lowest border-none rounded-lg p-4 pl-10 font-mono shadow-sm form-input-focus" placeholder="5000" type="number" />
                                         </div>
                                     </div>
-                                    <div class="space-y-2">
-                                        <label class="font-label text-sm font-bold uppercase text-on-surface-variant">Runner Up (2nd Place)</label>
-                                        <div class="relative">
-                                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-primary">$</span>
-                                            <input class="w-full bg-surface-container-lowest border-none rounded-lg p-4 pl-10 font-mono shadow-sm form-input-focus" placeholder="2500" type="number" />
+                                    <div className="space-y-2">
+                                        <label className="font-label text-sm font-bold uppercase text-on-surface-variant">Runner Up (2nd Place)</label>
+                                        <div className="relative">
+                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-primary">$</span>
+                                            <input className="w-full bg-surface-container-lowest border-none rounded-lg p-4 pl-10 font-mono shadow-sm form-input-focus" placeholder="2500" type="number" />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-primary/5 rounded-xl p-6 border border-primary/10 flex flex-col justify-center">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <span class="material-symbols-outlined text-primary"
+                                <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 flex flex-col justify-center">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <span className="material-symbols-outlined text-primary"
                                         //  style="font-variation-settings: 'FILL' 1;"
                                         >workspace_premium</span>
-                                        <h3 class="font-bold text-primary">Additional Perks</h3>
+                                        <h3 className="font-bold text-primary">Additional Perks</h3>
                                     </div>
-                                    <div class="space-y-3">
-                                        <label class="flex items-center gap-3 cursor-pointer">
-                                            <input class="rounded border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox" />
-                                            <span class="text-sm font-medium">Automatic Regional Seed</span>
+                                    <div className="space-y-3">
+                                        <label className="flex items-center gap-3 cursor-pointer">
+                                            <input className="rounded border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox" />
+                                            <span className="text-sm font-medium">Automatic Regional Seed</span>
                                         </label>
-                                        <label class="flex items-center gap-3 cursor-pointer">
-                                            <input class="rounded border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox" />
-                                            <span class="text-sm font-medium">Custom Trophy &amp; Medals</span>
+                                        <label className="flex items-center gap-3 cursor-pointer">
+                                            <input className="rounded border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox" />
+                                            <span className="text-sm font-medium">Custom Trophy &amp; Medals</span>
                                         </label>
-                                        <label class="flex items-center gap-3 cursor-pointer">
-                                            <input class="rounded border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox" />
-                                            <span class="text-sm font-medium">Player of the Month Nomination</span>
+                                        <label className="flex items-center gap-3 cursor-pointer">
+                                            <input className="rounded border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox" />
+                                            <span className="text-sm font-medium">Player of the Month Nomination</span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </div> */}
                         {/* <!-- Submit Actions --> */}
-                        <div class="pt-10 flex flex-col sm:flex-row items-center justify-end gap-4 border-t border-outline-variant/30">
-                            <button class="w-full sm:w-auto px-8 py-4 font-bold text-primary hover:bg-surface-container-low rounded transition-all" type="submit" value="draft" onClick={() => submit('draft')}>Save as Draft</button>
-                            <button class="w-full sm:w-auto px-10 py-4 font-bold bg-primary text-white rounded shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit" value="publish" onClick={() => submit('publish')}>
+                        <div className="pt-10 flex flex-col sm:flex-row items-center justify-end gap-4 border-t border-outline-variant/30">
+                            <button className="w-full sm:w-auto px-8 py-4 font-bold text-primary hover:bg-surface-container-low rounded transition-all" type="submit" value="draft" onClick={() => submit('draft')}>Save as Draft</button>
+                            <button className="w-full sm:w-auto px-10 py-4 font-bold bg-primary text-white rounded shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit" value="publish" onClick={() => submit('publish')}>
                                 <span>Publish Tournament</span>
                                 <Rocket />
 

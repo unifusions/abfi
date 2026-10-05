@@ -127,30 +127,30 @@ export default function RosterCreate({
                 <div className="lg:col-span-4 space-y-6">
                     {/* <!-- Helper Card --> */}
 
-                    <div className="bg-primary text-white p-8 rounded-xl relative overflow-hidden">
+                    <div className="bg-primary text-on-primary p-8 rounded-xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -mr-16 -mt-16"></div>
                         <h3 className="font-headline font-bold text-xl mb-4 flex items-center gap-3">
                             <ShieldAlert />
                             Setup Guide
                         </h3>
-                        <p className="font-body text-sm text-white/80 leading-relaxed mb-6">
+                        <p className="font-body text-sm  leading-relaxed mb-6">
                             Selection of the tournament automatically pulls regional regulations and age-eligibility
                             date cutoffs from the Federation Database.
                         </p>
                         <div className="space-y-4">
                             <div className="flex gap-4 items-start">
                                 <div className="bg-primary-container p-2 rounded-lg">
-                                    <Fingerprint />                                </div>
-                                <div className="font-body text-xs text-primary-fixed-dim">
+                                    <Fingerprint className="text-on-primary-container" />                                </div>
+                                <div className="font-body text-xs text-on-primary">
                                     <strong>Aadhar Check:</strong> Ensure all player aadhar cards are valid before
                                     next step.
                                 </div>
                             </div>
                             <div className="flex gap-4 items-start">
                                 <div className="bg-primary-container p-2 rounded-lg">
-                                    <BookLock />
+                                    <BookLock  className="text-on-primary-container"  />
                                 </div>
-                                <div className="font-body text-xs text-primary-fixed-dim">
+                                <div className="font-body text-xs  text-on-primary">
                                     <strong>Record Locking:</strong> Team names cannot be changed after roster assembly
                                     begins.
                                 </div>

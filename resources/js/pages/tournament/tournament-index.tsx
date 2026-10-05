@@ -27,7 +27,7 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
             <PageHeader title="Tournaments" >
 
                 {can('tournament.create') &&
-                    <div className="flex flex-wrap items-center gap-4 bg-surface-container-low p-4 rounded-xl">
+                    <div className="flex flex-wrap items-center gap-4   p-4 rounded-xl">
                         {/* <div class="flex flex-col gap-1">
                     <label class="text-[10px] font-bold text-on-surface-variant uppercase ml-1">Season</label>
                     <select class="bg-surface-container-lowest border-none rounded-lg text-sm font-semibold pr-10 focus:ring-2 focus:ring-primary/20">

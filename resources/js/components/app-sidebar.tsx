@@ -49,9 +49,9 @@ const mainNavItems: NavItem[] = [
         href: TournamentIndex(),
         icon: Trophy,
         module: "Tournament",
-        subMenus: tournamentSubMenu
+        
     },
-   
+
     {
         title: 'Players',
         href: PlayerIndex(),
@@ -94,11 +94,11 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
 
     const { canModule, permissions } = useAuthorization();
- 
+
     const visibleItems = mainNavItems.filter(item => canModule(item.module));
- 
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" variant="inset" className='bg-surface-container-lowest'>
             <SidebarHeader>
                 <SidebarMenu>
 

@@ -12,6 +12,7 @@ use App\Domains\Tournament\Roster\Actions\IndexRosterAction;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Requests\StoreRosterRequest;
+use App\Domains\Tournament\Roster\Resources\RosterDetailOfficialResource;
 use App\Domains\Tournament\Roster\Resources\RosterDetailPlayerResource;
 use App\Domains\Tournament\Roster\Resources\RosterListResource;
 use App\Domains\Tournament\Roster\Resources\RosterReplacementHistoryResource;
@@ -105,6 +106,7 @@ class RosterController extends Controller
     
     public function show(Roster $roster)
     {
+         
         $isVerified = $roster->competition->phase === CompetitionPhaseEnum::VERIFICATION;
         $issuedIdCards = $roster->competition->phase === CompetitionPhaseEnum::ISSUE_IDCARDS;
      
@@ -119,7 +121,7 @@ class RosterController extends Controller
 
             // $roster->playerReplacements()->with('replacingPlayer', 'replacementPlayer')->get(),
             'tournament' => $roster->competition->tournament,
-            'officials' => $roster->officials,
+            'officials' =>RosterDetailOfficialResource::collection( $roster->officials),
             'category' => $roster->competition->tournament->category,
             'hasAccreditations' => $roster->accreditations()->count() > 0
         ]);

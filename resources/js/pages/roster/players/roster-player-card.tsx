@@ -2,7 +2,7 @@ export default function RosterPlayerCard({player}) {
     const {replacement} = player;
     return (
         <div
-            className="bg-zinc-50 p-4 flex items-center gap-4 transition-transform hover:-translate-y-1 duration-300">
+            className="bg-surface-container-low p-4 flex items-center gap-4 transition-transform hover:-translate-y-1 duration-300">
             <div
                 className="w-16 h-16 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500">
                 <img className="w-full h-full object-cover"

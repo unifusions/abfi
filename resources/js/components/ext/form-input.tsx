@@ -36,7 +36,8 @@ export default function FormInput({ id, name, type = "text", layout = "col", lab
                 name={name}
                 type={type}
                 value={value}
-                className={cn('block border-0 p-3 w-full  text-slate-900 bg-white focus:bg-white',
+                className={cn('block border-0 p-3 w-full', 
+                     'bg-surface-container ',
                     'focus:ring-2 focus:ring-primary/20 placeholder:text-outline/60 transition-all', className,
                     {
                         'ring-1 ring-destructive': hasError,

@@ -19,10 +19,10 @@ class BuilderRosterAction{
         return [
             'roster' => $roster,
             'players' => PlayerListforRosterResource::collection(
-                Player::forCompetition($roster->competition)->get()
+                Player::forCompetition($roster->competition)->where('state_id', $roster?->organization?->state->id)->get()
                 
             ),
-            'officials' => OfficialResourceForRoster::collection(Official::all()),
+            'officials' => OfficialResourceForRoster::collection(Official::where('state_id', $roster?->organization?->state->id)->get()),
             'roster_players' => RosterPlayerResource::collection($roster->players),
             'roster_officials' =>RosterOfficialResource::collection( $roster->officials),
             'category' => $roster->competition->tournament->category,

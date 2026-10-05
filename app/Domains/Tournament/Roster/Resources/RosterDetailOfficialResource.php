@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Domains\Tournament\Roster\Resources;
+
+use App\Domains\Media\Enums\MediaCollectionEnum;
+use Carbon\Carbon;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class RosterDetailOfficialResource extends JsonResource
+{
+    public function toArray($request): array
+    {
+       
+        return [
+            'id' => $this->id,
+
+            'name' => implode(' ', [$this->official->first_name, $this->official->middle_name]),
+            'role' => $this->type 
+            // 'profile_photo' => $this->player->getMediaUrl(MediaCollectionEnum::PROFILE),
+            // 'positions' => $this->player->positions->pluck('name'),
+            // 'age' => Carbon::parse($this->player->dob)->age,
+            // 'code' => $this->player->player_code,
+            // 'dob' => $this->player?->dob->format('d/m/Y'),
+            // 'blood_group' => $this->player->blood_group,
+            
+        ];
+    }
+}

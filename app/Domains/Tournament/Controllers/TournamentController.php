@@ -3,6 +3,7 @@
 namespace App\Domains\Tournament\Controllers;
 
 use App\Domains\Compliance\Models\Category;
+use App\Domains\Compliance\Models\CodeSequence;
 use App\Domains\Compliance\Models\State;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Shared\Resources\SelectCategoryResource;
@@ -11,6 +12,7 @@ use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStageEnum;
 use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureStatusEnum;
 use App\Domains\Tournament\Competition\Services\CompetitionResultService;
 use App\Domains\Tournament\Enums\TournamentStatus;
+use App\Domains\Tournament\Enums\TournamentTypeEnum;
 use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Requests\StoreTournamentRequest;
 use App\Domains\Tournament\Requests\UpdateTournamentRequest;
@@ -25,6 +27,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Domains\Venue\Models\Venue;
+use Number;
 
 
 class TournamentController extends Controller
@@ -68,8 +71,44 @@ class TournamentController extends Controller
     public function create()
     {
 
-      
+
+        $year = now()->year;
+        $sequenceNames = collect(TournamentTypeEnum::cases())
+            ->mapWithKeys(fn(TournamentTypeEnum $type) => [
+                $type->sequenceName() => $type->value,
+            ]);
+
+        $sequences = CodeSequence::whereIn('name', $sequenceNames->keys())
+            ->pluck('last_number', 'name');
+
+        $existingTournaments = Tournament::query()
+            ->whereIn('tournament_type', $sequenceNames->values())
+            ->whereYear('starts_at', $year)
+            ->pluck('id', 'tournament_type');
+ 
+        $tournaments = collect(TournamentTypeEnum::cases())
+            ->mapWithKeys(function (TournamentTypeEnum $type) use ($sequences, $existingTournaments) {
+                $lastNumber = $sequences->get($type->sequenceName(), 0);
+                $exists = $existingTournaments->has($type->value);
+                $nameNumber = Number::ordinal($lastNumber) . " " . $type->name();
+                return [
+                    $type->value => [
+                        'type' => $type->value,
+                        'label' => $type->label(),
+                        'last_number' => $lastNumber,
+                        'next_number' => $lastNumber + 1,
+                        'available' => !$exists,
+                        'tournament' => Tournament::find($existingTournaments->get($type->value)),
+                        'name' => $nameNumber,
+                        'competitions' => $type->competitions(),
+                    ],
+                ];
+            });
+
+
+
         return inertia('tournament/tournament-create', [
+            'types' => $tournaments,
             'categories' => SelectCategoryResource::collection(Category::orderBy('created_at', 'asc')->get()),
             'states' => SelectStateResource::collection(State::all()),
             'venues' => Venue::all(),
@@ -107,8 +146,7 @@ class TournamentController extends Controller
      */
     public function show(Tournament $tournament)
     {
-
-        $tournament->load('venue');
+         $tournament->load('venue');
         return inertia(
             'tournament/tournament-show',
             [

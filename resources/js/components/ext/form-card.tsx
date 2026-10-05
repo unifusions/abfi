@@ -35,7 +35,7 @@ export default function FormCard({ variant = "accent", icon: Icon, title, classN
                 <h2 className="font-headline font-bold text-xl uppercase tracking-wider">{title}</h2>
             </div>
 
-            <div className="bg-neutral-50 py-12 px-6 ">  {children}</div>
+            <div className="bg-surface-container-low py-12 px-6 ">  {children}</div>
 
         </div>
     )

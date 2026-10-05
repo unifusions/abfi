@@ -31,6 +31,9 @@ export default function OfficialBuilder({ roster, officials, roster_officials })
 
     };
 
+    const handleReset = () => {
+        setOpen(false); setSelectedOfficial(null);  
+    }
 
     return (
         <>
@@ -110,7 +113,7 @@ export default function OfficialBuilder({ roster, officials, roster_officials })
                     open={open}
                     onOpenChange={setOpen}
                     selectedOfficial={selectedOfficial}
-                    resetOfficial={() => { setOpen(false); setSelectedOfficial(null) }}
+                    resetOfficial={handleReset }
                 />  }   
             </div>
         </>

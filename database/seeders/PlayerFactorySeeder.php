@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use App\Domains\Compliance\Models\BaseballPosition;
+use App\Domains\Compliance\Models\CodeSequence;
 use App\Domains\Organization\Models\Organization;
 use App\Domains\Player\Models\Player;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,8 +18,10 @@ class PlayerFactorySeeder extends Seeder
      */
     public function run(): void
     {
+
         Player::withoutSyncingToSearch(function () {
-            $runningNumber = 2601;
+            $sequence = CodeSequence::where('name', 'player_code')->first();
+            $runningNumber = $sequence->last_number;
             $positionIds = BaseballPosition::pluck('id');
             $organizations = Organization::with('state')->get();
             $ageGroups = [
@@ -45,13 +49,21 @@ class PlayerFactorySeeder extends Seeder
                         $codeNumber = str_pad($runningNumber, 5, '0', STR_PAD_LEFT);
                         $playerCode = "{$statePrefix}PLY{$codeNumber}{$genderSuffix}";
 
-                        $player = Player::factory()->create([
-                            'player_code' => $playerCode,
-                            'organization_id' => $organization->id,
-                            'state_id' => $organization->state_id,
-                            'gender' => $gender,
-                            'dob' => $dob,
-                        ]);
+                       $player = DB::transaction(
+                            function () use ($sequence, $playerCode, $organization, $gender, $dob) {
+                                $sequence->increment('last_number');
+                                $sequence->refresh();
+                                return  Player::factory()->create([
+                                    'player_code' => $playerCode,
+                                    'organization_id' => $organization->id,
+                                    'state_id' => $organization->state_id,
+                                    'gender' => $gender,
+                                    'dob' => $dob,
+                                ]);
+                            }
+
+                        );
+
                         $randomCount = rand(1, min(3, count($positionIds)));
                         $selectedPositionUuids = fake()->randomElements($positionIds, $randomCount);
                         $player->positions()->attach($selectedPositionUuids);

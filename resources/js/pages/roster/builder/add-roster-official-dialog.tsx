@@ -20,6 +20,10 @@ export default function AddRosterOfficialDialog({
             {
                 preserveScroll: true,
                 preserveState: true,
+                onSuccess: () => {
+                   
+                    resetOfficial()
+                }
             }
         );
     }

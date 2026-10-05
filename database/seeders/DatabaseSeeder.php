@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
+        User::updateOrCreate([
+            'email' => 'siyam@unifusions.com'
+        ],[
             'name' => 'admin',
             'email' => 'siyam@unifusions.com',
             'is_super_admin' => true,
@@ -32,6 +34,8 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
          OrganizationSeeder::class,
             CodeSequenceSeeder::class,
+            PlayerFactorySeeder::class,
+            OfficialFactorySeeder::class,
         ]);
 
     }

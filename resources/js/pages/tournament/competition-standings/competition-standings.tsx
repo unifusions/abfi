@@ -15,7 +15,7 @@ export default function CompetitionStandings({ standings }) {
                 </TableRow>
                 {standings.length > 0 && standings.map((standing, index) =>
 
-                    <TableRow className="bg-white">
+                    <TableRow className="">
                         <TableCell>{index + 1}</TableCell>
                         <TableCell> {standing?.roster?.name} </TableCell>
                         <TableCell> {standing?.played} </TableCell>

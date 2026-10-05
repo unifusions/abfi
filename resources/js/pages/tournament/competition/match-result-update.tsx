@@ -16,18 +16,18 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
 
 
         <div  
-            className="bg-white   p-4 cursor-pointer relative   transition-transform z-10 transition-all   hover:transform hover:scale-[1.01]">
-            <div className="flex justify-between items-start mb-3">
-                <span
-                    className="inline-flex items-center  py-0.5 rounded-full text-[10px] font-label font-bold uppercase tracking-widest bg-surface-variant text-on-surface-variant">
-                    Pending Result {fixture.pool} 
-                </span>
-                <span className="font-label text-xs text-on-surface-variant">Round #{fixture.round} Match #{fixture.match_number}</span>
+            className=" bg-surface-container-low  p-4 cursor-pointer relative transition-transform z-10 transition-all   hover:transform hover:scale-[1.01]">
+            <div className="flex justify-between items-center mb-3">
+                {/* <span
+                    className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-label font-bold uppercase tracking-widest bg-surface-variant text-on-surface-variant">
+                    Pending Result  
+                </span> */}
+                <span className="font-label text-[10px] text-on-surface-variant">Round #{fixture.round} Match #{fixture.match_number}</span>
             </div>
             <div className="flex flex-col gap-2 mb-4">
 
                 <div className={cn("flex justify-between items-center p-3 ", 
-                     {'bg-green-50' : isHomeWinner, }
+                     {'bg-green-50 dark:bg-green-900'  : isHomeWinner, }
                 )}>
                     <span className="font-headline font-semibold text-on-surface text-lg capitalize">{fixture?.home_roster?.name}</span>
                     <span className={cn("font-display    font-bold text-sm", 
@@ -37,7 +37,7 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
                     )}>{isCompleted && (isHomeWinner ? 'W'  : 'L')}</span>
                 </div>
                <div className={cn("flex justify-between items-center p-3 ", 
-                     {'bg-green-50' : isAwayWinner, }
+                     {'bg-green-50 dark:bg-green-900' : isAwayWinner, }
                 )}>
                     <span className="font-headline font-semibold text-on-surface text-lg capitalize">{fixture?.away_roster?.name}</span>
                     <span className={cn("font-display    font-bold text-sm", 
@@ -55,7 +55,7 @@ const isAwayWinner = fixture.winner_roster_id === fixture.away_roster_id;
                 onClick={onClick}
                     variant="accentSecondary"
                     size={"lg"}
-                    className="w-full  text-sm text-white  tracking-tight normal-case">
+                    className="w-full  text-sm  tracking-tight normal-case">
                     Update Score <NotebookPen />
                 </Button>
             </div>}
@@ -87,18 +87,19 @@ export default function MatchResultUpdate({   tournament, competition, fixtures,
             <div className="  flex flex-col gap-10">
                 {/* <!-- Pool Structure Grid --> */}
                 <section className="flex flex-col gap-6">
+ 
 
-
-
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-6 gap-4">
+                       
+                     
+                       
                         {
-                            Object.entries(pool_fixture).map(([key, data]) => {
+                           pool_fixture && Object.entries(pool_fixture).map(([key, data]) => {
                                 const { fixtures } = data[0];
                                 return (
                                     <>
                                         <div
-                                            className=" bg-zinc-50 overflow-hidden flex flex-col   shadow-sm border border-outline-variant/10 group hover:border-primary/30 transition-colors">
+                                            className=" bg-surface-container overflow-hidden flex flex-col   shadow-sm border border-outline-variant/10 group hover:border-primary/30 transition-colors">
                                             <div className="bg-primary p-4 flex justify-between items-center">
                                                 <h3 className="text-white font-headline font-bold">{key}</h3>
                                                 <span className="text-[10px] text-white/80 px-2 py-0.5 rounded   font-bold">{fixtures?.length} &nbsp;

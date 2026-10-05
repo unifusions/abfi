@@ -4,13 +4,13 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 
 const buttonVariants = cva(
-    "font-bold px-6 py-3  flex items-center gap-2 shadow-lg hover:brightness-110 active:scale-95 transition-all",
+    "font-bold px-6 py-3  flex items-center gap-2 shadow-lg hover:brightness-110 active:scale-95 transition-all  ",
     {
         variants : {
             variant : {
-                default : "bg-primary text-white ",
+                default : "bg-primary text-on-primary  ",
                 secondary : "bg-accent-secondary text-white",
-                view : "shadow-none hover:bg-blue-500/20",
+                view : " hover:bg-blue-500/20",
                 ghost : "shadow-none hover:bg-indigo-500/20",
                 destructive : "shadow-none text-destructive hover:bg-destructive/20"
             },

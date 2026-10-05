@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domains\Compliance\Models\CodeSequence;
 use App\Domains\Compliance\Models\State;
 use App\Domains\Official\Models\Official;
 use App\Domains\Player\Models\Player;
@@ -15,6 +16,9 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
+
+
+        $lastNumbers = CodeSequence::pluck('last_number', 'name');
         return inertia('dashboard', [
             'states_data' => State::select('short_code')->withCount([
                 'players',
@@ -23,12 +27,12 @@ class DashboardController extends Controller
             'stats' => [
                 [
                     'label' => 'Total Players',
-                    'value' => Player::count(),
+                    'value' => $lastNumbers->get('player_code')
 
                 ],
                 [
                     'label' => 'Total Officials',
-                    'value' => Official::count(),
+                    'value' => $lastNumbers->get('official_code'),
 
                 ],
                 [
@@ -41,14 +45,14 @@ class DashboardController extends Controller
                     'value' => Roster::where('status', RosterStatusEnum::APPROVED)->get()->count()
                 ]
             ],
-            'events' =>  Tournament::where('status', '!=', 'draft')->get()->map(function ($event) {
- 
-            return [
-                        'id'=> $event->id,
-                        'name' => $event->name,
-                        'venue' => $event->venue->name,
-                        'month' => $event->starts_at->format('M'),
-                        'day' => $event->starts_at->format('d')
+            'events' => Tournament::where('status', '!=', 'draft')->get()->map(function ($event) {
+
+                return [
+                    'id' => $event->id,
+                    'name' => $event->name,
+                    'venue' => $event->venue->name,
+                    'month' => $event->starts_at->format('M'),
+                    'day' => $event->starts_at->format('d')
                 ];
             })
 

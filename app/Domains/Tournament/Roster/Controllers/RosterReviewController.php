@@ -18,15 +18,17 @@ class RosterReviewController extends Controller
     public function __construct(protected RosterPlayerService $service)
     {
     }
-    
-    public function competitionRosters(Tournament $tournament, TournamentCompetition $competition){
-        return inertia('tournament/competition/rosters/roster-list', 
-     [   'rosters' => $competition->rosters]
-    );
+
+    public function competitionRosters(Tournament $tournament, TournamentCompetition $competition)
+    {
+        return inertia(
+            'tournament/competition/rosters/roster-list',
+            ['rosters' => $competition->rosters]
+        );
     }
     public function review(Roster $roster)
     {
-        return inertia('roster/review/roster-review', [
+        return inertia('roster/review/roster-review-simple', [
             'roster' => $roster,
             'roster_players' => RosterPlayerResource::collection(
                 $roster->players
@@ -46,14 +48,8 @@ class RosterReviewController extends Controller
     {
 
         $competition = $roster->competition;
-        $unverifiedPlayers = $roster->players
-            ->where('is_approved', false);
-
-        if ($unverifiedPlayers->isNotEmpty()) {
-            return back()->with([
-                'error' => 'All players in the roster must be approved before the roster can be approved.',
-            ]);
-        }
+ 
+        // if($this->isAllPlayerVerified($roster))
 
         $roster->status = RosterStatusEnum::APPROVED->value;
         $roster->save();
@@ -66,5 +62,18 @@ class RosterReviewController extends Controller
         return redirect()->route('tournaments.show', $roster->competition->tournament)->with([
             'success' => "Roster {$roster->name} has been approved"
         ]);
+    }
+
+    protected function isAllPlayerVerified($roster)
+    {
+        $unverifiedPlayers = $roster->players
+            ->where('is_approved', false);
+
+        if ($unverifiedPlayers->isNotEmpty()) {
+            return back()->with([
+                'error' => 'All players in the roster must be approved before the roster can be approved.',
+            ]);
+        }
+        return true;
     }
 }

@@ -14,7 +14,7 @@ class RosterOfficialResource extends JsonResource
             'id' => $this->id,
             'official_id' => $official?->id,
             'name' => implode(' ', [$official?->first_name, $official?->middle_name, $official?->last_name]),
-            'type' => ucfirst($official->type) . ' Official',
+            'type' => ucfirst($this->type)  ,
             'code' => $official->official_code
         ];
     }

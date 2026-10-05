@@ -112,6 +112,10 @@ class CompetitionController extends Controller
                         ['match_number', 'asc'],
                     ])
                     ->values(),
+                'pool_fixture' => $competition->pools()->with([
+                    'fixtures.homeRoster.organization.state',
+                    'fixtures.awayRoster.organization.state',
+                ])->get()->groupBy('name'),
                 'knockout_fixtures' => $competition->fixtures()->with([
                     'homeRoster.organization.state',
                     'awayRoster.organization.state'
@@ -189,9 +193,9 @@ class CompetitionController extends Controller
             ->get()
             ->map(
                 fn($fixture) =>
-                $fixture->home_roster_id === $fixture->winner_roster_id
-                ? $fixture->away_roster_id
-                : $fixture->home_roster_id
+                    $fixture->home_roster_id === $fixture->winner_roster_id
+                    ? $fixture->away_roster_id
+                    : $fixture->home_roster_id
             )
             ->filter()
             ->unique();
@@ -206,9 +210,9 @@ class CompetitionController extends Controller
             ->get()
             ->map(
                 fn($fixture) =>
-                $fixture->home_roster_id === $fixture->winner_roster_id
-                ? $fixture->away_roster_id
-                : $fixture->home_roster_id
+                    $fixture->home_roster_id === $fixture->winner_roster_id
+                    ? $fixture->away_roster_id
+                    : $fixture->home_roster_id
             )
             ->filter()
             ->unique();
@@ -255,7 +259,7 @@ class CompetitionController extends Controller
             ->sum('players_count');
 
         $participatingRosters = Roster::query()->with(['organization.state', 'certificates'])
-        ->withCount(['players', 'officials'])->whereIn('id', $participantRosterIds)->get();
+            ->withCount(['players', 'officials'])->whereIn('id', $participantRosterIds)->get();
 
         return inertia(
             'tournament/competition/certificates/certificate-index',

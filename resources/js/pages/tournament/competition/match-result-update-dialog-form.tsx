@@ -61,6 +61,7 @@ export default function MatchResultUpdateDialogForm({
             competition: competition?.id,
             fixture: fixture?.id
         }).url, {
+            preserveScroll: true,
             onSuccess: () => { resetAll() }
         })
     }
@@ -113,8 +114,8 @@ export default function MatchResultUpdateDialogForm({
                                     <Tally5 />   Final  Score
                                 </h3>
 
-                                <div className="overflow-x-auto space-y-2  ">
-                                    <div className="flex justify-between items-center bg-primary text-white py-4 px-4 uppercase text-xs tracking-wide font-black">
+                                <div className="overflow-x-auto space-y-4  ">
+                                    <div className="flex justify-between items-center bg-primary text-on-primary py-4 px-4 uppercase text-xs tracking-wide font-black">
                                         <div className="">Roster</div>
                                         <div>Score</div>
                                     </div>
@@ -124,7 +125,7 @@ export default function MatchResultUpdateDialogForm({
                                             {fixture?.home_roster?.name}
                                         </div>
                                         <div><FormInput
-                                            className="text-right w-8 bg-zinc-50"
+                                            className="  w-16  "
                                             id="home_score"
                                             type="number"
                                             hasError={errors.home_score}
@@ -133,10 +134,10 @@ export default function MatchResultUpdateDialogForm({
                                         </div>
                                     </div>
 
-                                    <div className="flex justify-between items-center px-4">
+                                    <div className="flex justify-between items-center px-4 pb-4 ">
                                         <div className="font-semibold capitalize">{fixture?.away_roster?.name}</div>
                                         <div><FormInput
-                                            className="text-right w-8 bg-zinc-50"
+                                            className="  w-16  "
                                             id="away_score"
                                             type="number"
                                             hasError={errors.away_score}
@@ -153,18 +154,18 @@ export default function MatchResultUpdateDialogForm({
                                     <p className="font-body text-[11px] text-on-surface-variant mb-4">Winner will
                                         automatically update the tournament standings once finalized.</p>
 
-                                    {winner &&
+                                    
                                         <div
                                             className="flex items-center justify-between p-4 rounded-xl border-2 border-surface-container-highest bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary-fixed/10 transition-all">
                                             <div>
 
                                                 <div className="flex items-center gap-2">
                                                     <div className={cn("flex h-12  items-center justify-center w-12 font-bold font-display text-md rounded-md", stateColors[winner?.organization?.state?.short_code])}>
-                                                        {winner?.organization?.state?.short_code}
+                                                        {winner && winner?.organization?.state?.short_code}
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <div className="text-primary font-bold font-display tracking-tight text-2xl capitalize">{winner?.name}</div>
-                                                        <div className="text-zinc-400 text-sm">{winner?.organization?.name}</div>
+                                                        <div className="text-zinc-400 text-sm">{winner ? winner?.organization?.name : "Yet to be decided"}</div>
 
 
                                                     </div>
@@ -174,11 +175,11 @@ export default function MatchResultUpdateDialogForm({
 
 
                                         </div>
-                                    }
+                                    
 
 
                                 </div>
-                                <div className="mt-4">
+                                <div className="my-4">
                                     <Label>Remarks</Label>
                                     <Textarea value={data.remarks} onChange={(e) => setData('remarks', e.target.value)}>
 
@@ -194,14 +195,14 @@ export default function MatchResultUpdateDialogForm({
                         <div
                             className="mt-auto border-t border-zinc-100  py-5 flex justify-end gap-2 items-center">
 
-                            <Button variant="destructive" className="normal-case tracking-tight" size={"lg"} onClick={() => resetAll()}>
+                            <Button variant="destructive" className="normal-case tracking-tight w-fit" size={"lg"} onClick={() => resetAll()}>
                                 <XCircle />
                                 Cancel</Button>
                             <Button
                                 // onClick={resetFixture}
                                 size={"lg"}
                                 type="submit"
-                                className="font-label normal-case tracking-tight cursor-pointer text-sm font-bold bg-primary text-white px-6  hover:bg-[#00122b] transition-all flex items-center gap-2 shadow-[inset_0_-2px_0_rgba(0,45,98,0.5)] active:translate-y-[1px] active:shadow-none">
+                                className="w-fit font-label normal-case tracking-tight cursor-pointer text-sm font-bold    px-6   active:shadow-none">
                                 <Lock className="h-5" />
                                 Submit Final Result
                             </Button>

@@ -10,6 +10,9 @@ export default function Dashboard({ states_data, stats, events }) {
         <>
             <Head title="Dashboard" />
 
+<div className="h-20 w-20 bg-secondary-destructive">
+
+</div>
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
                 <section className="grid grid-cols-1 md:grid-cols-4 gap-6">

@@ -7,6 +7,7 @@ use App\Domains\Organization\Models\Organization;
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Enums\TournamentFormatEnum;
 use App\Domains\Tournament\Enums\TournamentStatus;
+use App\Domains\Tournament\Enums\TournamentTypeEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Venue\Models\Venue;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -16,9 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Tournament extends Model
 {
-    use HasFactory;
-
-    use HasUuids;
+    use HasFactory, HasUuids;
 
 
 
@@ -40,10 +39,11 @@ class Tournament extends Model
         'ends_at',
         'published_at',
         'created_by',
-        'updated_by',
+        'updated_by', 'tournament_year', 'tournament_type'
     ];
     protected $casts = [
 
+        'type' => TournamentTypeEnum::class,
         'status' => TournamentStatus::class,
         'competition_format' => TournamentFormatEnum::class,
         'registration_open_at' => 'datetime',

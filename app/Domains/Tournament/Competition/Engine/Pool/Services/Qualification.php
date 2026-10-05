@@ -25,7 +25,7 @@ class Qualification
                     ->get()
             );
         }
-
+ 
         app(KnockoutGeneratorService::class)
             ->generate($competition, $qualified);
 
