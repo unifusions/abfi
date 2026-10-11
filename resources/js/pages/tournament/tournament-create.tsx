@@ -26,7 +26,7 @@ export default function TournamentCreate({ types, states, organizations, categor
 
     const [v, setV] = useState();
     const [competitionType, setCompetitionType] = useState({});
-      const targetSectionRef = useRef(null);
+    const targetSectionRef = useRef(null);
     const { data, setData, processing, errors, post, transform } = useForm({
         'name': '',
         'category_id': '',
@@ -38,7 +38,7 @@ export default function TournamentCreate({ types, states, organizations, categor
         'registration_close_at': '',
         'competition_format': '',
         'competition_type': [],
-        'tournament_type' : 'others'
+        'tournament_type': 'others'
 
     });
 
@@ -92,28 +92,28 @@ export default function TournamentCreate({ types, states, organizations, categor
 
     const handleAnnualTournament = (tournamentType) => {
         const { competitions, available, label } = tournamentType;
-    const fallBackCat = "Senior - SR"
-            const genderString = competitions.map(item => item.gender.charAt(0).toUpperCase() + item.gender.slice(1)).join(' & ');
-            const competitionType = competitions.map(item=>item.gender.toLowerCase());
-    // alert(JSON.stringify(categories?.data));
-            const categoryId = categories?.data?.filter(c => c.label.toLowerCase().includes(label.toLowerCase()) )
-           const fallbackId = categories?.data?.filter(c => c.label.toLowerCase().includes(fallBackCat.toLowerCase()) )
-            let finalCatId = categoryId.length > 0 ? categoryId: fallbackId;
-          
-        setData('name' ,   (tournamentType?.name + ' ' + genderString )) ;
+        const fallBackCat = "Senior - SR"
+        const genderString = competitions.map(item => item.gender.charAt(0).toUpperCase() + item.gender.slice(1)).join(' & ');
+        const competitionType = competitions.map(item => item.gender.toLowerCase());
+        // alert(JSON.stringify(categories?.data));
+        const categoryId = categories?.data?.filter(c => c.label.toLowerCase().includes(label.toLowerCase()))
+        const fallbackId = categories?.data?.filter(c => c.label.toLowerCase().includes(fallBackCat.toLowerCase()))
+        let finalCatId = categoryId.length > 0 ? categoryId : fallbackId;
+
+        setData('name', (tournamentType?.name + ' ' + genderString));
         setData('category_id', finalCatId[0]?.value);
         setData('competition_type', [...competitionType]);
-        setData('tournament_type' ,tournamentType?.type )
- targetSectionRef.current?.scrollIntoView({ 
-      behavior: 'smooth', // Animates the scroll smoothly
-      block: 'start'      // Aligns the top of the section to the top of the viewport
-    });
+        setData('tournament_type', tournamentType?.type)
+        targetSectionRef.current?.scrollIntoView({
+            behavior: 'smooth', // Animates the scroll smoothly
+            block: 'start'      // Aligns the top of the section to the top of the viewport
+        });
     }
     return (
         < >
             <PageHeader title="Create Tournament" subText="Select an annual tournament or create a custom
             tournament..." >
-                
+ 
                 {/* <div
                     className="flex items-center gap-3 bg-surface-container-low px-4 py-2.5 rounded-lg border border-outline-variant/20 self-start md:self-auto shadow-sm">
                     <div className="flex items-center gap-2">
@@ -152,7 +152,7 @@ export default function TournamentCreate({ types, states, organizations, categor
                             </div>
                         </div> */}
                         <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6">
-                            {Object.values(types).map((tournamentType) => (<AnnualTournament tournamentType={tournamentType} onSelect={()=> handleAnnualTournament(tournamentType)} />))}
+                            {Object.values(types).map((tournamentType) => (<AnnualTournament tournamentType={tournamentType} onSelect={() => handleAnnualTournament(tournamentType)} />))}
 
                         </div>
 
@@ -160,7 +160,7 @@ export default function TournamentCreate({ types, states, organizations, categor
 
                     <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
                         {/* <!-- Section 1: Core Identity --> */}
-                        <div className="space-y-6"  ref={targetSectionRef}>
+                        <div className="space-y-6" ref={targetSectionRef}>
                             <div className="flex items-center gap-4">
                                 <div className="w-1 h-6 bg-secondary"></div>
                                 <h2 className="font-headline font-bold text-xl uppercase tracking-wider">Tournament Identity</h2>

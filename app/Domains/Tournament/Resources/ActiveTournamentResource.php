@@ -19,7 +19,7 @@ class ActiveTournamentResource extends JsonResource
             'status' => $this->status,
             'venue' => $this->venue?->name . ',' . $this->venue?->state?->short_code,
             'organization' => $this->organization?->name,
-            'competitions' => $this->competitions()->withCount('rosters')->get()
+            'competitions' => $this->competitions()->withCount(['rosters', 'players', 'officials'])->get()
         ];
     }
 }

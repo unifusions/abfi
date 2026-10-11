@@ -45,7 +45,9 @@ export default function PlayerCreate({ baseball_positions, organizations, states
         'city': '',
         'pincode': '',
         'organization_id': default_organization || '',
-        'media_id': ''
+        'media_id': '',
+        'height' : '',
+        'weight' : '',
 
     })
     const [photo, setPhoto] = useState<UploadedMedia | null>(null);

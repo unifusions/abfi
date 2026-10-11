@@ -17,12 +17,12 @@ class CodeSequenceSeeder extends Seeder
         $sequences = [
             ['name' => 'player_code', 'last_number' => 8000],
             ['name' => 'official_code', 'last_number' => 750],
-            ['name' => 'u13_tournament_code', 'last_number' => 31],
-            ['name' => 'u15_tournament_code', 'last_number' => 31],
-            ['name' => 'u17_tournament_code', 'last_number' => 31],
-            ['name' => 'sr_tournament_code', 'last_number' => 31],
-            ['name' => 'fc_tournament_code', 'last_number' => 31],
-            ['name' => 'zc_tournament_code', 'last_number' => 31],
+            ['name' => 'sub_juniors', 'last_number' => 31],
+            ['name' => 'juniors', 'last_number' => 31],
+            ['name' => 'seniors', 'last_number' => 31],
+            ['name' => 'zone', 'last_number' => 31],
+            ['name' => 'federation_cup', 'last_number' => 31],
+      
 
         ];
 

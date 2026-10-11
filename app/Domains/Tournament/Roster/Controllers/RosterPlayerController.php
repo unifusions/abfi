@@ -2,6 +2,7 @@
 
 namespace App\Domains\Tournament\Roster\Controllers;
 
+use App\Domains\Player\Models\Player;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Models\RosterPlayer;
 use App\Http\Controllers\Controller;
@@ -27,9 +28,12 @@ class RosterPlayerController extends Controller
             return back()->with([
                 'error' => "Player cannot be added furthur"
             ]);
+            $player =  Player::find($request->player_id);
+       
         $rosterPlayer = RosterPlayer::create([
             'roster_id' => $roster->id,
             'player_id' => $request->player_id,
+            'snapshot' => $player
 
         ]);
 

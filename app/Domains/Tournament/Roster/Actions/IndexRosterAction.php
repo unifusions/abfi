@@ -18,11 +18,12 @@ class IndexRosterAction
             $filter($currentYearQuery);
             $filter($lastYearQuery);
         }
-        $currentYearCount = $currentYearQuery->whereYear('created_at', Carbon::now()->year)->count();
-        $lastYearCount = $lastYearQuery->whereYear('created_at', Carbon::now()->subYear()->year)->count();
+        $currentYearCount = $currentYearQuery->whereYear('submitted_at', Carbon::now()->year)->count();
+        $lastYearCount = $lastYearQuery->whereYear('submitted_at', Carbon::now()->subYear()->year)->count();
         if ($lastYearCount > 0) {
             $percentageChange = (($currentYearCount - $lastYearCount) / $lastYearCount) * 100;
         } else {
+            
             $percentageChange = $currentYearCount > 0 ? 100 : 0;
         }
 

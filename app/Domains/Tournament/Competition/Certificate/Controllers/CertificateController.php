@@ -21,10 +21,12 @@ class CertificateController extends Controller
 
     public function generateAllCertificates(Tournament $tournament, TournamentCompetition $competition)
     {
+       
+        
+        $this->service->generateAllCertificates($competition);
         $competition->update([
             'phase' => CompetitionPhaseEnum::PROCESS_CERTIFICATES
         ]);
-        $this->service->generateAllCertificates($competition);
         return back()->with(['success' => 'All Certificates has been generated ssuccessfully. Generate PDF for final versions']);
     }
     public function generateParticipantCertificates(Tournament $tournament, TournamentCompetition $competition)

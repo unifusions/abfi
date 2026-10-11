@@ -42,7 +42,9 @@ class StorePlayerRequest extends FormRequest
             'city' => ['required'],
             
             'pincode' => ['required', 'string'],
-            'media_id' => ['string']
+            'media_id' => ['string'],
+            'height' => ['numeric'],
+            'weight' => ['numeric']
             
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Tournament\Competition\Models;
 
+use App\Domains\Player\Models\Player;
 use App\Domains\Shared\Enums\GenderEnum;
 use App\Domains\Tournament\Competition\Accreditation\Models\TournamentAccreditation;
 use App\Domains\Tournament\Competition\Certificate\Models\CompetitionCertificate;
@@ -12,14 +13,15 @@ use App\Domains\Tournament\Competition\Enums\CompetitionPhaseEnum;
 use App\Domains\Tournament\Competition\Policies\TournamentCompetitionPolicy;
 use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Roster\Models\Roster;
-
-
+use App\Domains\Tournament\Roster\Models\RosterOfficial;
+use App\Domains\Tournament\Roster\Models\RosterPlayer;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 #[UsePolicy(TournamentCompetitionPolicy::class)]
 
@@ -69,6 +71,15 @@ class TournamentCompetition extends Model
     {
         return $this->hasMany(TournamentPool::class, 'tournament_competition_id');
     }
+
+    public function players(): HasManyThrough{
+        return $this->hasManyThrough(RosterPlayer::class, Roster::class); 
+    }
+
+    public function officials(): HasManyThrough{
+        return $this->hasManyThrough(RosterOfficial::class, Roster::class); 
+    }
+
 
     public function standings()
     {

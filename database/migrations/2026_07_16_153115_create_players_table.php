@@ -24,11 +24,14 @@ return new class extends Migration {
             $table->foreignUuidFor(Organization::class)->nullable();
             $table->enum('gender', ['male', 'female']);
             $table->date('dob');
+            $table->unsignedInteger('height')->nullable();
+            $table->unsignedInteger('weight')->nullable();
             $table->string('blood_group', 5)->nullable();
             $table->string('aadhar_no')->unique();
             $table->string('passport')->nullable();
             $table->string('email')->nullable();
             $table->string('phone', 20)->nullable();
+
 
             $table->string('emergency_contact_phone', 20)->nullable();
 

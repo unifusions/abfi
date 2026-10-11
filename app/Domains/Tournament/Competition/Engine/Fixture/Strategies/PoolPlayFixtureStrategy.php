@@ -28,15 +28,17 @@ class PoolPlayFixtureStrategy implements FixtureStrategy
             foreach ($competition->pools as $pool) {
 
                 $rosters = $pool->poolRosters
+                ->whereNull('seed')
                     ->sortBy('position')
                     ->pluck('roster')
                     ->values();
 
-                $count = $rosters->count();
 
+                $count = $rosters->count();
+ 
                 $rounds = $this->generator->generate($rosters);
 
-
+ 
                 foreach ($rounds as $roundNumber => $matches) {
 
                     foreach ($matches as $match) {

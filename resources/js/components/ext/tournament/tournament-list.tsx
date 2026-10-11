@@ -9,7 +9,7 @@ export default function TournamentList({ tournaments }) {
 
     const { data, ...paginationData } = tournaments;
     return (
-        <section className="   overflow-hidden">
+        <section className="mt-6  ">
             {/* <div class="bg-primary px-8 py-4 flex items-center justify-between">
                 <h3 class="text-on-primary font-label text-xs font-black uppercase tracking-[0.2em]">Live Registry Log</h3>
                 <button class="text-on-primary/60 text-[10px] font-bold flex items-center gap-1 hover:text-on-primary">
@@ -28,7 +28,7 @@ export default function TournamentList({ tournaments }) {
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="divide-y divide-surface-container">
                     {data.map((t) => <TableRow id={t.id} className="hover:bg-gray-50 transition-colors">
                         <TableCell>
                             <div>

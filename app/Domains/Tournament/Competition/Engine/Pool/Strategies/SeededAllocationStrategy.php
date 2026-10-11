@@ -21,7 +21,7 @@ class SeededAllocationStrategy implements AllocationStrategy
     ): array {
 
         $pools = [];
-
+ 
         // Initialize pools
         for ($i = 0; $i < $poolCount; $i++) {
             $pools[$i] = collect();

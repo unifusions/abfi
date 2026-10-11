@@ -15,7 +15,7 @@ export default function AnnualTournament({ onSelect, tournamentType }) {
             <div>
                 <div className="flex items-start justify-between gap-2">
                     <span className="text-xs font-label font-bold uppercase tracking-widest text-primary">{label}</span>
-
+ 
                     {available && <span
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-label font-semibold bg-primary-container/80 text-primary-fixed border border-primary/30">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
@@ -26,8 +26,8 @@ export default function AnnualTournament({ onSelect, tournamentType }) {
 
                 <h3
                     className="font-headline font-bold text-lg text-on-surface mt-3 leading-snug group-hover:text-primary transition-colors">
-                    {tournamentType?.name} {genderString}
-                </h3>
+                    {tournament ? tournament?.name : <>{tournamentType?.name}{genderString}
+</>}                 </h3>
 
                 <div className="mt-3 flex flex-wrap gap-2">
                     <span

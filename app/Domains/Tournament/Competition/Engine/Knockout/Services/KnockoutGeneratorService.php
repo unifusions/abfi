@@ -96,13 +96,19 @@ class KnockoutGeneratorService
                 'A 16-team knockout requires exactly 16 qualified teams.'
             );
         }
-
+        
         $qualified = $qualified
-            ->groupBy('tournament_pool_id')
-            ->sortKeys()
-            ->values();
+        ->sortBy('knockout_seed')
+        ->values();
 
 
+        // dd($qualified);
+        // $qualified = $qualified
+        //     ->groupBy('tournament_pool_id')
+        //     ->sortKeys()
+        //     ->values();
+
+ 
         $fixtures = [
             [$qualified[0], $qualified[15]],
             [$qualified[7], $qualified[8]],

@@ -25,6 +25,7 @@ class RosterPlayer extends Model
     use HasUuids;
 
     protected $casts = [
+        'snapshot' => 'json',
         'is_captain' => 'boolean',
         'is_vice_captain' => 'boolean',
         'is_approved' => 'boolean',

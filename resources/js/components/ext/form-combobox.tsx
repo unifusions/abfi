@@ -1,3 +1,4 @@
+import InputError from "../input-error";
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "../ui/combobox";
 import FormLabel from "./form-label";
 
@@ -36,6 +37,7 @@ export default function FormCombobox(
                     </ComboboxList>
                 </ComboboxContent>
             </Combobox>
+            <InputError message={hasError} />
         </div>
     )
 }

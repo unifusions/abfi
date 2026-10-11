@@ -16,7 +16,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('tournaments', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('slug')->nullable();
             $table->text('description')->nullable();

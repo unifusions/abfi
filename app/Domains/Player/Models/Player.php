@@ -51,6 +51,7 @@ use Laravel\Scout\Searchable;
     'created_by',
     'updated_by',
     'state_id',
+    'height', 'weight'
 
 ])]
 

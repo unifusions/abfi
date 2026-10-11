@@ -120,7 +120,8 @@ class RosterController extends Controller
             'replacements' => RosterReplacementHistoryResource::collection($roster->playerReplacements),
 
             // $roster->playerReplacements()->with('replacingPlayer', 'replacementPlayer')->get(),
-            'tournament' => $roster->competition->tournament,
+            'tournament' => $roster->competition->tournament  ,
+            'venue' => $roster->competition->tournament->venue,
             'officials' =>RosterDetailOfficialResource::collection( $roster->officials),
             'category' => $roster->competition->tournament->category,
             'hasAccreditations' => $roster->accreditations()->count() > 0

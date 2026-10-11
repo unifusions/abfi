@@ -11,9 +11,10 @@ class RosterPlayerResource extends JsonResource
     public function toArray($request)
     {
         $player = $this->player;
-        if(!$player){
+        if (!$player) {
             return [];
         }
+
         return [
             'id' => $this->id,
             'code' => $player->player_code,
@@ -25,7 +26,8 @@ class RosterPlayerResource extends JsonResource
             'profile_photo' => $player->getMediaUrl(MediaCollectionEnum::PROFILE),
             'dob' => $player->dob->format('d/m/Y'),
             'approved' => $this->is_approved,
-            'requestedResubmission' => $this->is_request_resubmission
+            'requestedResubmission' => $this->is_request_resubmission,
+            'snapshot' => $this->snapshot
         ];
     }
 }

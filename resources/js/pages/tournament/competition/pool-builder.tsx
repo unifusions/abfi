@@ -3,6 +3,7 @@ import { CheckCircle, ClockArrowUp, Search } from "lucide-react";
 import UnassignedRosterCard from "./unassigned-roster-card";
 import CompetitionPool from "@/components/ext/tournament/competition-pool";
 import PoolLock from "./pool-lock";
+import { Button } from "@/components/ui/button";
 
 export default function PoolBuilder(
     {
@@ -10,15 +11,19 @@ export default function PoolBuilder(
         competition, category, tournament, unassignedRosters, approvedRosters
     }
 ) {
+
+    const gridCol = pools?.length > 4 ? 'grid-cols-3' : 'grid-cols-4';
     return (
         <>
          {/* <!-- Header & Breadcrumbs Section --> */}
             <PageHeader title={`Pool Generator for ${competition.name} ${category} `} subText={tournament.name}
             >
 
-
+<div>
+<Button variant="ghost" >Reshuffle Pool </Button>
+</div>
             </PageHeader>
-
+ 
             <div className="grid grid-cols-12 gap-8 items-start">
                 {/* <!-- Left Sidebar: Team Selection Pool --> */}
                 <section
@@ -64,9 +69,9 @@ export default function PoolBuilder(
                     </div> */}
                 </section>
 
-                <section className="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                <section className={`col-span-12 lg:col-span-9 grid grid-cols-3 xl:${gridCol} gap-6`}>
                     {/* <!-- Pool Card A --> */}
-
+ 
                     {pools.map((pool: any) => (
                         <CompetitionPool key={pool.id} pool={pool.name} teams={pool.rosters} />
                     ))}
@@ -76,7 +81,11 @@ export default function PoolBuilder(
 
 
 
-                    <section className="mt-12 bg-primary dark:bg-surface-container relative  xl:col-span-4">
+                 
+
+                </section>
+
+                <section className="col-span-12 mt-6 bg-primary dark:bg-surface-container     sticky bottom-0 z-50">
                         <div className="absolute inset-0 opacity-10 pointer-events-none">
                             <div className="absolute top-0 left-0 w-full h-full"
                             // style="background-image: radial-gradient(circle at 2px 2px, #fff 1px, transparent 0); background-size: 40px 40px;"
@@ -100,14 +109,11 @@ export default function PoolBuilder(
 
                             </div>
                             <div className="flex-shrink-0 w-full md:w-auto">
+                            
                                <PoolLock />
                             </div>
                         </div>
                     </section>
-
-                </section>
-
-
             </div>
             {/* <!-- Summary Statistics Footer Panel --> */}
         </>

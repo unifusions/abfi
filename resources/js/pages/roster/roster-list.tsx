@@ -21,6 +21,7 @@ export default function RosterList({ rosters }) {
                     <TableHead>Actions</TableHead>
                 </TableHeader>
                 <TableBody>
+                    
                     {data.map((r) => {
                         const playerProgress = (r.max_players > 0)
                             ? `${(r.roster_players / r.max_players) * 100}%`

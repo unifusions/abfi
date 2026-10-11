@@ -5,16 +5,16 @@ import { Grip, GripVertical, Move } from "lucide-react";
 export default function CompetitionPool({ pool, teams }) {
     return (
         <div
-            class="pool-card bg-surface-container-lowest rounded-xl shadow-[0_8px_16px_-4px_rgba(0,0,0,0.05)] border-t-4 border-primary p-5 group">
-            <div class="flex justify-between items-center mb-4">
+            className=" bg-surface-container-lowest shadow-[0_8px_16px_-4px_rgba(0,0,0,0.05)] border-t-4 border-primary p-5 group">
+            <div className="flex justify-between items-center mb-4">
                 <div>
-                    <h4 class="font-headline font-black text-primary text-xl">{pool}</h4>
-                    <span class="text-xs font-label uppercase tracking-widest text-secondary font-bold">{teams.length} Rosters Assigned</span>
+                    <h4 className="font-headline font-black text-primary text-xl">{pool}</h4>
+                    <span className="text-xs font-label uppercase tracking-widest text-secondary font-bold">{teams.length} Rosters Assigned</span>
                 </div>
                 <button
-                    class="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-surface-container rounded-full">
+                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-surface-container rounded-full">
                     <GripVertical />
-                    <span class="material-symbols-outlined text-on-surface-variant"></span>
+                    <span className="material-symbols-outlined text-on-surface-variant"></span>
                 </button>
             </div>
 
@@ -23,7 +23,7 @@ export default function CompetitionPool({ pool, teams }) {
 
 
                 {teams.map((team) => <div
-                    className={cn("  flex items-center justify-between p-3 rounded-lg border border-transparent hover:border-primary-fixed ",
+                    className={cn(" flex items-center justify-between p-3 rounded-lg border border-transparent hover:border-primary-fixed ",
 
                     )}>
                     <div className="flex items-center gap-3">

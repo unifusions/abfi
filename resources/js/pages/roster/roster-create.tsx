@@ -4,6 +4,7 @@ import FormInput from "@/components/ext/form-input";
 import FormRadio from "@/components/ext/form-radio";
 import FormSelect from "@/components/ext/form-select";
 import PageHeader from "@/components/ext/page-header";
+import ProcessingButton from "@/components/ext/processing-button";
 import { Button } from "@/components/ui/button";
 import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
 import { dashboard } from "@/routes";
@@ -20,9 +21,9 @@ export default function RosterCreate({
 }) {
 
     useSetBreadcrumbs([
-        {title : 'Dashboard', href: dashboard().url},
-        {title : 'Rosters' , href : index().url},
-        {title : 'New Roster' , href : create().url}
+        { title: 'Dashboard', href: dashboard().url },
+        { title: 'Rosters', href: index().url },
+        { title: 'New Roster', href: create().url }
     ])
     const { data, setData, processing, errors, post } = useForm({
         'organization_id': default_organization || '',
@@ -74,16 +75,19 @@ export default function RosterCreate({
                                     onValueChange={(val) =>
                                         setData('tournament_id', val)
                                     }
+
                                 />
-
-
-                                <FormInput
-                                    label="Team Name"
+                                <FormRadio
+                                    label="Division"
                                     labelRequired={true}
-                                    value={data.name}
-                                    onChange={(e) => setData('name', e.target.value)}
-
+                                    options={selectedTournament ? selectedTournament.competition : []}
+                                    value={data.tournament_competition_id}
+                                    onValueChange={(val) => setData('tournament_competition_id', val)}
+                                    hasError={errors.tournament_competition_id}
                                 />
+
+
+
 
 
                                 <FormCombobox
@@ -99,25 +103,26 @@ export default function RosterCreate({
                                     disabled={!can_select_organization}
                                 />
 
-                                <FormRadio
-                                    label="Division"
+
+
+                                <FormInput
+                                    label="Team Name"
                                     labelRequired={true}
-                                    options={selectedTournament ? selectedTournament.competition : []}
-                                    value={data.tournament_competition_id}
-                                    onValueChange={(val) => setData('tournament_competition_id', val)}
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+
                                 />
-
-
                             </div>
 
                             <div className="mt-12 flex justify-end">
-                                <Button size={"xl"}
+                                <ProcessingButton size={"xl"}
                                     type="submit"
+                                    processing={processing}
                                 >
                                     Proceed to Roster Assembly
                                     <MoveRight className="h-10 w-10" />
 
-                                </Button>
+                                </ProcessingButton>
                             </div>
                         </div>
 
@@ -148,7 +153,7 @@ export default function RosterCreate({
                             </div>
                             <div className="flex gap-4 items-start">
                                 <div className="bg-primary-container p-2 rounded-lg">
-                                    <BookLock  className="text-on-primary-container"  />
+                                    <BookLock className="text-on-primary-container" />
                                 </div>
                                 <div className="font-body text-xs  text-on-primary">
                                     <strong>Record Locking:</strong> Team names cannot be changed after roster assembly
@@ -168,7 +173,7 @@ export default function RosterCreate({
                             </div>}
                         </div>
                     </div>
-                     
+
                 </div>
             </div>
 

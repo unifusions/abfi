@@ -30,7 +30,7 @@ const RosterContainer = ({ roster, winner, showResult }) => {
 
 const FixtureCard = ({ fixture, onClick, enableScoreUpdate }) => {
     return (
-        <div className="bg-white  p-6 cursor-pointer shadow-[0_8px_24px_-8px_rgba(25,28,29,0.08)] transform scale-[1.01] transition-transform z-10 border-l-4 hover:border-primary">
+        <div className="bg-surface-container  p-6 cursor-pointer shadow-[0_8px_24px_-8px_rgba(25,28,29,0.08)] transform scale-[1.01] transition-transform z-10 border-l-4 hover:border-primary">
             <div className="flex justify-between items-start mb-3">
                 <span
                     className=
@@ -59,7 +59,7 @@ const FixtureCard = ({ fixture, onClick, enableScoreUpdate }) => {
                         variant="accentSecondary"
                         size={"lg"}
                         onClick={onClick}
-                        className="  text-sm text-white  tracking-tight normal-case">
+                        className="  tracking-tight normal-case">
                         Update Score <NotebookPen />
                     </Button>
 
@@ -67,7 +67,7 @@ const FixtureCard = ({ fixture, onClick, enableScoreUpdate }) => {
         </div>
     )
 }
-export default function KnockoutFixtures({tournament, competition, fixtures }) {
+export default function KnockoutFixtures({ tournament, competition, fixtures }) {
 
     const [selectedFixture, setSelectedFixture] = useState();
     const [open, setOpen] = useState(false);
@@ -77,14 +77,30 @@ export default function KnockoutFixtures({tournament, competition, fixtures }) {
 
 
     }
+    const statusOrder = ['scheduled', 'in_progress', 'completed'];
+
+
+    // const matchesByStatus = fixtures.reduce((acc, match) => {
+    //     const status = match.status || 'unknown';
+    //     if (!acc[status]) {
+    //         acc[status] = [];
+    //     }
+    //     acc[status].push(match);
+    //     return acc;
+    // }, {});
+
     const matchesByStatus = fixtures.reduce((acc, match) => {
         const status = match.status || 'unknown';
+
         if (!acc[status]) {
             acc[status] = [];
         }
+
         acc[status].push(match);
+
         return acc;
     }, {});
+
 
     return (
         <div className=" ">
@@ -92,9 +108,9 @@ export default function KnockoutFixtures({tournament, competition, fixtures }) {
 
             </PageHeader>
 
-            <div className="grid grid-cols-2 gap-6">
-                {Object.entries(matchesByStatus).map(([status, matches]) =>
-                    <div className="bg-zinc-50 space-y-6 p-6">
+          
+                {/* {Object.entries(matchesByStatus).map(([status, matches]) =>
+                    <>
 
                         {matches.map((fixture) => <FixtureCard
                             key={fixture.id}
@@ -103,17 +119,38 @@ export default function KnockoutFixtures({tournament, competition, fixtures }) {
                             onClick={() => dialogScoreUpdate(fixture)}
                         />)}
 
-                    </div>
+                    </>
 
 
-                )}
+                )} */}
+
+                {statusOrder.map((status) => {
+                    const matches = matchesByStatus[status] ?? [];
+
+                    if (!matches.length) {
+                        return <></>;
+                    }
+
+                    return (
+                        <div key={status} className="grid grid-cols-2 gap-6 mb-3">
+                            {matches.map((fixture) => (
+                                <FixtureCard
+                                    key={fixture.id}
+                                    fixture={fixture}
+                                    enableScoreUpdate={fixture.status === 'scheduled'}
+                                    onClick={() => dialogScoreUpdate(fixture)}
+                                />
+                            ))}
+                        </div>
+                    );
+                })}
 
 
-            </div>
-            {selectedFixture && 
-            <MatchResultUpdateDialogForm
-tournament={tournament} competition ={competition}
-                open={open} onOpenChange={setOpen} fixture={selectedFixture} resetFixture={() => setSelectedFixture(null)} /> }
+          
+            {selectedFixture &&
+                <MatchResultUpdateDialogForm
+                    tournament={tournament} competition={competition}
+                    open={open} onOpenChange={setOpen} fixture={selectedFixture} resetFixture={() => setSelectedFixture(null)} />}
         </div>
     )
 }

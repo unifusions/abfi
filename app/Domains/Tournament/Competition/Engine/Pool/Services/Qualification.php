@@ -15,6 +15,7 @@ class Qualification
     {
         $qualified = collect();
 
+      
         foreach ($competition->pools as $pool) {
 
             $qualified = $qualified->merge(
@@ -26,9 +27,23 @@ class Qualification
             );
         }
  
+
+        $seeded = $competition->pools
+            ->flatMap(
+                fn ($pool) => $pool->poolRosters
+                    ->whereNotNull('seed')
+            )
+            ->values();
+
+  $qualified = $qualified
+            ->merge($seeded)
+            ->unique('roster_id')
+            ->values();
+        
         app(KnockoutGeneratorService::class)
             ->generate($competition, $qualified);
 
+        
         return $qualified;
     }
 }

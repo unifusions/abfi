@@ -8,6 +8,8 @@ use App\Domains\Tournament\Models\Tournament;
 use App\Domains\Tournament\Roster\Enums\RosterStatusEnum;
 use App\Domains\Tournament\Roster\Models\Roster;
 use App\Domains\Tournament\Roster\Models\RosterPlayer;
+use App\Domains\Tournament\Roster\Resources\RosterListResource;
+use App\Domains\Tournament\Roster\Resources\RosterOfficialResource;
 use App\Domains\Tournament\Roster\Resources\RosterPlayerResource;
 use App\Domains\Tournament\Roster\Services\RosterPlayerService;
 use App\Http\Controllers\Controller;
@@ -23,16 +25,19 @@ class RosterReviewController extends Controller
     {
         return inertia(
             'tournament/competition/rosters/roster-list',
-            ['rosters' => $competition->rosters]
+            ['rosters' =>RosterListResource::collection( $competition->rosters)]
         );
     }
     public function review(Roster $roster)
     {
-        return inertia('roster/review/roster-review-simple', [
+        $roster->load(['organization.state', 'competition.tournament.category']);
+        return inertia('tournament/competition/rosters/roster-review', [
             'roster' => $roster,
             'roster_players' => RosterPlayerResource::collection(
                 $roster->players
-            )
+            ),
+            'roster_officials' =>RosterOfficialResource::collection( $roster->officials),
+            
         ]);
     }
 

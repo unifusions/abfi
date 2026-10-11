@@ -13,6 +13,7 @@ import RosterSSubmission from "./builder/roster-submission";
 import AddPlayerDialog from "./builder/add-player-dialog";
 import { dashboard } from "@/routes";
 import { useSetBreadcrumbs } from "@/context/BreadcrumbContext";
+import ProcessingButton from "@/components/ext/processing-button";
 
 
 
@@ -22,19 +23,22 @@ export default function RosterBuilder({ roster,
     category, last_date, roster_players }) {
 
 
-        useSetBreadcrumbs([
-            {title : 'Dashboard', href: dashboard().url},
-            {title : 'Rosters' , href : index().url},
-            {title : ` ${roster?.name} Roster Builder` , href : ""}
-        ])
+    useSetBreadcrumbs([
+        { title: 'Dashboard', href: dashboard().url },
+        { title: 'Rosters', href: index().url },
+        { title: ` ${roster?.name} Roster Builder`, href: "" }
+    ])
 
+    const [processing, setProcessing] = useState(false);
     const [playerSearch, setPlayerSearch] = useState('');
     const [open, setOpen] = useState(false);
     const [params, setParams] = useState({});
     const { get } = useHttp({});
-    // const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
     // const [addDialogOpen, setAddDialogOpen] = useState(false)
     const addPlayer = (playerId: string) => {
+        setProcessing(true);
+        setSelectedPlayer(playerId)
         router.post(
             (rosters.rosterplayers.store({ roster: roster.id }).url),
             {
@@ -44,6 +48,10 @@ export default function RosterBuilder({ roster,
             {
                 preserveScroll: true,
                 preserveState: true,
+                onSuccess: () => {
+                    setProcessing(false)
+                    setSelectedPlayer(null)
+                }
             }
         );
     };
@@ -174,15 +182,17 @@ export default function RosterBuilder({ roster,
 
                                                     > <Minus /></Button>
 
-                                                    : <Button onClick={() => addPlayer(player.id)}
+                                                    : <ProcessingButton onClick={() => addPlayer(player.id)}
                                                         variant="outline"
-                                                        className="rounded-none hover:bg-primary hover:text-white" size={"lg"}>
+                                                        className="rounded-none hover:bg-primary hover:text-white" size={"lg"}
+                                                        processing={selectedPlayer === player.id}
+                                                    >
                                                         <Plus />
-                                                    </Button>
+                                                    </ProcessingButton>
 
 
                                                 }
- 
+
                                             </div>
                                         </div>)
                                     }
@@ -297,11 +307,11 @@ export default function RosterBuilder({ roster,
                                         <div class="flex items-center gap-3">
 
                                             <div>
- <div className="flex items-center gap-4">
-    <p className="font-bold text-sm text-primary">{player?.name} </p> 
-    <span className="bg-primary text-on-primary text-[9px] font-bold tracking-wider uppercase px-2 py-1">{player?.type}</span>
- </div>
-                                            
+                                                <div className="flex items-center gap-4">
+                                                    <p className="font-bold text-sm text-primary">{player?.name} </p>
+                                                    <span className="bg-primary text-on-primary text-[9px] font-bold tracking-wider uppercase px-2 py-1">{player?.type}</span>
+                                                </div>
+
                                                 <p className="text-[10px] font-medium text-on-surface-variant">{player.code} </p>
                                             </div>
                                         </div>
@@ -323,8 +333,8 @@ export default function RosterBuilder({ roster,
 
                     </div>
                     {/* <!-- Finalize Roster Workflow --> */}
-                    <RosterSSubmission lastDate = {last_date} roster={roster}/>
-                   
+                    <RosterSSubmission lastDate={last_date} roster={roster} />
+
                 </div>
             </div>
 

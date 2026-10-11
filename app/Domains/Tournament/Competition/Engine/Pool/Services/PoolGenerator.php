@@ -34,7 +34,7 @@ class PoolGenerator
 
         if ($data->generationMethod === PoolGenerationMethod::SEEDED) {
             $seededRosters = $this->seedResolver->resolve($competition);
-
+ 
             $rosters = $rosters
                 ->reject(fn($roster) => $seededRosters->contains('id', $roster->id))
                 ->values();

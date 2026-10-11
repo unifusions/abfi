@@ -32,12 +32,15 @@ class PoolController extends Controller
         GeneratePools $action
     ) {
 
-
+ 
+     
         $action->handle(
             $competition,
             new PoolGenerationData(
                 poolCount: $request->integer('pool_count'),
-                generationMethod: PoolGenerationMethod::from(
+                generationMethod:  $tournament->tournament_type !== 'others' ?  
+                        PoolGenerationMethod::SEEDED
+                : PoolGenerationMethod::from(
                     $request->string('generation_method')
                 ),
             )

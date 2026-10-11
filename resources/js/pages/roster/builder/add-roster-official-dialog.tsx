@@ -3,12 +3,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { router, useForm } from "@inertiajs/react";
 import { store } from "@/routes/rosters/rosterofficials";
 import FormSelect from "@/components/ext/form-select";
+import ProcessingButton from "@/components/ext/processing-button";
 export default function AddRosterOfficialDialog({
     roster,
     open, onOpenChange, selectedOfficial, resetOfficial
 }) {
 
-    const { data, setData, post } = useForm({
+    const { data, setData, post, processing } = useForm({
         'official_id': selectedOfficial.id,
         'type': '',
 
@@ -75,7 +76,7 @@ export default function AddRosterOfficialDialog({
 
                     <DialogFooter>
 
-                        <Button type="submit">Save changes</Button>
+                        <ProcessingButton type="submit" processing={processing}>Save changes</ProcessingButton>
                     </DialogFooter>
                 </form>
             </DialogContent>

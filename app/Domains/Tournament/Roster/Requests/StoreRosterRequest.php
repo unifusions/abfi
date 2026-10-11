@@ -20,6 +20,9 @@ class StoreRosterRequest extends FormRequest
     }
     public function messages(): array
     {
-        return [];
+        return [
+            'tournament_competition_id' => "The participating tournament & it's division field is required",
+            'organization_id' => "Select the Association where roster belongs to"
+        ];
     }
 }

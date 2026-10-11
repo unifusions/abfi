@@ -17,8 +17,8 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
     const { can } = useAuthorization();
 
     useSetBreadcrumbs([
-        {title : 'Dashboard', href: dashboard().url},
-        {title : 'Tournaments', href:index().url }
+        { title: 'Dashboard', href: dashboard().url },
+        { title: 'Tournaments', href: index().url }
     ])
 
     return (
@@ -55,64 +55,68 @@ export default function TournamentIndex({ tournaments, activeNow, completedMTD, 
 
             </PageHeader>
 
-            <div className="grid sm:grid-cols-1 md:grid-cols-4 gap-6">
-                {activeTournament?.data && <div className=" ">
-                    <ActiveTournament tournament={activeTournament?.data} />    </div>}
+            <section >
 
-                <div className="md:col-span-3">
-
-                    <div className="grid  sm:grid-cols-1   md:grid-cols-3 gap-6 mb-6">
-
-
-
-
-
-                        <TournamentStatCard
-                            label="Active Now"
-                            value={activeNow}
-                            description=""
-
-                        />
-
-                        <TournamentStatCard
-                            label="Verified Rosters"
-                            value={totalTeams}
-                            description=""
-
-                        />
-
-                        <TournamentStatCard
-                            label="Completed "
-                            value={completedMTD}
-
-
-                        />
-
-
-                        <div className="md:col-span-3">
-                            <TournamentList tournaments={tournaments} />
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 ">
+                    <div class="col-span-2 bg-surface-container-lowest p-5  border-l-4 border-secondary shadow-sm">
+                        <p class="text-on-surface-variant text-[11px] font-bold uppercase tracking-wider mb-1">Current Active
+                            Event</p>
+                        <h3 class="font-headline text-2xl font-black text-primary">{activeTournament?.data?.name}</h3>
+                        <div class="flex items-center gap-1.5 mt-2">
+                            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                            <p class="text-secondary text-xs font-bold">Active</p>
                         </div>
+                    </div>
+
+                    <TournamentStatCard
+                        label="Rosters"
+                        value={totalTeams}
+                        description="100 % Verified Rosters"
+
+                    />
+
+                    <TournamentStatCard
+                        label="Completed "
+                        value={completedMTD}
 
 
+                    />
 
 
-
-
+                    {/* 
+                <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-primary shadow-sm">
+                    <p class="text-on-surface-variant text-[11px] font-bold uppercase tracking-wider mb-1">Participating
+                        State Teams</p>
+                    <h3 class="font-headline text-3xl font-black text-primary">28 / 28</h3>
+                    <p class="text-on-surface-variant text-[11px] mt-2">100% Rosters Verified</p>
+                </div>
+                <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-primary shadow-sm">
+                    <p class="text-on-surface-variant text-[11px] font-bold uppercase tracking-wider mb-1">Matches Finalized
+                    </p>
+                    <h3 class="font-headline text-3xl font-black text-primary">42 <span
+                        class="text-base font-medium text-on-surface-variant">/ 56</span></h3>
+                    <div class="w-full bg-surface-container rounded-full h-1.5 mt-2.5 overflow-hidden">
+                        <div class="bg-primary h-full rounded-full"  ></div>
                     </div>
                 </div>
-            </div>
+                <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-outline shadow-sm">
+                    <p class="text-on-surface-variant text-[11px] font-bold uppercase tracking-wider mb-1">Days Remaining in
+                        Window</p>
+                    <h3 class="font-headline text-3xl font-black text-primary">3 <span
+                        class="text-base font-medium text-on-surface-variant">Days</span></h3>
+                    <p class="text-on-surface-variant text-[11px] mt-2">Finals: Nov 05, 2024</p>
+                </div> */}
+                </div>
+                <>
+                    {activeTournament?.data &&
+                        <div className="mt-6"><ActiveTournament tournament={activeTournament?.data} /></div>
+                    }
+                </>
 
 
+                <TournamentList tournaments={tournaments} />
+            </section>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                {/* <ActiveTournament /> */}
-
-                {/* <UpcomingTournament /> */}
-
-
-                {/* <TournamentDraft /> */}
-            </div>
 
 
 

@@ -25,15 +25,14 @@ export default function RosterReview({
                     <Button size="xl">Disapprove Roster</Button>
                 </div>
             </PageHeader>
-
+ 
             <div className="flex-1 flex overflow-hidden border-t ">
 
             <PlayerSidebar players={roster_players?.data} selectedPlayer={selectedPlayer} onSelect={onSelectPlayer} />
                 {selectedPlayer && <PlayerReview roster={roster?.id} player={selectedPlayer} />
 
                 }
-
-
+ 
             </div>
 
         </>

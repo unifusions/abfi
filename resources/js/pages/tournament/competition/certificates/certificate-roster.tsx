@@ -18,12 +18,13 @@ export default function CertificateRoster({
         <>
 
             <PageHeader title="Roster Certificates" subText={`Certificate List for ${roster?.name}`}>
-
+ 
             </PageHeader>
 
             <div className="grid grid-cols-12 ">
                 <div className="col-span-3 border-r">
 
+ 
                     {certificates.map((certificate) => (
                         <div
 
@@ -77,9 +78,9 @@ export default function CertificateRoster({
 
                             </div>
                             <div className="w-full">
-
+ {selectedCertificate?.pdf_url}
                                 <PdfPreview
-                                    fileUrl={selectedCertificate.pdf_url}
+                                    fileUrl={selectedCertificate?.pdf_url}
 
                                 />
 

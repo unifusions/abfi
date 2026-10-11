@@ -43,6 +43,14 @@ const OFFICIALOPTIONS = [{
     value: 'tournament'
 },
 {
+    label: 'Roster Manager',
+    value: 'manager'
+},
+{
+    label: 'Coach',
+    value: 'coach'
+},
+{
     label: 'Other Official',
     value: 'other'
 }

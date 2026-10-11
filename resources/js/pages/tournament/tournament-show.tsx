@@ -45,9 +45,9 @@ export default function TournamentShow({ tournament,
     const { can } = useAuthorization();
 
     useSetBreadcrumbs([
-        {title:'Dashboard' , href:dashboard().url},
-        {title : 'Tournaments', href:index().url},
-        {title : `Event : ${tournament?.name}`, href:show({tournament:tournament?.id}).url}
+        { title: 'Dashboard', href: dashboard().url },
+        { title: 'Tournaments', href: index().url },
+        { title: `Event : ${tournament?.name}`, href: show({ tournament: tournament?.id }).url }
     ])
     return (
         <>
@@ -83,7 +83,7 @@ export default function TournamentShow({ tournament,
                     {tournament?.status === 'completed' && <ArchiveTournament tournament={tournament.id} />}
 
                     <div className="flex items-end space-x-3">
-                        
+
                         <TournamentCompetitionStatus competitions={competitions} tournament={tournament?.id}
                             approvedRosters={approvedRosters}
                         />
@@ -133,19 +133,45 @@ export default function TournamentShow({ tournament,
 
 
                                 <div className="">
-                                    {competition.phase === 'scheduled' ?
-                                    
-                                        <LinkButton
-                                        className="text-xs h-9   "
-                                        href={accreditationIndex({ tournament: tournament?.id, competition: competition?.id }).url} icon={IdCard}>View ID Cards</LinkButton> : 
-                                        competition.pools_generated_at &&
-                                    <Link
+                                    {
+                                        competition?.phase == 'registration_open' ?
+                                           <></>
+                                            :
 
-                                        className="bg-accent-secondary text-white text-sm p-2 font-bold"
-                                        href={fixtures({
-                                            tournament: tournament?.id,
-                                            competition: competition?.id
-                                        })}> Update Results </Link>}
+                                            competition.phase === 'scheduled' ?
+
+                                            <LinkButton
+                                                className="text-xs h-9   "
+                                                href={accreditationIndex({ tournament: tournament?.id, competition: competition?.id }).url} icon={IdCard}>View ID Cards</LinkButton>
+
+                                            :
+
+
+                                            competition?.phase !== 'process_certificate' && competition.pools_generated_at ?
+
+
+                                                <Link
+
+                                                    className="bg-accent-secondary text-white text-sm p-2 font-bold"
+                                                    href={fixtures({
+                                                        tournament: tournament?.id,
+                                                        competition: competition?.id
+                                                    })}> Update Results </Link>
+
+                                                :
+
+                                                <Link
+                                                    className="bg-accent-secondary text-white text-sm p-2 font-bold"
+                                                    href={certificates({
+                                                        tournament: tournament?.id,
+                                                        competition: competition?.id
+                                                    })}>
+                                                    Download Certificates
+                                                </Link>
+
+                                    }
+                                    {
+                                    }
                                 </div>
 
                             </div>

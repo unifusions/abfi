@@ -14,6 +14,7 @@ use App\Domains\Tournament\Competition\Engine\Fixture\Enums\FixtureTypeEnum;
 
 use App\Domains\Tournament\Competition\Models\TournamentCompetition;
 use App\Domains\Tournament\Roster\Models\Roster;
+use App\Jobs\GenerateCertificatePdf;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -25,12 +26,12 @@ class CompetitionCertificateService
     public function __construct(
         protected CertificateNumberGenerator $numberGenerator,
         protected CertificateVerificationCodeGenerator $verificationCodeGenerator,
-    ) {
-    }
+    ) {}
 
     public function generateAllCertificates(
         TournamentCompetition $competition
     ): Collection {
+
         return DB::transaction(function () use ($competition) {
 
             $certificates = new Collection();
@@ -110,8 +111,8 @@ class CompetitionCertificateService
                 ->map(
                     fn($fixture) =>
                     $fixture->home_roster_id === $fixture->winner_roster_id
-                    ? $fixture->away_roster_id
-                    : $fixture->home_roster_id
+                        ? $fixture->away_roster_id
+                        : $fixture->home_roster_id
                 )
                 ->filter()
                 ->unique();
@@ -127,8 +128,8 @@ class CompetitionCertificateService
                 ->map(
                     fn($fixture) =>
                     $fixture->home_roster_id === $fixture->winner_roster_id
-                    ? $fixture->away_roster_id
-                    : $fixture->home_roster_id
+                        ? $fixture->away_roster_id
+                        : $fixture->home_roster_id
                 )
                 ->filter()
                 ->unique();
@@ -268,28 +269,34 @@ class CompetitionCertificateService
                 'gender' => $competition->gender(),
 
                 'certificate_number' =>
-                    $this->numberGenerator->generate(),
+                $this->numberGenerator->generate(),
 
                 'verification_code' =>
-                    $this->verificationCodeGenerator->generate(),
+                $this->verificationCodeGenerator->generate(),
 
                 'issued_at' => now(),
                 'pdf_disk' => 'public',
             ]
         );
 
-        $certificate->qrCode()->create([
-            'type' => QrcodeTypeEnum::CERTIFICATE->value,
-            'is_active' => true,
-        ]);
+        $certificate->qrCode()->firstOrCreate(
+            [
+                'type' => QrcodeTypeEnum::CERTIFICATE->value,
+            ],
+            [
+                'is_active' => true,
+            ]
+        );
 
-        $pdfService = app(CertificatePdfService::class);
-        if (
-            !$certificate->pdf_path ||
-            !Storage::disk($certificate->pdf_disk)->exists($certificate->pdf_path)
-        ) {
-            $pdfService->generate($certificate);
-        }
+        GenerateCertificatePdf::dispatch($certificate->id)
+    ->afterCommit();
+        // $pdfService = app(CertificatePdfService::class);
+        // if (
+        //     !$certificate->pdf_path ||
+        //     !Storage::disk($certificate->pdf_disk)->exists($certificate->pdf_path)
+        // ) {
+        //     $pdfService->generate($certificate);
+        // }
         return $certificate->refresh();
     }
 
@@ -323,8 +330,8 @@ class CompetitionCertificateService
             ->map(
                 fn($fixture) =>
                 $fixture->home_roster_id === $fixture->winner_roster_id
-                ? $fixture->away_roster_id
-                : $fixture->home_roster_id
+                    ? $fixture->away_roster_id
+                    : $fixture->home_roster_id
             )
             ->filter()
             ->values();

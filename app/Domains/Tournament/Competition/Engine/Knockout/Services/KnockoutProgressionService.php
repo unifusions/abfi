@@ -26,6 +26,14 @@ class KnockoutProgressionService
 
         match ($fixture->stage) {
 
+            FixtureStageEnum::ROUND_OF_16 =>
+            $this->generateNextRound(
+                $fixture,
+                FixtureStageEnum::ROUND_OF_16,
+                FixtureStageEnum::QUARTER_FINAL,
+                4
+            ),
+
             FixtureStageEnum::QUARTER_FINAL =>
             $this->generateNextRound(
                 $fixture,
@@ -150,9 +158,10 @@ class KnockoutProgressionService
     protected function round(FixtureStageEnum $stage): int
     {
         return match ($stage) {
-            FixtureStageEnum::QUARTER_FINAL => 1,
-            FixtureStageEnum::SEMI_FINAL => 2,
-            FixtureStageEnum::FINAL => 3,
+            FixtureStageEnum::ROUND_OF_16 => 1,
+            FixtureStageEnum::QUARTER_FINAL => 2,
+            FixtureStageEnum::SEMI_FINAL => 3,
+            FixtureStageEnum::FINAL => 4,
             default => 0,
         };
     }

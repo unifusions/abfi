@@ -43,12 +43,12 @@ const menuItems = [
         icon : KeyRound
     },
 
-     {
-            title: 'Tournament Categories',
-            href: categoryIndex().url,
-            module: "Tournament",
-            icon: Award
-        },
+    //  {
+    //         title: 'Tournament Categories',
+    //         href: categoryIndex().url,
+    //         module: "Tournament",
+    //         icon: Award
+    //     },
 
     // {
     //     title: 'Audit Logs',

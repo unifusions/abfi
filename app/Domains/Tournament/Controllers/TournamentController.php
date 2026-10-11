@@ -37,8 +37,7 @@ class TournamentController extends Controller
      */
     public function __construct(
         protected TournamentService $service
-    ) {
-    }
+    ) {}
 
     public function index()
     {
@@ -75,20 +74,21 @@ class TournamentController extends Controller
         $year = now()->year;
         $sequenceNames = collect(TournamentTypeEnum::cases())
             ->mapWithKeys(fn(TournamentTypeEnum $type) => [
-                $type->sequenceName() => $type->value,
+                $type->value => $type->value,
             ]);
 
         $sequences = CodeSequence::whereIn('name', $sequenceNames->keys())
             ->pluck('last_number', 'name');
 
+
         $existingTournaments = Tournament::query()
             ->whereIn('tournament_type', $sequenceNames->values())
             ->whereYear('starts_at', $year)
             ->pluck('id', 'tournament_type');
- 
+
         $tournaments = collect(TournamentTypeEnum::cases())
             ->mapWithKeys(function (TournamentTypeEnum $type) use ($sequences, $existingTournaments) {
-                $lastNumber = $sequences->get($type->sequenceName(), 0);
+                $lastNumber = $sequences->get($type->value, 0);
                 $exists = $existingTournaments->has($type->value);
                 $nameNumber = Number::ordinal($lastNumber) . " " . $type->name();
                 return [
@@ -146,12 +146,28 @@ class TournamentController extends Controller
      */
     public function show(Tournament $tournament)
     {
-         $tournament->load('venue');
+        $tournament->load('venue');
+        
+     
         return inertia(
             'tournament/tournament-show',
             [
                 'tournament' => $tournament,
-                'competitions' => $tournament->competitions()->get()->map(function ($c) {
+                'competitions' => $tournament->competitions()->get()->map(function ($c) use ($tournament) {
+                    $previousCompetition = collect();
+                    if($tournament->tournament_type !== 'others' ){
+                        $previousTournament = Tournament::query()
+                        ->where('tournament_type', $tournament->tournament_type)
+                        ->whereYear('starts_at', '<',  $tournament->starts_at)
+                        ->orderByDesc('starts_at')
+                        ->first();
+                        $previousCompetition = $previousTournament?->competitions()
+                        // ->where('category_id', $c->category_id)
+                        ->where('competition_type', $c->competition_type)->with('rosters.organization.state')
+                        ->first();
+                        
+                    }
+                
                     return
                         array_merge(
                             $c->toArray(),
@@ -159,13 +175,15 @@ class TournamentController extends Controller
                                 'can' => [
                                     'progress' => auth()->user()->can('progress', $c),
                                 ],
-                                'rosters' => RosterListResource::collection($c->rosters),
+                                'rosters' => RosterListResource::collection($c->rosters()->orderByDesc('submitted_at')->get()),
                                 'standings' => $c->standings()->with('roster')->get(),
                                 'results' => app(CompetitionResultService::class)->results($c),
                                 'winner' => $c->winnerRoster()->with('organization.state')->first(),
                                 'runner' => $c->runnerRoster()->with('organization.state')->first(),
                                 'third_place' => $c->thirdPlaceRoster()->with('organization.state')->first(),
-                                'third_place2' => $c->thirdPlace2Roster()->with('organization.state')->first()
+                                'third_place2' => $c->thirdPlace2Roster()->with('organization.state')->first(),
+                                'previousCompetition' => $previousCompetition
+                               
                             ]
                         );
                 }),

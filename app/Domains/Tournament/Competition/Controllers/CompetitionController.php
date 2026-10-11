@@ -74,7 +74,7 @@ class CompetitionController extends Controller
                         'pool',
                         'homeRoster.organization.state',
                         'awayRoster.organization.state',
-                    ])->orderBy('pool_id')
+                    ])->orderBy('tournament_pool_id')
                         ->orderBy('round')
                         ->orderBy('match_number')
                         ->get()
@@ -121,8 +121,10 @@ class CompetitionController extends Controller
                     'awayRoster.organization.state'
                 ])
                     ->where('fixture_type', FixtureTypeEnum::KNOCKOUT)
+
                     ->orderBy('stage')
                     ->orderBy('match_number')
+                 
 
                     ->get(),
             ]

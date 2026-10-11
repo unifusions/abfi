@@ -14,10 +14,10 @@ export default function AppSidebarLayout({
         <AppShell variant="sidebar">
             
             <AppSidebar />
-            <AppContent variant="sidebar" className="overflow-x-hidden">
+            <AppContent variant="sidebar"  >
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
 
-                <div className='flex-1 p-4 overflow-y-auto'>
+                <div className='flex-1 p-4  '>
                     <Breadcrumbs breadcrumbs={breadcrumbs} />
 
                     {children}

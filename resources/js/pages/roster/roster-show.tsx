@@ -13,7 +13,7 @@ import RosterReplacementHistory from "./players/roster-replacement-history";
 
 
 export default function RosterShow({ roster, players, tournament, canReplaceMember,
-    officials, hasAccreditations,
+    officials, hasAccreditations, venue, 
     competition, category, replacements }) {
 
     const isComplete = roster.status === 'completed'; 
@@ -137,7 +137,7 @@ export default function RosterShow({ roster, players, tournament, canReplaceMemb
                             </div>
                             <div className="flex justify-between pb-1.5 border-b border-surface-container">
                                 <span className="text-on-surface-variant">Venue:</span>
-                                <span className="font-semibold text-right text-on-surface">Puducherry Sports Complex</span>
+                                <span className="font-semibold text-right text-on-surface">{venue?.name}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-on-surface-variant">Roster Status:</span>
