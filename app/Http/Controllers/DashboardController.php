@@ -50,9 +50,9 @@ class DashboardController extends Controller
                 return [
                     'id' => $event->id,
                     'name' => $event->name,
-                    'venue' => $event->venue->name,
-                    'month' => $event->starts_at->format('M'),
-                    'day' => $event->starts_at->format('d')
+                    'venue' => $event?->venue?->name,
+                    'month' => $event?->starts_at->format('M'),
+                    'day' => $event?->starts_at->format('d')
                 ];
             })
 
