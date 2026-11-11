@@ -188,13 +188,14 @@
                         <div class="aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-surface-container-high relative">
                             <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 data-alt="Professional studio portrait of Mr. M N Krishnamurthy, President of ABFI, a middle-aged man with a authoritative and kind expression, wearing a professional dark suit against a clean studio background. Corporate photography style, high-end lighting with soft shadows, representing institutional trust and leadership for the Amateur Baseball Federation of India."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHROsXjZOw_pdn48VEexJi5EVd0www1v1jZDHYg5SfglABhvofzXuLKFXAi5UrXxJPfbF5cVinfTgn1TRV7WfOLAc2udpmI8dD1iJl9btvAj3cL06rH-hNmSCNDxREGkWXhgCgvrDBVYPcA9gu8rj7zJ4fImi3WsGaKPIVxWI2Bmg5CwUSM3qz_U6RhDkx58JprlG5MQ8OsgfpCI3ZLUsFbgKwhhhbbiQb8Qrgqy6WJEVG9c1HIdrLaQ" />
+                                src={{ asset('images/leadership/pankaj-l-mohanty.jpeg') }}
+                                />
                             <div
                                 class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity">
                             </div>
                         </div>
                         <div class="text-center">
-                            <h4 class="font-headline-md text-headline-md text-primary">Mr. M N Krishnamurthy</h4>
+                            <h4 class="font-headline-md text-headline-md text-primary">Mr. Pankaj L Mohanty</h4>
                             <p
                                 class="font-label-lg text-label-lg text-secondary uppercase font-bold tracking-widest mt-1">
                                 President ABFI</p>
@@ -205,30 +206,30 @@
                         <div class="aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-surface-container-high relative">
                             <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 data-alt="Professional portrait of Mr. Harish Kumar, Secretary General of ABFI. A man in formal business attire with a focused and professional demeanor. The photo is taken in a modern office environment with professional lighting, clear focus on features, and a high-contrast corporate look mirroring the national sports federation's authority."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuMXrzn4UN6ABHku8Euyl4Q856dvVzlXSo9EyrhCP5OVjMfc9Z4WPqeY8-njpvElUXzWkt1UftTlXUncz0twEe7llemsyhp31-UVCSgqU3x_W0-s529ez_jS3cqPRBt0p_rpSF4ToGVWbA2AieIwAB5yh-l2JqTKzvhbPptP8LM-PvKbrNBq865TFSSETwHXfXQHe4hNMyQU7r2mV5KciA4Df7MZ5rrwbcO_eTE1bYQLcP4obSmjJ7Jg" />
+                                src={{ asset('images/leadership/aravind-kumar.jpeg') }} />
                             <div
                                 class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity">
                             </div>
                         </div>
                         <div class="text-center">
-                            <h4 class="font-headline-md text-headline-md text-primary">Mr. Harish Kumar</h4>
+                            <h4 class="font-headline-md text-headline-md text-primary">Mr.Arvind Kumar</h4>
                             <p
                                 class="font-label-lg text-label-lg text-secondary uppercase font-bold tracking-widest mt-1">
-                                Secretary General ABFI</p>
+                                Secretary General ABFI </p>
                         </div>
                     </div>
                     <!-- Member 3 -->
                     <div class="group">
                         <div class="aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-surface-container-high relative">
                             <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                data-alt="Professional portrait of Dr. Dinesh Yadav, Treasurer of ABFI. A professional individual with a friendly but authoritative gaze, dressed in business casual attire suitable for a top-level sporting organization. High-quality editorial lighting with a neutral background that emphasizes clarity and professional integrity."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6JDGNScmVygMYNhl3PZRz0pwwEVObPMJ-jTMJrZDpEsakpxsx9cxTqCiY_MfvenXmRZEJcn6bAr_Ad5vmElt_LZC4uXNCeP_8V982TcGJs5wwS6UUTc9bSibmp_QnXMn09JroTQaIpNqB3eBsfvKch-vpLhXwKoRrCzsE5W6j-P55h5iU93sPrgrEcckyfgQD0fLvYOVnYnqYLAOywyh1hVT-VPqS44vxNDUJq-QjE-haOptLV01ZZQ" />
+                                data-alt=""
+                                src={{ asset('images/leadership/venkat.jpg') }} />
                             <div
                                 class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity">
                             </div>
                         </div>
                         <div class="text-center">
-                            <h4 class="font-headline-md text-headline-md text-primary">Dr. Dinesh Yadav</h4>
+                            <h4 class="font-headline-md text-headline-md text-primary">Mr.S.Venkat</h4>
                             <p
                                 class="font-label-lg text-label-lg text-secondary uppercase font-bold tracking-widest mt-1">
                                 Treasurer ABFI</p>
