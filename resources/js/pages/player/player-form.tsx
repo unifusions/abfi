@@ -43,7 +43,7 @@ export default function PlayerForm({
 
     }
     return (
-        <form className="  grid grid-cols-1 md:grid-cols-12 gap-6" onSubmit={handleSubmit}>
+        <form className=" grid grid-cols-1 md:grid-cols-12 gap-6" onSubmit={handleSubmit}>
             <div className="lg:col-span-9 md:col-span-6 space-y-6">
                 <FormCard
                     title="Personal Identity"
@@ -111,30 +111,30 @@ export default function PlayerForm({
                         />
 
 
-<FormInput
-label="Height (in cms)"
-id="height"
-name="height"
-type="number"
-value={data.height}
-onChange = {(e) => setData('height', e.target.value)}
-hasError={errors.height}
-labelRequired={true}
+                        <FormInput
+                            label="Height (in cms)"
+                            id="height"
+                            name="height"
+                            type="number"
+                            value={data.height}
+                            onChange={(e) => setData('height', e.target.value)}
+                            hasError={errors.height}
+                            labelRequired={true}
 
-/>
+                        />
 
 
-<FormInput
-label="Weight (in kgs)"
-id="weight"
-name="weight"
-type="number"
-value={data.weight}
-onChange = {(e) => setData('weight', e.target.value)}
-hasError={errors.weight}
-labelRequired={true}
+                        <FormInput
+                            label="Weight (in kgs)"
+                            id="weight"
+                            name="weight"
+                            type="number"
+                            value={data.weight}
+                            onChange={(e) => setData('weight', e.target.value)}
+                            hasError={errors.weight}
+                            labelRequired={true}
 
-/>
+                        />
 
 
                         <FormRadio
@@ -350,21 +350,23 @@ labelRequired={true}
 
 
 
-            <div className="md:col-span-12 flex items-center justify-end gap-4 py-8 border-t border-outline-variant/10">
 
-                <div className="flex gap-3">
-                    <Button size="xl" variant="destructive"
-                        className="     hover:bg-red-200 transition-colors  " onClick={() => router.bac}>
-                        <XCircle className="text-destructive" />   Cancel</Button>
-                    <Button
-                        size="xl"
-                        className="" type="submit">
-                        <Save className="h-8 w-8 mr-2" /> <span>Save Player</span>
-                    </Button>
-                </div>
+            <div className= "col-span-9 py-8 border-t border-outline-variant/10">
+
+<div className="flex flex-row justify-end items-center  gap-3">
+    <Button size="xl" variant="destructive"
+        className="     hover:bg-red-200 transition-colors w-auto   " onClick={() => router.bac}>
+        <XCircle className="text-destructive" />   Cancel</Button>
+    <Button
+        size="xl"
+        className="w-auto" type="submit">
+        <Save className="h-8 w-8 mr-2" /> <span>Save Player</span>
+    </Button>
+</div>
 
 
-            </div>
+</div>
+
         </form>
 
     )
