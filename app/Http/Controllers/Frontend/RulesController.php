@@ -8,8 +8,11 @@ use File;
 use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
+use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
+use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
 
 use Str;
@@ -25,58 +28,63 @@ class RulesController extends Controller
 
     public function show(string $category, string $slug)
     {
-        $path = resource_path("rules/{$category}/{$slug}.md");
+         $path = resource_path("rules/{$category}/{$slug}.md");
 
-        abort_unless(File::exists($path), 404);
+    abort_unless(File::exists($path), 404);
 
-        $content = File::get($path);
+    $environment = new Environment([
+        'html_input' => 'strip',
+        'allow_unsafe_links' => false,
+    ]);
 
-        $environment = new Environment([
-            'html_input' => 'strip',
-            'allow_unsafe_links' => false,
-        ]);
+    $environment->addExtension(new CommonMarkCoreExtension());
+    $environment->addExtension(new FrontMatterExtension());
+    $environment->addExtension(new TableExtension());
 
-        $environment->addExtension(new CommonMarkCoreExtension());
-        $environment->addExtension(new FrontMatterExtension());
+    $converter = new MarkdownConverter($environment);
+    $markdown = File::get($path);
+    $result = $converter->convert($markdown);
 
+    $frontMatter = $result instanceof RenderedContentWithFrontMatter
+        ? $result->getFrontMatter()
+        : [];
 
-        $converter = new MarkdownConverter($environment);
-        $markdown = File::get($path);
-        $result = $converter->convert($markdown);
-
-        $converter = new CommonMarkConverter([
-            'html_input' => 'strip',
-            'allow_unsafe_links' => false,
-        ]);
-
-        $markdown = File::get($path);
-        $content = $converter->convert($markdown)->getContent();
-
-
-
-        return view('static.rules.show', [
-            'categories' => $this->getCategories(),
-            'category' => $category,
-            'slug' => $slug,
-            'title' => Str::headline($slug),
-            'content' => $result->getContent(),
-        ]);
+    return view('static.rules.show', [
+        'categories' => $this->getCategories(),
+        'category' => $category,
+        'slug' => $slug,
+        'title' => $frontMatter['title'] ?? Str::headline($slug),
+        'content' => $result->getContent(),
+        'href' => url("rules/{$category}/{$slug}")
+    ]);
     }
 
-    private function getCategories(): array
-    {
-        $directories = File::directories(resource_path('rules'));
+ private function getCategories(): array
+{
+    $directories = File::directories(resource_path('rules'));
+    $parser = new FrontMatterParser(new SymfonyYamlFrontMatterParser());
 
-        return collect($directories)->map(fn($directory) => [
-            'name' => basename($directory),
-            'pages' => collect(File::files($directory))
-                ->map(fn($file) => [
-                    'slug' => $file->getFilenameWithoutExtension(),
-                    'title' => Str::headline(
-                        $file->getFilenameWithoutExtension()
-                    ),
-                ])->values(),
-        ])->values()->toArray();
-    }
+    return collect($directories)->map(fn ($directory)  => [
+        'name' => basename($directory),
+        'pages' => collect(File::files($directory))
+            ->filter(fn ($file) => $file->getExtension() === 'md')
+            ->map(function ($file) use ($parser, $directory) {
+                $slug = $file->getFilenameWithoutExtension();
+                $frontMatter = $parser->parse(File::get($file->getPathname()))->getFrontMatter() ?? [];
+                $category = basename($directory);
+                return [
+                    'slug' => $slug,
+                    'title' => $frontMatter['title'] ?? Str::headline($slug),
+                     'href' => url("rules/{$category}/{$slug}"),
+                    'order' => $frontMatter['order'] ?? 999,
+                ];
+            })
+            ->sortBy([
+                ['order', 'asc'],
+                ['title', 'asc'],
+            ])
+            ->values(),
+    ])->values()->toArray();
+}
 
 }
