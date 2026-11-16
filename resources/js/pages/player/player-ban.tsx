@@ -17,5 +17,5 @@ patch(banPlayer({player:player}).url)
                 <Ban />
                 Ban Player</Button>
         </form>
-    )
+    )   
 }

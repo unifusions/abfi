@@ -58,8 +58,8 @@ export default function PlayerView({ player }) {
 
                                     <div className="flex gap-2 items-center">
                                         <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-
-                                        Tamil Nadu</div>
+                                        {data?.association}
+                                    </div>
 
                                 </div>
 
@@ -68,13 +68,13 @@ export default function PlayerView({ player }) {
 
                         </div>
                         <div className="shrink-0 flex space-x-3 pb-2">
-                            <LinkButton icon={Pencil} variant="secondary" 
-                            href={edit({player:data?.id}).url} > 
-                            Edit Profile
+                            <LinkButton icon={Pencil} variant="secondary"
+                                href={edit({ player: data?.id }).url} >
+                                Edit Profile
                             </LinkButton>
 
                             <PlayerBan player={data?.id} />
-                           
+
                         </div>
                     </div>
                 </section>

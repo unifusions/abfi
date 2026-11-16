@@ -29,6 +29,7 @@ class PlayerResource extends JsonResource
                 'blood_group' => $this->blood_group ?? null,
                 'association' => $this->organization?->name,
             ],
+            'association' => $this?->organization->name,
             'contact' => [
                 'father_name' => $this->father_name,
                 'phone' => $this->phone,

@@ -17,4 +17,11 @@ class AboutController extends Controller{
         ]
     );
     }
+
+    public function people(){
+        return view('static.about.people',
+        [
+
+        ]) ;
+    }
 }

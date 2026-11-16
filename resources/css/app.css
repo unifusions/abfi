@@ -5,6 +5,7 @@
 @import "tw-animate-css";
 
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 
 
@@ -345,4 +346,62 @@
         calc(var(--radius) * 2.2);
     --radius-4xl:
         calc(var(--radius) * 2.6);
+}
+
+@layer components {
+    .prose-content h1 {
+        @apply mb-6 text-4xl font-bold tracking-tight text-[#001638];
+    }
+
+    .prose-content h2 {
+        @apply mt-12 mb-5 text-2xl font-bold tracking-tight text-[#001638];
+    }
+
+    .prose-content h3 {
+        @apply mt-8 mb-4 text-xl font-semibold text-[#001638];
+    }
+
+    .prose-content p {
+        @apply mb-6 text-base leading-8 text-slate-600;
+    }
+
+    .prose-content ul {
+        @apply mb-6 list-disc space-y-2 pl-6;
+    }
+
+    .prose-content ol {
+        @apply mb-6 list-decimal space-y-2 pl-6;
+    }
+
+    .prose-content li {
+        @apply leading-7 text-slate-600;
+    }
+
+    .prose-content a {
+        @apply text-blue-700 underline;
+    }
+
+    .prose-content blockquote {
+        @apply my-6 border-l-4 border-[#bb0026] pl-5 italic text-slate-600;
+    }
+
+    .prose-content code {
+        @apply rounded bg-slate-100 px-1.5 py-1 text-sm text-[#bb0026];
+    }
+
+    .prose-content pre {
+        @apply my-6 overflow-x-auto rounded-xl bg-[#001638] p-5 text-sm text-white;
+    }
+
+    .prose-content table {
+        @apply my-8 w-full border-collapse text-left text-sm;
+    }
+
+    .prose-content th {
+        @apply border-b border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-[#001638];
+    }
+
+    .prose-content td {
+        @apply border-b border-slate-100 px-4 py-3 text-slate-600;
+    }
 }

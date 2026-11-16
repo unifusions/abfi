@@ -21,6 +21,7 @@ use App\Http\Controllers\DashboardController;
  
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\RulesController;
 use Illuminate\Support\Facades\Route;
 
 // Route::inertia('/', 'welcome')->name('home');
@@ -29,8 +30,20 @@ Route::get('/', HomeController::class)->name('home');
 Route::controller(AboutController::class)->group(function () {
     Route::get('/history', 'history')->name('history');
     Route::get('/affiliates', 'affiliate')->name('affiliate');
+    Route::get('/people', 'people')->name('people');
 
 });
+
+Route::controller(RulesController::class)->prefix('rules')->name('rules.')->group(function(){
+    Route::get('/', 'index')->name('index');
+    Route::get('/{category}/{slug}', 'show')->name('show');
+
+});
+
+Route::get('/under-construction' , function() {
+    return view('under-construction');
+});
+
 Route::get('/verify/{token}', [QrcodeVerificationController::class, 'verify'])->name('qr.verify');
 
 Route::get('/getUuid', function () {

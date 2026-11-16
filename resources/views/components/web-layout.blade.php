@@ -6,7 +6,10 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>{{  $title ?? 'Amateur Baseball Federation of India' }}</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+ 
+
+
     <link
         href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;500;600;700;900&amp;display=swap"
         rel="stylesheet" />
@@ -16,6 +19,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
+    @viteReactRefresh
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -133,8 +137,39 @@
             transform: translateY(-4px);
             box-shadow: 0 12px 24px -8px rgba(0, 22, 56, 0.15);
         }
+
+      
+
+    
     </style>
 </head>
+
+@php
+
+    $navItems = [
+   ['label' => 'Home', 'href' => route('home') , 'active' => 'home'],
+        [
+            'label' => 'About',
+            'active' => ['history*', 'affiliate*', 'people'],
+            'children' => [
+                ['label' => 'History','href' => route('history'),'active' => 'history',],
+              
+                
+                 ['label' => 'Our People', 'href' => route('people'), 'active'=>'people'],
+                 ['label' => 'Affiliated Units','href' => route('affiliate'),'active' => 'affiliate',
+                ],
+            ],
+        ],
+       
+       
+        ['label' => 'Rules', 'href' => "#" , 'active' => 'rules'],
+        ['label' => 'Events', 'href' => "#", 'active' => 'events' ],
+        ['label' => 'Schedule', 'href' => "#", 'active' => 'rules'],
+        ['label' => 'Information', 'href' => "#", 'active' => 'rules'],
+        ['label' => 'Downloads', 'href' => "#", 'active' => 'rules'],
+    ];
+
+@endphp
 
 <body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
     <!-- TopNavBar -->
@@ -144,10 +179,10 @@
         <div class="flex  justify-between items-center   py-4  mx-auto ">
             <div class="flex items-center justify-between gap-4   ">
                 <div class="flex items-center max-w-96">
-               
+
                     <img alt="ABFI Logo" class="h-20 w-auto  " src={{asset("/images/logo.png")}} />
-                   
-                  
+
+
                     <span
                         class="font-headline-md text-headline-md font-bold text-on-primary dark:text-primary-fixed hidden md:block">Amateur
                         Baseball Federation of India</span>
@@ -157,51 +192,26 @@
                 </div>
             </div>
             <div class="hidden lg:flex items-center gap-6 me-6">
-                <a class="font-label-lg text-label-lg uppercase text-on-primary border-b-2 border-secondary font-bold transition-opacity"
-                    href={{ route('home') }}>Home</a>
+                
 
 
-               <div class="relative group">
-                    <button
-                        class="font-label-lg uppercase text-label-lg text-on-primary/80 hover:text-on-primary transition-colors flex items-center gap-1 py-2">
-                        About
-                        
-                        <span
-                            class="material-symbols-outlined text-sm transition-transform group-hover:rotate-180">keyboard_arrow_down</span>
-                    </button>
-                    <div
-                        class="absolute top-full left-0 w-64 bg-surface-container-low rounded-lg shadow-2xl border border-outline-variant/20 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                        <a href={{ route('history') }}
-                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">History</a>
-                        <a href=""
-                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">International
-                            Recognition</a>
-                        <a href="#"
-                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Affiliated
-                            Units</a>
+               
 
-                            <a href= {{ route('affiliate') }}
-                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Executive
-                            Affiliates</a>
+                @foreach($navItems as $item)
+                    @if(isset($item['children']))
+                        <x-nav-dropdown :label="$item['label']" :active="request()->routeIs($item['active'])">
+                            @foreach($item['children'] as $child)
+                                <x-nav-dropdown-item :href="$child['href']" :active="request()->routeIs($child['active'])"
+                                   >
+                                    {{ $child['label'] }}
+                                </x-nav-dropdown-item>
+                            @endforeach
+                        </x-nav-dropdown>
+                    @else
+                        <x-nav-link :href="$item['href']" :label="$item['label']"  :active="request()->routeIs($item['active'])"/>
+                    @endif
+                @endforeach
 
-
-                           
-
-                        <a href="#"
-                            class="block px-6 py-3 text-on-surface hover:bg-primary/10 font-label-lg transition-colors">Executive
-                            Committee</a>
-                    </div>
-                </div>
-                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
-                    href="#">Rules</a>
-                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
-                    href="#">Events</a>
-                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
-                    href="#">Schedule</a>
-                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
-                    href="#">Information</a>
-                <a class="font-label-lg text-label-lg  uppercase  text-on-primary/80 hover:text-on-primary transition-colors"
-                    href="#">Downloads</a>
             </div>
             <a hre="#"
                 class="bg-secondary text-on-secondary px-6 py-2 rounded-lg font-label-lg text-label-lg hover:scale-105 active:scale-95 transition-transform uppercase tracking-wider font-bold">
@@ -210,26 +220,28 @@
         </div>
     </nav>
 
-    @if(isset($pageHeader))  
+    @if(isset($pageHeader))
 
-    <header
+        <header
             class="bg-tertiary text-on-tertiary relative overflow-hidden py-section-padding px-margin-mobile md:px-margin-desktop">
             <div class="absolute inset-0 opacity-10 pointer-events-none"
                 style="background-image: radial-gradient(circle at 20px 20px, #ffffff 2px, transparent 0); background-size: 40px 40px;">
             </div>
             <div class="max-w-container-max mx-auto relative z-10">
+                @if(isset($preTitle))
                 <div
                     class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-stack-md">
-                     
+
                     {{$preTitle ?? ''}}
                 </div>
+                @endif
                 <h1 class="font-display-lg text-display-lg mb-stack-sm text-on-tertiary">{{ $title ?? ''}}</h1>
                 <p class="font-body-lg text-body-lg text-on-tertiary/80 max-w-2xl">
-                  {{ $heroDescription ?? '' }}
+                    {{ $heroDescription ?? '' }}
                 </p>
             </div>
         </header>
-    
+
     @endif
     {{ $slot }}
 
