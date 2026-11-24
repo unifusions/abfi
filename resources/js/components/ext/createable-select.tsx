@@ -45,6 +45,7 @@ export default function CreatableSelect({
     // Close dropdown when clicking outside
     useEffect(() => {
         const listener = (e) => {
+             e.preventDefault(); 
             if (!wrapperRef.current?.contains(e.target)) {
                 setOpen(false);
             }
@@ -72,7 +73,6 @@ export default function CreatableSelect({
 
                 onSuccess: (response) => {
                     setHighlight(0);
-
                     setOptions(response)
 
 
@@ -171,7 +171,7 @@ labelRequired={labelRequired}
                     ) : processing ? null : (
                         <div className="p-3">
                             <div className="text-sm text-muted-foreground">
-                                No results found.     <Button onClick={() => onCreate(data.search)}> Add {data.search} </Button>
+                                No results found.     <Button     type="button" onClick={() => onCreate(data.search)}> Add {data.search} </Button>
                             </div>
 
 

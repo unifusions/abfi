@@ -94,6 +94,7 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
 
     const { canModule, permissions } = useAuthorization();
+ 
 
     const visibleItems = mainNavItems.filter(item => canModule(item.module));
 
@@ -114,6 +115,9 @@ export function AppSidebar() {
 
             <SidebarContent>
 
+ 
+    
+ 
                 <NavMain items={visibleItems} />
             </SidebarContent>
 

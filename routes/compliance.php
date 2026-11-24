@@ -10,7 +10,7 @@ use App\Domains\User\Controllers\UserAccessController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('rbac:role,admin')->group(function () {
-        Route::resource('officials', \App\Domains\Official\Controllers\OfficialController::class);
+    
         Route::get('compliance', [ComplianceController::class, 'index'])->name('compliance');
 
         Route::prefix('compliance')->name('compliance.')->group(

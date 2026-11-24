@@ -266,10 +266,10 @@
                 <div>
                     <h5 class="font-label-lg text-label-lg text-on-tertiary mb-6 font-bold uppercase">Federation</h5>
                     <ul class="space-y-3 font-body-md text-body-md opacity-70">
-                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">History</a></li>
-                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Constitution</a></li>
-                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">Affiliated Units</a></li>
-                        <li><a class="hover:text-secondary-fixed transition-colors" href="#">RTI Information</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href={{ route('history') }}>History</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href={{ route('constitution') }} target="_blank">Constitution</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href={{ route('affiliate') }}>Affiliated Units</a></li>
+                        <li><a class="hover:text-secondary-fixed transition-colors" href={{route('cor')}}>Certification of Registration</a></li>
                     </ul>
                 </div>
                 <!-- Legal Links -->
@@ -288,7 +288,7 @@
                     <div class="space-y-4 opacity-70 font-body-md text-body-md">
                         <p class="flex items-start gap-3">
                             <span class="material-symbols-outlined text-secondary">location_on</span>
-                            B4/317B, Keshav Puram,<br />Delhi - 110035
+                           65 Forest Park, <br/>Bhubaneswar 751009. Odisha
                         </p>
                         <p class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-secondary">call</span>
@@ -296,7 +296,7 @@
                         </p>
                         <p class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-secondary">mail</span>
-                            abfi.secretary@gmail.com
+                            president@baseballindia.com
                         </p>
                     </div>
                 </div>
@@ -307,8 +307,8 @@
                 <p class="font-label-sm text-label-sm opacity-60">© 1983 - {{ now()->year }} Amateur Baseball Federation
                     of India. All
                     Rights Reserved.</p>
-                <div class="font-label-sm text-label-sm opacity-60">
-                    For best results use Mozilla or Chrome browsers
+                <div class="font-label-sm text-label-sm opacity-40">
+                   Powered by <a href="https://unifusions.com?utm_source=baseballindia.com" class="text-red-600">Unifusions.</a>
                 </div>
             </div>
         </div>

@@ -46,5 +46,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
    ->withEvents(discover: [
     app_path('Domains/Tournament/Competition/Engine/Fixture'),
+   
 ])
     ->create();

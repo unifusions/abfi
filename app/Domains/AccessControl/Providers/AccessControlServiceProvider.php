@@ -4,6 +4,7 @@ namespace App\Domains\AccessControl\Providers;
 
 // use App\Domains\AccessControl\Scopes\OfficialScope;
 // use App\Domains\AccessControl\Scopes\OrganizationScope;
+use App\Domains\AccessControl\Scopes\OfficialScope;
 use App\Domains\AccessControl\Scopes\PlayerScope;
 // use App\Domains\AccessControl\Scopes\RosterScope;
 // use App\Domains\AccessControl\Scopes\TournamentScope;
@@ -38,7 +39,8 @@ class AccessControlServiceProvider extends ServiceProvider
 
         $registry->register(
             Player::class,
-            PlayerScope::class
+            PlayerScope::class,
+         
         );
 
         // $registry->register(
@@ -46,10 +48,10 @@ class AccessControlServiceProvider extends ServiceProvider
         //     RosterScope::class
         // );
 
-        // $registry->register(
-        //     Official::class,
-        //     OfficialScope::class
-        // );
+        $registry->register(
+            Official::class,
+            OfficialScope::class
+        );
 
         // $registry->register(
         //     Organization::class,
